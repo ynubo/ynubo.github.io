@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sacerdos bio</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'JetBrains Mono', monospace;
+    background-color: #000;
+    color: white;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+#particles-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.container {
+    position: relative;
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 20;
+    padding: 20px;
+}
+
+.content-wrapper {
+    display: flex;
+    gap: 30px;
+    align-items: stretch;
+    max-width: 900px;
+    width: 100%;
+}
+
+.main-content {
+    flex: 1;
+    max-width: 480px;
+    background-color: transparent;
+    padding: 40px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 30px;
+    animation: fadeIn 0.7s ease-out;
+    min-height: 600px;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 16px;
+    backdrop-filter: blur(4px);
+    transition: all 0.3s ease;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+}
+
+.main-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 16px;
+    border: 1px solid transparent;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent) border-box;
+    -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: -1;
+}
+
+@media (min-width: 1025px) {
+    .main-content {
+        backdrop-filter: blur(6px);
+        box-shadow: 0 0 40px rgba(255, 255, 255, 0.15);
+    }
+    
+    .main-content:hover {
+        box-shadow: 0 0 60px rgba(255, 255, 255, 0.25);
+        border-color: rgba(255, 255, 255, 0.4);
+        transform: translateY(-2px);
+    }
+}
+
+@media (max-width: 1024px) {
+    .content-wrapper {
+        flex-direction: column;
+        align-items: center;
+        max-width: 480px;
+    }
+    
+    .main-content {
+        min-height: auto;
+        padding: 40px 20px;
+        width: 100%;
+    }
+}
+
+.avatar-section {
+    position: relative;
+}
+
+.avatar-link {
+    display: block;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.avatar-wrapper {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid white;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+    transition: all 0.5s ease;
+    position: relative;
+}
+
+.avatar-wrapper::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    border-radius: 50%;
+    border: 1px solid transparent;
+    background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4, #feca57, #ff9ff3, #54a0ff, #5f27cd);
+    background-size: 400% 400%;
+    -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    animation: gradientRotate 3s linear infinite;
+}
+
+@keyframes gradientRotate {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.avatar-link:hover .avatar-wrapper::after {
+    opacity: 1;
+}
+
+@media (min-width: 640px) {
+    .avatar-wrapper {
+        width: 112px;
+        height: 112px;
+    }
+}
+
+.avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.avatar-link:hover .avatar-wrapper {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.8);
+    border-color: white;
+}
+
+.avatar-link:hover .avatar {
+    transform: rotate(-5deg);
+}
+
+.avatar-hover-text {
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    font-family: 'VT323', monospace;
+    font-size: 10px;
+    color: white;
+    letter-spacing: 2px;
+    background-color: rgba(0, 0, 0, 0.9);
+    padding: 2px 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.avatar-link:hover .avatar-hover-text {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-5px);
+}
+
+.info-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.nickname {
+    font-family: 'VT323', monospace;
+    font-size: 24px;
+    font-weight: bold;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.9);
+    letter-spacing: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    transition: text-shadow 0.3s ease;
+}
+
+.nickname:hover {
+    text-shadow: 0 0 25px rgba(255, 255, 255, 1);
+}
+
+@media (min-width: 640px) {
+    .nickname {
+        font-size: 28px;
+    }
+}
+
+.telegram-icon-wrapper {
+    transition: transform 0.3s ease;
+}
+
+.nickname:hover .telegram-icon-wrapper {
+    transform: translateY(-2px) rotate(10deg);
+}
+
+.telegram-icon-wrapper i {
+    font-size: 24px;
+    transition: text-shadow 0.3s ease;
+}
+
+.nickname:hover .telegram-icon-wrapper i {
+    text-shadow: 0 0 15px #0088cc;
+}
+
+.description {
+    font-family: 'VT323', monospace;
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.6);
+    letter-spacing: 3.2px;
+    text-transform: uppercase;
+    position: relative;
+    overflow: hidden;
+}
+
+.description::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, white, transparent);
+    transition: width 0.5s ease;
+}
+
+.description:hover::after {
+    width: 100%;
+}
+
+@media (min-width: 640px) {
+    .description {
+        font-size: 18px;
+    }
+}
+
+.buttons-section {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    padding: 14px 24px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transform-style: preserve-3d;
+    transform: translateZ(0);
+}
+
+.social-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.5s ease;
+    z-index: 1;
+}
+
+.social-btn:hover::before {
+    left: 100%;
+}
+
+@media (min-width: 640px) {
+    .social-btn {
+        padding: 16px 24px;
+    }
+}
+
+.social-btn:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.4);
+    transform: translateY(-3px) translateZ(10px);
+    border-color: rgba(255, 255, 255, 0.4);
+    transition-delay: 0.15s;
+}
+
+.social-btn:active {
+    transform: translateY(-1px) translateZ(5px);
+    transition-duration: 0.1s;
+}
+
+.social-btn i {
+    font-size: 22px;
+    color: white;
+    transition: transform 0.3s ease, text-shadow 0.3s ease;
+    position: relative;
+    z-index: 2;
+}
+
+.social-btn:hover i {
+    transform: scale(1.2);
+}
+
+.social-btn:hover .fa-telegram {
+    text-shadow: 0 0 20px #0088cc;
+}
+
+.social-btn:hover .fa-steam {
+    text-shadow: 0 0 20px #171a21;
+}
+
+.social-btn:hover .fa-github {
+    text-shadow: 0 0 20px #6e5494;
+}
+
+.social-btn span {
+    font-family: 'VT323', monospace;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    transition: letter-spacing 0.3s ease;
+    position: relative;
+    z-index: 2;
+}
+
+.social-btn:hover span {
+    letter-spacing: 3px;
+}
+
+@media (min-width: 640px) {
+    .social-btn span {
+        font-size: 20px;
+    }
+}
+
+.divider {
+    height: 1px;
+    width: 96px;
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.3), transparent);
+    margin: 8px auto 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.divider::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, white, transparent);
+    animation: slide 3s infinite;
+}
+
+@keyframes slide {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+.footer {
+    position: absolute;
+    bottom: 24px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.2);
+    font-family: 'VT323', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    z-index: 20;
+    transition: color 0.3s ease;
+}
+
+.footer:hover {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+@media (min-width: 640px) {
+    .footer {
+        font-size: 14px;
+    }
+}
+
+.scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        to bottom,
+        rgba(18, 16, 16, 0) 50%,
+        rgba(0, 0, 0, 0.1) 50%
+    );
+    background-size: 100% 4px;
+    z-index: 10;
+    pointer-events: none;
+    opacity: 0.3;
+}
+
+::selection {
+    background-color: white;
+    color: black;
+    text-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+.bio-player {
+    width: 300px;
+    padding: 30px;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 16px;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.2);
+    font-family: 'VT323', monospace;
+    z-index: 40;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 600px;
+    animation: fadeIn 0.7s ease-out 0.2s both;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.bio-player::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 16px;
+    border: 1px solid transparent;
+    background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05), rgba(255,255,255,0.1)) border-box;
+    -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.bio-player.audio-pulse::before {
+    opacity: 1;
+    animation: pulseBorder 0.5s ease;
+}
+
+@keyframes pulseBorder {
+    0% { transform: scale(1); opacity: 0.5; }
+    50% { transform: scale(1.02); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.5; }
+}
+
+@media (min-width: 1025px) {
+    .bio-player {
+        backdrop-filter: blur(8px);
+        border-radius: 16px;
+        box-shadow: 0 0 40px rgba(255, 255, 255, 0.25);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    .bio-player:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 0 50px rgba(255, 255, 255, 0.35);
+    }
+}
+
+@media (max-width: 1024px) {
+    .bio-player {
+        display: none !important;
+    }
+    
+    #bg-music {
+        display: none !important;
+    }
+}
+
+.bio-player-title {
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: rgba(255, 255, 255, 0.5);
+    text-align: center;
+    margin-bottom: 5px;
+    text-shadow: 0 0 5px rgba(255,255,255,0.3);
+}
+
+.bio-player-track {
+    font-size: 18px;
+    text-align: center;
+    color: white;
+    text-shadow: 0 0 10px rgba(255,255,255,0.7);
+    margin-bottom: 25px;
+    min-height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: text-shadow 0.3s ease;
+}
+
+.bio-player.audio-active .bio-player-track {
+    text-shadow: 0 0 15px rgba(255,255,255,1);
+}
+
+.bio-player-btn {
+    width: 100%;
+    margin-top: 15px;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255,255,255,0.4);
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-family: 'VT323', monospace;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+.bio-player-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+}
+
+.bio-player-btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.bio-player-btn:hover {
+    background: rgba(255,255,255,0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(255,255,255,0.3);
+}
+
+.bio-player-btn:active {
+    transform: translateY(0);
+    transition-duration: 0.1s;
+}
+
+.bio-progress {
+    margin-top: 20px;
+    height: 4px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+}
+
+.bio-progress-bar {
+    height: 100%;
+    width: 0%;
+    background: white;
+    transition: width 0.1s linear;
+    position: relative;
+    box-shadow: 0 0 10px white;
+}
+
+.bio-progress-bar.audio-active {
+    animation: progressGlow 0.5s ease;
+}
+
+@keyframes progressGlow {
+    0% { box-shadow: 0 0 5px white; }
+    50% { box-shadow: 0 0 20px white; }
+    100% { box-shadow: 0 0 10px white; }
+}
+
+.bio-time {
+    margin-top: 8px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+}
+
+.bio-time span {
+    transition: color 0.3s ease;
+}
+
+.bio-player.audio-active .bio-time span {
+    color: rgba(255,255,255,0.8);
+}
+
+.player-icon {
+    font-size: 48px;
+    text-align: center;
+    margin: 20px 0;
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.7);
+    transition: all 0.3s ease;
+}
+
+.bio-player.audio-active .player-icon {
+    text-shadow: 0 0 30px rgba(255, 255, 255, 1);
+    transform: scale(1.1);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.spark {
+    position: fixed;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 5;
+    box-shadow: 0 0 10px 2px white;
+    opacity: 0;
+}
+
+.wind-indicator {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    font-family: 'VT323', monospace;
+    font-size: 12px;
+    color: rgba(255,255,255,0.3);
+    z-index: 100;
+    opacity: 0;
+    transition: opacity 1s ease;
+}
+
+.parallax-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    background: radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.05) 0%, transparent 50%);
+    opacity: 0.5;
+}
+    </style>
+</head>
+<body>
+    <div class="parallax-layer"></div>
+    <div class="wind-indicator">WIND: CALM</div>
+    
+    <canvas id="particles-canvas"></canvas>
+    
+    <div class="container">
+        <div class="content-wrapper">
+            <div class="main-content" id="bioCard">
+                <div class="avatar-section">
+                    <a href="https://t.me/Khayzeh" target="_blank" class="avatar-link">
+                        <div class="avatar-wrapper">
+                            <img src="https://i.ibb.co/KppByBMy/ada.png" alt="Avatar" class="avatar">
+                        </div>
+                        <div class="avatar-hover-text">TELEGRAM</div>
+                    </a>
+                </div>
+
+                <div class="info-section">
+                    <h1 class="nickname">
+                        <span>&lt;/&gt; sacerdos |</span>
+                        <span class="telegram-icon-wrapper">
+                            <i class="fab fa-telegram"></i>
+                        </span>
+                    </h1>
+                    <p class="description">sacerdos / GrOb / &lt;/&gt;</p>
+                </div>
+
+                <div class="buttons-section">
+                    <a href="https://t.me/ynubo" target="_blank" class="social-btn">
+                        <i class="fab fa-telegram"></i>
+                        <span>TELEGRAM ACCOUNT</span>
+                    </a>
+                    
+                    <a href="https://t.me/info_sacerdos" target="_blank" class="social-btn">
+                        <i class="fab fa-telegram"></i>
+                        <span>TELEGRAM CHANNEL</span>
+                    </a>
+                    
+                    <a href="https://steamcommunity.com/profiles/sacedosxd/" target="_blank" class="social-btn">
+                        <i class="fab fa-steam"></i>
+                        <span>STEAM PROFILE</span>
+                    </a>
+
+                    <a href="https://github.com/sacerdosxd" target="_blank" class="social-btn">
+                        <i class="fab fa-github"></i>
+                        <span>GITHUB</span>
+                    </a>
+                </div>
+
+                <div class="divider"></div>
+            </div>
+
+            <div class="bio-player" id="bioPlayer">
+                <div class="player-icon">
+                    <i class="fas fa-music"></i>
+                </div>
+                <div class="bio-player-title">NOW PLAYING</div>
+                <div class="bio-player-track">CUPSIZE - ..</div>
+
+                <button class="bio-player-btn" id="bioPlayBtn">
+                    <i class="fas fa-pause"></i> PAUSE
+                </button>
+
+                <div class="bio-progress" id="bioProgress">
+                    <div class="bio-progress-bar" id="bioProgressBar"></div>
+                </div>
+
+                <div class="bio-time">
+                    <span id="bioCurrent">00:00</span>
+                    <span id="bioDuration">00:00</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio id="bg-music" preload="auto" loop autoplay>
+        <source src="name_siund.mp3" type="audio/mpeg">
+        Ваш браузер не поддерживает аудио элементы.
+    </audio>
+
+    <div class="footer">
+        &copy; 2026 SACEDOS DEV (СПИЗЖЕНО)
+    </div>
+
+    <div class="scanlines"></div>
+
+    <script src="script.js"></script>
+
+    <script>
+/* =========================
+   CANVAS SNOW + ENHANCED EFFECTS
+   ========================= */
+
+const canvas = document.getElementById("particles-canvas");
+const ctx = canvas.getContext("2d");
+const windIndicator = document.querySelector('.wind-indicator');
+
+let w, h;
+const SNOW_COUNT = 120;
+const LINK_DISTANCE = 120;
+const MOUSE_DISTANCE = 140;
+let snow = [];
+let wind = { x: 0, y: 0 };
+let lastWindChange = Date.now();
+
+const mouse = { x: null, y: null };
+
+const parallaxLayer = document.querySelector('.parallax-layer');
+let mouseX = 0, mouseY = 0;
+
+document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX / w;
+    mouseY = e.clientY / h;
+    
+    if (parallaxLayer) {
+        const moveX = mouseX * 20 - 10;
+        const moveY = mouseY * 20 - 10;
+        parallaxLayer.style.transform = `translate(${moveX}px, ${moveY}px)`;
+    }
+});
+
+function resize() {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+}
+window.addEventListener("resize", resize);
+resize();
+
+window.addEventListener("mousemove", e => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+});
+window.addEventListener("mouseleave", () => {
+    mouse.x = mouse.y = null;
+});
+
+class Snow {
+    constructor() {
+        this.reset();
+    }
+
+    reset() {
+        this.x = Math.random() * w;
+        this.y = Math.random() * h;
+        this.r = Math.random() * 2 + 0.8;
+        this.baseSpeed = Math.random() * 0.8 + 0.4;
+        this.sy = this.baseSpeed;
+        this.sx = Math.random() * 0.4 - 0.2;
+        this.a = Math.random() * 0.5 + 0.4;
+        this.oscillation = Math.random() * Math.PI * 2;
+        this.oscillationSpeed = Math.random() * 0.02 + 0.01;
+    }
+
+    update(audioIntensity = 0) {
+        this.x += wind.x;
+        this.y += wind.y;
+        
+        this.sy = this.baseSpeed * (1 + audioIntensity * 0.3);
+        
+        this.oscillation += this.oscillationSpeed;
+        this.x += Math.sin(this.oscillation) * 0.1;
+        
+        this.y += this.sy;
+        this.x += this.sx;
+        
+        if (this.y > h) {
+            this.y = -10;
+            this.x = Math.random() * w;
+        }
+        if (this.x > w) this.x = -10;
+        if (this.x < -10) this.x = w;
+    }
+
+    draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${this.a})`;
+        ctx.fill();
+    }
+}
+
+function initSnow() {
+    snow = [];
+    for (let i = 0; i < SNOW_COUNT; i++) {
+        snow.push(new Snow());
+    }
+}
+
+function drawSnowLinks(audioIntensity = 0) {
+    ctx.globalAlpha = 0.3 + audioIntensity * 0.3;
+    for (let i = 0; i < snow.length; i++) {
+        for (let j = i + 1; j < snow.length; j++) {
+            const dx = snow[i].x - snow[j].x;
+            const dy = snow[i].y - snow[j].y;
+            const d = Math.sqrt(dx * dx + dy * dy);
+
+            if (d < LINK_DISTANCE) {
+                const alpha = (1 - d / LINK_DISTANCE) * (0.3 + audioIntensity * 0.2);
+                ctx.strokeStyle = `rgba(255,255,255,${alpha})`;
+                ctx.lineWidth = 0.4 + audioIntensity * 0.3;
+                ctx.beginPath();
+                ctx.moveTo(snow[i].x, snow[i].y);
+                ctx.lineTo(snow[j].x, snow[j].y);
+                ctx.stroke();
+            }
+        }
+    }
+    ctx.globalAlpha = 1;
+}
+
+function drawMouseLinks() {
+    if (!mouse.x) return;
+
+    ctx.globalAlpha = 0.3;
+    snow.forEach(p => {
+        const dx = p.x - mouse.x;
+        const dy = p.y - mouse.y;
+        const d = Math.sqrt(dx * dx + dy * dy);
+
+        if (d < MOUSE_DISTANCE) {
+            ctx.strokeStyle = `rgba(255,255,255,${1 - d / MOUSE_DISTANCE})`;
+            ctx.lineWidth = 0.6;
+            ctx.beginPath();
+            ctx.moveTo(mouse.x, mouse.y);
+            ctx.lineTo(p.x, p.y);
+            ctx.stroke();
+        }
+    });
+    ctx.globalAlpha = 1;
+}
+
+function updateWind() {
+    const now = Date.now();
+    if (now - lastWindChange > 10000) {
+        lastWindChange = now;
+        wind.x = (Math.random() - 0.5) * 0.5;
+        wind.y = (Math.random() - 0.5) * 0.2;
+        
+        const windStrength = Math.sqrt(wind.x * wind.x + wind.y * wind.y);
+        let windText = "CALM";
+        if (windStrength > 0.3) windText = "STRONG";
+        else if (windStrength > 0.15) windText = "MODERATE";
+        else if (windStrength > 0.05) windText = "LIGHT";
+        
+        windIndicator.textContent = `WIND: ${windText}`;
+        windIndicator.style.opacity = '1';
+        setTimeout(() => {
+            windIndicator.style.opacity = '0';
+        }, 2000);
+    }
+}
+
+function createSpark() {
+    if (Math.random() < 0.01) {
+        const spark = document.createElement('div');
+        spark.className = 'spark';
+        spark.style.left = Math.random() * w + 'px';
+        spark.style.top = Math.random() * h + 'px';
+        document.body.appendChild(spark);
+        
+        spark.animate([
+            { opacity: 0, transform: 'scale(0)' },
+            { opacity: 1, transform: 'scale(1)' },
+            { opacity: 0, transform: 'scale(0)' }
+        ], {
+            duration: 1000 + Math.random() * 1000,
+            easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+        });
+        
+        setTimeout(() => spark.remove(), 2000);
+    }
+}
+
+let audioIntensity = 0;
+let lastAudioUpdate = 0;
+
+function animate() {
+    ctx.clearRect(0, 0, w, h);
+    
+    updateWind();
+    createSpark();
+    
+    snow.forEach(p => {
+        p.update(audioIntensity);
+        p.draw();
+    });
+
+    drawSnowLinks(audioIntensity);
+    drawMouseLinks();
+    
+    const now = Date.now();
+    if (now - lastAudioUpdate > 100) {
+        audioIntensity *= 0.9;
+    }
+
+    requestAnimationFrame(animate);
+}
+
+initSnow();
+animate();
+
+/* =========================
+   AUDIO PLAYER WITH REACTIVITY
+   ========================= */
+
+const isDesktop = window.innerWidth > 1024;
+
+if (isDesktop) {
+    const audio = document.getElementById("bg-music");
+    const playBtn = document.getElementById("bioPlayBtn");
+    const progress = document.getElementById("bioProgress");
+    const bar = document.getElementById("bioProgressBar");
+    const cur = document.getElementById("bioCurrent");
+    const dur = document.getElementById("bioDuration");
+    const player = document.getElementById("bioPlayer");
+    const trackElement = document.querySelector('.bio-player-track');
+
+    let isPlaying = true; // Start with playing
+    let audioContext, analyser, source, dataArray;
+    let beatTimer = 0;
+    let lastBeatTime = 0;
+
+    audio.volume = 0.5;
+    audio.loop = true;
+
+    function fmt(t) {
+        if (isNaN(t) || !isFinite(t)) return "00:00";
+        const m = Math.floor(t / 60);
+        const s = Math.floor(t % 60);
+        return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+    }
+
+    function updateProgress() {
+        if (audio.duration && !isNaN(audio.duration)) {
+            const p = (audio.currentTime / audio.duration) * 100;
+            bar.style.width = p + "%";
+            cur.textContent = fmt(audio.currentTime);
+        }
+    }
+
+    function initAudioAnalysis() {
+        try {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            analyser = audioContext.createAnalyser();
+            source = audioContext.createMediaElementSource(audio);
+            source.connect(analyser);
+            analyser.connect(audioContext.destination);
+            analyser.fftSize = 256;
+            analyser.smoothingTimeConstant = 0.8;
+            
+            dataArray = new Uint8Array(analyser.frequencyBinCount);
+            
+            updateAudioAnalysis();
+        } catch (e) {
+            console.log("Audio analysis not supported:", e);
+        }
+    }
+
+    function updateAudioAnalysis() {
+        if (!analyser || !isPlaying) {
+            requestAnimationFrame(updateAudioAnalysis);
+            return;
+        }
+        
+        analyser.getByteFrequencyData(dataArray);
+        
+        let sum = 0;
+        for (let i = 0; i < 32; i++) {
+            sum += dataArray[i];
+        }
+        const avgIntensity = sum / (32 * 256);
+        
+        audioIntensity = avgIntensity;
+        lastAudioUpdate = Date.now();
+        
+        const now = Date.now();
+        if (avgIntensity > 0.3 && now - lastBeatTime > 200) {
+            if (beatTimer > 0.5) {
+                lastBeatTime = now;
+                triggerBeatEffect();
+            }
+        }
+        
+        if (player) {
+            if (avgIntensity > 0.2) {
+                player.classList.add('audio-active');
+                bar.classList.add('audio-active');
+                
+                if (avgIntensity > 0.4) {
+                    player.classList.add('audio-pulse');
+                    setTimeout(() => {
+                        player.classList.remove('audio-pulse');
+                    }, 200);
+                }
+            } else {
+                player.classList.remove('audio-active');
+                bar.classList.remove('audio-active');
+            }
+        }
+        
+        beatTimer = avgIntensity;
+        requestAnimationFrame(updateAudioAnalysis);
+    }
+
+    function triggerBeatEffect() {
+        if (trackElement) {
+            trackElement.animate([
+                { transform: 'scale(1)', textShadow: '0 0 10px rgba(255,255,255,0.7)' },
+                { transform: 'scale(1.05)', textShadow: '0 0 20px rgba(255,255,255,1)' },
+                { transform: 'scale(1)', textShadow: '0 0 10px rgba(255,255,255,0.7)' }
+            ], {
+                duration: 200,
+                easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+            });
+        }
+    }
+
+    function togglePlay() {
+        if (isPlaying) {
+            audio.pause();
+            isPlaying = false;
+            playBtn.innerHTML = '<i class="fas fa-play"></i> PLAY';
+            player.classList.remove('audio-active');
+        } else {
+            audio.play().then(() => {
+                isPlaying = true;
+                playBtn.innerHTML = '<i class="fas fa-pause"></i> PAUSE';
+                
+                if (!audioContext) {
+                    initAudioAnalysis();
+                }
+            }).catch(error => {
+                console.log("Play error:", error);
+            });
+        }
+    }
+
+    if (playBtn) {
+        playBtn.addEventListener("click", togglePlay);
+    }
+
+    if (progress) {
+        progress.addEventListener("click", e => {
+            if (audio.duration && !isNaN(audio.duration)) {
+                const x = e.offsetX / progress.clientWidth;
+                audio.currentTime = x * audio.duration;
+            }
+        });
+    }
+
+    audio.addEventListener("loadedmetadata", () => {
+        console.log("Audio loaded, duration:", fmt(audio.duration));
+        if (dur) {
+            dur.textContent = fmt(audio.duration);
+        }
+    });
+
+    audio.addEventListener("timeupdate", updateProgress);
+
+    audio.addEventListener("error", (e) => {
+        console.error("Audio error:", e);
+        console.error("Error code:", audio.error?.code);
+        console.error("Error message:", audio.error?.message);
+        
+        if (trackElement) {
+            trackElement.textContent = "Audio error - trying alternatives...";
+        }
+    });
+
+    // Auto-play on load with user interaction fallback
+    window.addEventListener('load', function() {
+        console.log("Desktop: Loading audio...");
+        
+        // Try to play automatically
+        const playPromise = audio.play();
+        
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
+                console.log("Audio autoplay successful");
+                initAudioAnalysis();
+            }).catch(error => {
+                console.log("Autoplay prevented, waiting for user interaction:", error);
+                
+                // Add interaction handler
+                const unlockAudio = () => {
+                    audio.play().then(() => {
+                        console.log("Audio started after user interaction");
+                        initAudioAnalysis();
+                        document.removeEventListener('click', unlockAudio);
+                    });
+                };
+                
+                document.addEventListener('click', unlockAudio);
+            });
+        }
+    });
+} else {
+    console.log("Mobile/Tablet: Audio player disabled");
+    
+    const audioElement = document.getElementById('bg-music');
+    const playerElement = document.getElementById('bioPlayer');
+    
+    if (audioElement) audioElement.remove();
+    if (playerElement) playerElement.remove();
+}
+
+window.addEventListener('resize', function() {
+    const isNowDesktop = window.innerWidth > 1024;
+    
+    if (!isNowDesktop) {
+        const audioElement = document.getElementById('bg-music');
+        const playerElement = document.getElementById('bioPlayer');
+        
+        if (audioElement) audioElement.remove();
+        if (playerElement) playerElement.remove();
+    }
+});
+
+window.addEventListener('load', function() {
+    console.log("Page loaded - Device type:", window.innerWidth > 1024 ? "Desktop" : "Mobile/Tablet");
+});
+
+    </script>
+</body>
+</html>
