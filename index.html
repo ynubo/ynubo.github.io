@@ -43,7 +43,7 @@
       --accent-glow: rgba(239, 68, 68, 0.35);
       --text: #fef2f2;
       --text-muted: #991b1b;
-      --particle-color: rgba(239, 68, 68, 0.3);
+      --particle-color: rgba(239, 68, 68, 0.4);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -64,14 +64,14 @@
     a { color: inherit; text-decoration: none; }
     button { font: inherit; border: none; background: none; cursor: pointer; }
 
-    #particles {
+    #canvas {
       position: fixed;
       inset: 0;
       z-index: 0;
       pointer-events: none;
     }
 
-    /* Topbar & Theme Toggle */
+    /* Topbar */
     .topbar {
       position: fixed;
       top: 16px;
@@ -103,7 +103,6 @@
       color: var(--text-muted);
       font-size: 12px;
       font-family: 'JetBrains Mono', monospace;
-      transition: border-color 0.4s ease;
     }
 
     .status-dot {
@@ -140,7 +139,7 @@
       font-size: 12px;
     }
 
-    /* Window Container & Animations */
+    /* Window Container */
     .layout {
       position: relative;
       z-index: 5;
@@ -201,12 +200,10 @@
       padding: 3px;
       background: linear-gradient(135deg, var(--accent), transparent);
       box-shadow: 0 0 20px var(--accent-glow);
-      transition: transform 0.3s ease, box-shadow 0.4s ease;
+      transition: transform 0.3s ease;
     }
 
-    .avatar-shell:hover {
-      transform: scale(1.05) rotate(3deg);
-    }
+    .avatar-shell:hover { transform: scale(1.05) rotate(3deg); }
 
     .avatar {
       width: 100%;
@@ -220,7 +217,6 @@
       font-size: 32px;
       font-weight: 700;
       color: var(--text);
-      letter-spacing: -0.5px;
     }
 
     .subtitle {
@@ -228,7 +224,51 @@
       font-size: 13px;
       margin-top: 4px;
       font-family: 'JetBrains Mono', monospace;
-      transition: color 0.4s ease;
+    }
+
+    /* Spotify / Lanyard Live Card */
+    .spotify-card {
+      display: none;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 14px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      margin-bottom: 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .spotify-album-art {
+      width: 42px;
+      height: 42px;
+      border-radius: 6px;
+      object-fit: cover;
+    }
+
+    .spotify-details {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      overflow: hidden;
+    }
+
+    .spotify-title {
+      color: var(--text);
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .spotify-artist {
+      color: var(--text-muted);
+      font-size: 11px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     /* Terminal Box */
@@ -241,7 +281,6 @@
       font-size: 13px;
       display: grid;
       gap: 12px;
-      transition: border-color 0.4s ease;
     }
 
     .row {
@@ -252,14 +291,11 @@
       transition: transform 0.2s ease;
     }
 
-    .row:hover {
-      transform: translateX(4px);
-    }
+    .row:hover { transform: translateX(4px); }
 
     .row .material-symbols-outlined {
       font-size: 18px;
       color: var(--accent);
-      transition: color 0.4s ease;
     }
 
     .label { color: var(--text-muted); }
@@ -280,19 +316,13 @@
       font-size: 11px;
       margin-right: 4px;
       border: 1px solid var(--card-border);
-      transition: all 0.3s ease;
-    }
-
-    .tag:hover {
-      border-color: var(--accent);
-      box-shadow: 0 0 10px var(--accent-glow);
     }
 
     /* Actions Matrix */
     .actions {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px;
       margin-top: 24px;
     }
 
@@ -302,12 +332,12 @@
       justify-content: center;
       gap: 8px;
       height: 44px;
-      padding: 0 16px;
+      padding: 0 14px;
       border-radius: 8px;
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid var(--card-border);
       color: var(--text);
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 500;
       transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
@@ -362,17 +392,13 @@
       font-family: 'JetBrains Mono', monospace;
       font-size: 12px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.6);
-      transition: all 0.4s ease;
-      animation: fadeIn 1s ease;
     }
 
     .views-widget .material-symbols-outlined {
       font-size: 16px;
       color: var(--accent);
-      transition: color 0.4s ease;
     }
 
-    /* Keyframes */
     @keyframes float-window {
       0%, 100% { transform: translateY(0px); }
       50% { transform: translateY(-8px); }
@@ -384,14 +410,14 @@
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
+      from { opacity: 0; transform: translateY(15px); }
       to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 
 <body>
-  <canvas id="particles"></canvas>
+  <canvas id="canvas"></canvas>
 
   <header class="topbar">
     <div class="topbar-left">
@@ -427,6 +453,16 @@
           <div class="title-area">
             <h1>ynubo</h1>
             <div class="subtitle" id="typing"></div>
+          </div>
+        </div>
+
+        <!-- Live Spotify Listening Status -->
+        <div class="spotify-card" id="spotifyWidget">
+          <i class="fa-brands fa-spotify" style="color: #1db954; font-size: 20px;"></i>
+          <img class="spotify-album-art" id="spotifyArt" src="" alt="Album Art">
+          <div class="spotify-details">
+            <span class="spotify-title" id="spotifyTitle">Слушает Spotify</span>
+            <span class="spotify-artist" id="spotifyArtist">...</span>
           </div>
         </div>
 
@@ -480,7 +516,7 @@
           </div>
         </div>
 
-        <!-- Buttons -->
+        <!-- Action Buttons -->
         <div class="actions">
           <a class="action-btn primary" href="https://t.me/ynubo" target="_blank">
             <i class="fa-brands fa-telegram"></i> TELEGRAM
@@ -494,6 +530,9 @@
           <a class="action-btn" href="https://steamcommunity.com/id/sacerdosxd" target="_blank">
             <i class="fa-brands fa-steam"></i> STEAM
           </a>
+          <a class="action-btn" href="https://open.spotify.com/playlist/0yzdXwn0gWxlvnMeFCAgpZ" target="_blank">
+            <i class="fa-brands fa-spotify"></i> SPOTIFY
+          </a>
         </div>
 
         <div class="footer">
@@ -504,30 +543,52 @@
     </div>
   </main>
 
-  <!-- View Counter (Bottom Right Eye Icon) -->
+  <!-- View Counter -->
   <div class="views-widget">
     <span class="material-symbols-outlined">visibility</span>
     <span id="visitorCount">—</span>
   </div>
 
   <script>
+    // ---------- Web Audio API UI Click Sound ----------
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playClickSound() {
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.04);
+      gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.04);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.04);
+    }
+
+    document.querySelectorAll('.action-btn, .theme-toggle-btn').forEach(btn => {
+      btn.addEventListener('click', playClickSound);
+    });
+
     // ---------- Theme Switching & Persistence ----------
     const themeToggleBtn = document.getElementById("themeToggle");
-    const currentTheme = localStorage.getItem("theme") || "dark";
+    let isRedTheme = localStorage.getItem("theme") === "red";
 
-    if (currentTheme === "red") {
+    if (isRedTheme) {
       document.documentElement.setAttribute("data-theme", "red");
     }
 
     themeToggleBtn.addEventListener("click", () => {
-      const isRed = document.documentElement.getAttribute("data-theme") === "red";
-      if (isRed) {
-        document.documentElement.removeAttribute("data-theme");
-        localStorage.setItem("theme", "dark");
-      } else {
+      isRedTheme = !isRedTheme;
+      if (isRedTheme) {
         document.documentElement.setAttribute("data-theme", "red");
         localStorage.setItem("theme", "red");
+      } else {
+        document.documentElement.removeAttribute("data-theme");
+        localStorage.setItem("theme", "dark");
       }
+      initCanvas();
     });
 
     // ---------- Clock ----------
@@ -552,6 +613,32 @@
     }
     typeLoop();
 
+    // ---------- Spotify Live Status (Lanyard) ----------
+    const DISCORD_ID = "ТВОЙ_DISCORD_ID"; // Замени на свой Discord ID
+    const spotifyWidget = document.getElementById("spotifyWidget");
+
+    if (DISCORD_ID !== "ТВОЙ_DISCORD_ID") {
+      async function checkSpotify() {
+        try {
+          const res = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
+          const data = await res.json();
+          if (data.success && data.data.spotify) {
+            const sp = data.data.spotify;
+            document.getElementById("spotifyArt").src = sp.album_art_url;
+            document.getElementById("spotifyTitle").textContent = sp.song;
+            document.getElementById("spotifyArtist").textContent = `by ${sp.artist}`;
+            spotifyWidget.style.display = "flex";
+          } else {
+            spotifyWidget.style.display = "none";
+          }
+        } catch {
+          spotifyWidget.style.display = "none";
+        }
+      }
+      checkSpotify();
+      setInterval(checkSpotify, 10000);
+    }
+
     // ---------- Visitor Counter ----------
     async function loadVisitors() {
       try {
@@ -565,36 +652,56 @@
     }
     loadVisitors();
 
-    // ---------- Background Particle Canvas ----------
-    const canvas = document.getElementById("particles");
+    // ---------- Background Canvas (Particles or Matrix Rain) ----------
+    const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
-    let W, H, particles = [];
+    let W, H, particles = [], matrixCols = [];
+    const katakana = "0123456789ABCDEFЯИИИРКНВБС";
 
-    function resize() {
+    function initCanvas() {
       W = canvas.width = window.innerWidth;
       H = canvas.height = window.innerHeight;
-      particles = Array.from({ length: 40 }, () => ({
-        x: Math.random() * W, y: Math.random() * H,
-        r: Math.random() * 1.5 + 1, vx: (Math.random() - .5) * .2, vy: Math.random() * .2 + .1
-      }));
+
+      if (isRedTheme) {
+        const cols = Math.floor(W / 20);
+        matrixCols = Array.from({ length: cols }, () => Math.floor(Math.random() * -50));
+      } else {
+        particles = Array.from({ length: 40 }, () => ({
+          x: Math.random() * W, y: Math.random() * H,
+          r: Math.random() * 1.5 + 1, vx: (Math.random() - .5) * .2, vy: Math.random() * .2 + .1
+        }));
+      }
     }
 
-    function render() {
+    function renderCanvas() {
       ctx.clearRect(0, 0, W, H);
-      const style = getComputedStyle(document.documentElement);
-      ctx.fillStyle = style.getPropertyValue('--particle-color').trim() || "rgba(255, 255, 255, 0.2)";
-      
-      for (let p of particles) {
-        p.x += p.vx; p.y += p.vy;
-        if (p.y > H) p.y = 0;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fill();
+
+      if (isRedTheme) {
+        ctx.fillStyle = "rgba(239, 68, 68, 0.4)";
+        ctx.font = "14px 'JetBrains Mono', monospace";
+        matrixCols.forEach((y, i) => {
+          const char = katakana[Math.floor(Math.random() * katakana.length)];
+          const x = i * 20;
+          ctx.fillText(char, x, y * 20);
+          if (y * 20 > H && Math.random() > 0.975) matrixCols[i] = 0;
+          matrixCols[i]++;
+        });
+      } else {
+        ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
+        for (let p of particles) {
+          p.x += p.vx; p.y += p.vy;
+          if (p.y > H) p.y = 0;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fill();
+        }
       }
-      requestAnimationFrame(render);
+      requestAnimationFrame(renderCanvas);
     }
-    window.onresize = resize;
-    resize(); render();
+
+    window.onresize = initCanvas;
+    initCanvas();
+    renderCanvas();
   </script>
 </body>
 </html>
