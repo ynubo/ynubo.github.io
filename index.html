@@ -600,30 +600,28 @@
     typeLoop();
 
     // Lanyard Discord Spotify Status
-    const DISCORD_ID = "ТВОЙ_DISCORD_ID"; // Замени на свой ID!
+    const DISCORD_ID = "1126900855925383169"; 
     const spotifyWidget = document.getElementById("spotifyWidget");
 
-    if (DISCORD_ID !== "ТВОЙ_DISCORD_ID") {
-      async function checkSpotify() {
-        try {
-          const res = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
-          const data = await res.json();
-          if (data.success && data.data.spotify) {
-            const sp = data.data.spotify;
-            document.getElementById("spotifyArt").src = sp.album_art_url;
-            document.getElementById("spotifyTitle").textContent = sp.song;
-            document.getElementById("spotifyArtist").textContent = `by ${sp.artist}`;
-            spotifyWidget.style.display = "flex";
-          } else {
-            spotifyWidget.style.display = "none";
-          }
-        } catch {
+    async function checkSpotify() {
+      try {
+        const res = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
+        const data = await res.json();
+        if (data.success && data.data.spotify) {
+          const sp = data.data.spotify;
+          document.getElementById("spotifyArt").src = sp.album_art_url;
+          document.getElementById("spotifyTitle").textContent = sp.song;
+          document.getElementById("spotifyArtist").textContent = `by ${sp.artist}`;
+          spotifyWidget.style.display = "flex";
+        } else {
           spotifyWidget.style.display = "none";
         }
+      } catch {
+        spotifyWidget.style.display = "none";
       }
-      checkSpotify();
-      setInterval(checkSpotify, 8000);
     }
+    checkSpotify();
+    setInterval(checkSpotify, 8000);
 
     // Reliable Local Visitor Counter
     function updateVisits() {
@@ -660,7 +658,6 @@
       frameCounter++;
 
       if (isRedTheme) {
-        // Slow down Matrix animation by updating position only every 4th frame
         if (frameCounter % 4 === 0) {
           ctx.fillStyle = "rgba(8, 2, 3, 0.25)";
           ctx.fillRect(0, 0, W, H);
