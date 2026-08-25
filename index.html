@@ -47,7 +47,6 @@
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     
-    /* Скрытие стандартного курсора */
     @media (pointer: fine) {
       body, button, a { cursor: none !important; }
     }
@@ -69,7 +68,7 @@
     a { color: inherit; text-decoration: none; }
     button { font: inherit; border: none; background: none; }
 
-    /* Custom Cursor Elements */
+    /* Custom Cursor */
     .cursor-dot {
       position: fixed;
       top: 0; left: 0;
@@ -150,23 +149,36 @@
       animation: pulse-dot 2s infinite;
     }
 
-    .theme-toggle-btn {
+    .top-btn {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 32px;
       height: 32px;
-      border-radius: 50%;
+      padding: 0 10px;
+      border-radius: 16px;
       background: rgba(0, 0, 0, 0.4);
       border: 1px solid var(--card-border);
       color: var(--accent);
       backdrop-filter: blur(10px);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
       transition: all 0.3s ease;
+    }
+
+    .top-btn:hover {
+      border-color: var(--accent);
+      transform: scale(1.05);
+    }
+
+    .theme-toggle-btn {
+      width: 32px;
+      padding: 0;
+      border-radius: 50%;
     }
 
     .theme-toggle-btn:hover {
       transform: rotate(180deg) scale(1.1);
-      border-color: var(--accent);
     }
 
     .clock {
@@ -400,7 +412,6 @@
       color: var(--accent);
     }
 
-    /* Toast notification */
     .toast {
       position: fixed;
       bottom: 25px;
@@ -441,7 +452,7 @@
 </head>
 
 <body>
-  <!-- Custom Cursor Elements -->
+  <!-- Custom Cursor -->
   <div class="cursor-dot" id="cursorDot"></div>
   <div class="cursor-outline" id="cursorOutline"></div>
 
@@ -452,9 +463,10 @@
       <div class="status-chip">
         <span class="status-dot"></span> macOS Terminal
       </div>
-      <button class="theme-toggle-btn" id="themeToggle" title="Сменить тему">
+      <button class="top-btn theme-toggle-btn" id="themeToggle" title="Сменить тему / Switch theme">
         <span class="material-symbols-outlined" style="font-size: 18px;">palette</span>
       </button>
+      <button class="top-btn" id="langToggle" title="Сменить язык / Switch language">RU</button>
     </div>
     <div class="clock" id="clock">00:00:00</div>
   </header>
@@ -486,12 +498,12 @@
         <div class="terminal">
           <div class="row">
             <span class="material-symbols-outlined">person</span>
-            <span class="label">alias</span>
+            <span class="label" data-i18n="alias_label">псевдоним</span>
             <span class="value">ynubo</span>
           </div>
           <div class="row">
             <span class="material-symbols-outlined">code</span>
-            <span class="label">stack</span>
+            <span class="label" data-i18n="stack_label">стек</span>
             <span class="value">
               <span class="tag">Rust</span>
               <span class="tag">Kotlin</span>
@@ -507,27 +519,27 @@
 
           <div class="row">
             <span class="material-symbols-outlined">school</span>
-            <span class="label">learning</span>
+            <span class="label" data-i18n="learning_label">изучаю</span>
             <span class="value">Rust · Kotlin</span>
           </div>
           <div class="row">
             <span class="material-symbols-outlined">folder_open</span>
-            <span class="label">projects</span>
-            <span class="value">none yet — currently learning</span>
+            <span class="label" data-i18n="projects_label">проекты</span>
+            <span class="value" data-i18n="projects_val">пока нет — в процессе обучения</span>
           </div>
-          <div class="row" title="Нажмите, чтобы скопировать ID">
+          <div class="row">
             <span class="material-symbols-outlined">badge</span>
             <span class="label">telegram id</span>
             <span class="value copyable" id="tgId">8613256620</span>
           </div>
           <div class="row">
             <span class="material-symbols-outlined">location_on</span>
-            <span class="label">location</span>
-            <span class="value">Kirov · ~15-16 y.o.</span>
+            <span class="label" data-i18n="location_label">локация</span>
+            <span class="value" data-i18n="location_val">Киров · ~15-16 лет</span>
           </div>
           <div class="row">
             <span class="material-symbols-outlined">psychology</span>
-            <span class="label">type</span>
+            <span class="label" data-i18n="type_label">тип</span>
             <span class="value">ISTP-T</span>
           </div>
         </div>
@@ -537,7 +549,7 @@
             <i class="fa-brands fa-telegram"></i> TELEGRAM
           </a>
           <a class="action-btn" href="https://t.me/d031r" target="_blank">
-            <span class="material-symbols-outlined">podcasts</span> CHANNEL
+            <span class="material-symbols-outlined">podcasts</span> <span data-i18n="btn_channel">КАНАЛ</span>
           </a>
           <a class="action-btn" href="https://github.com/ynubo" target="_blank">
             <i class="fa-brands fa-github"></i> GITHUB
@@ -566,14 +578,63 @@
   <div class="toast" id="toast">ID скопирован в буфер обмена!</div>
 
   <script>
-    // Custom Cursor with Physics Delay
+    // i18n Translations
+    const translations = {
+      ru: {
+        alias_label: "псевдоним",
+        stack_label: "стек",
+        learning_label: "изучаю",
+        projects_label: "проекты",
+        projects_val: "пока нет — в процессе обучения",
+        location_label: "локация",
+        location_val: "Киров · ~15-16 лет",
+        type_label: "тип",
+        btn_channel: "КАНАЛ",
+        toast_copy: "ID скопирован в буфер обмена!",
+        phrases: ["разработчик / telegram", "создаю вещи в тишине", "rust / kotlin / системная разработка"]
+      },
+      en: {
+        alias_label: "alias",
+        stack_label: "stack",
+        learning_label: "learning",
+        projects_label: "projects",
+        projects_val: "none yet — currently learning",
+        location_label: "location",
+        location_val: "Kirov · ~15-16 y.o.",
+        type_label: "type",
+        btn_channel: "CHANNEL",
+        toast_copy: "ID copied to clipboard!",
+        phrases: ["developer / telegram", "building things quietly", "rust / kotlin / systems"]
+      }
+    };
+
+    let currentLang = localStorage.getItem("lang") || "ru";
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem("lang", lang);
+      document.getElementById("langToggle").textContent = lang.toUpperCase();
+
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        if (translations[lang][key]) {
+          el.textContent = translations[lang][key];
+        }
+      });
+      
+      // Reset typing animation with new language phrases
+      phraseIdx = 0; pos = 0; deleting = false;
+    }
+
+    document.getElementById("langToggle").addEventListener("click", () => {
+      setLanguage(currentLang === "ru" ? "en" : "ru");
+    });
+
+    // Custom Cursor
     const dot = document.getElementById('cursorDot');
     const outline = document.getElementById('cursorOutline');
-
-    let mouseX = window.innerWidth / 2;
-    let mouseY = window.innerHeight / 2;
-    let outlineX = mouseX;
-    let outlineY = mouseY;
+    let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+    let outlineX = mouseX, outlineY = mouseY;
 
     window.addEventListener('mousemove', (e) => {
       mouseX = e.clientX;
@@ -583,29 +644,26 @@
     });
 
     function animateCursor() {
-      // Плавное следование за курсором (задержка)
       outlineX += (mouseX - outlineX) * 0.15;
       outlineY += (mouseY - outlineY) * 0.15;
-      
       outline.style.left = `${outlineX}px`;
       outline.style.top = `${outlineY}px`;
-      
       requestAnimationFrame(animateCursor);
     }
     animateCursor();
 
-    // Hover effect for cursor
     const interactiveElements = document.querySelectorAll('a, button, .copyable, .mac-title');
     interactiveElements.forEach(el => {
       el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
       el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
     });
 
-    // Copy TG ID to Clipboard
+    // Copy TG ID
     const tgId = document.getElementById('tgId');
     const toast = document.getElementById('toast');
     tgId.addEventListener('click', () => {
       navigator.clipboard.writeText('8613256620').then(() => {
+        toast.textContent = translations[currentLang].toast_copy;
         toast.classList.add('show');
         setTimeout(() => toast.classList.remove('show'), 2000);
       });
@@ -628,7 +686,7 @@
       osc.stop(audioCtx.currentTime + 0.04);
     }
 
-    document.querySelectorAll('.action-btn, .theme-toggle-btn, .copyable').forEach(btn => {
+    document.querySelectorAll('.action-btn, .top-btn, .copyable').forEach(btn => {
       btn.addEventListener('click', playClickSound);
     });
 
@@ -658,13 +716,13 @@
       clock.textContent = new Date().toLocaleTimeString("ru-RU", { hour12: false });
     }, 1000);
 
-    // Typing
+    // Dynamic Typing
     const typing = document.getElementById("typing");
-    const phrases = ["developer / telegram", "building things quietly", "rust / kotlin / systems"];
     let phraseIdx = 0, pos = 0, deleting = false;
 
     function typeLoop() {
-      const text = phrases[phraseIdx];
+      const phrases = translations[currentLang].phrases;
+      const text = phrases[phraseIdx % phrases.length];
       typing.textContent = deleting ? text.slice(0, pos--) : text.slice(0, pos++);
       let delay = deleting ? 40 : 80;
 
@@ -744,30 +802,43 @@
     initCanvas();
     renderCanvas();
 
-    // Easter Egg 1: Konami Code Sequence (↑ ↑ ↓ ↓ ← → ← → B A)
-    const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
-    let konamiIndex = 0;
+    // 5 Keyboard Easter Eggs
+    const easterEggs = [
+      { code: ['ArrowUp', 'ArrowUp', 'ArrowUp'], msg: "🚀 Speedrunner unlocked!" },
+      { code: ['r', 'u', 's', 't'],              msg: "🦀 Crab power: Rust mode activated!" },
+      { code: ['d', 'e', 'v'],                  msg: "💻 Developer mode initialized!" },
+      { code: ['k', 'o', 't', 'l', 'i', 'n'],   msg: "🎯 Powered by Kotlin!" },
+      { code: ['y', 'n', 'u', 'b', 'o'],        msg: "⚡ ynubo mode activated!" }
+    ];
+
+    let keyProgress = new Array(easterEggs.length).fill(0);
 
     document.addEventListener('keydown', (e) => {
-      if (e.key.toLowerCase() === konamiCode[konamiIndex].toLowerCase()) {
-        konamiIndex++;
-        if (konamiIndex === konamiCode.length) {
-          triggerEasterEgg();
-          konamiIndex = 0;
+      if (e.ctrlKey || e.altKey || e.metaKey) return;
+      const key = e.key.toLowerCase();
+
+      easterEggs.forEach((egg, index) => {
+        const expectedKey = egg.code[keyProgress[index]].toLowerCase();
+        if (key === expectedKey) {
+          keyProgress[index]++;
+          if (keyProgress[index] === egg.code.length) {
+            triggerEasterEgg(egg.msg);
+            keyProgress[index] = 0;
+          }
+        } else {
+          keyProgress[index] = (key === egg.code[0].toLowerCase()) ? 1 : 0;
         }
-      } else {
-        konamiIndex = 0;
-      }
+      });
     });
 
-    function triggerEasterEgg() {
-      toast.textContent = "🎮 Easter Egg Unlocked: Matrix Mode!";
+    function triggerEasterEgg(message) {
+      toast.textContent = message;
       toast.classList.add('show');
       if (!isRedTheme) themeToggleBtn.click();
       setTimeout(() => toast.classList.remove('show'), 3000);
     }
 
-    // Easter Egg 2: Title Click Secret
+    // Header Click Easter Egg
     const macTitle = document.getElementById('macTitle');
     let titleClicks = 0;
     macTitle.addEventListener('click', () => {
@@ -779,6 +850,9 @@
         titleClicks = 0;
       }
     });
+
+    // Apply saved language on start
+    setLanguage(currentLang);
   </script>
 </body>
 </html>
