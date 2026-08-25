@@ -27,6 +27,7 @@
       --text: #f1f5f9;
       --text-muted: #64748b;
       --particle-color: rgba(255, 255, 255, 0.2);
+      --cursor-color: #ffffff;
       --mac-close: #ff5f56;
       --mac-min: #ffbd2e;
       --mac-max: #27c93f;
@@ -41,9 +42,16 @@
       --text: #fef2f2;
       --text-muted: #991b1b;
       --particle-color: rgba(239, 68, 68, 0.4);
+      --cursor-color: #ef4444;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    /* Скрытие стандартного курсора */
+    @media (pointer: fine) {
+      body, button, a { cursor: none !important; }
+    }
+
     html { scroll-behavior: smooth; }
     body {
       min-height: 100vh;
@@ -59,7 +67,39 @@
     }
 
     a { color: inherit; text-decoration: none; }
-    button { font: inherit; border: none; background: none; cursor: pointer; }
+    button { font: inherit; border: none; background: none; }
+
+    /* Custom Cursor Elements */
+    .cursor-dot {
+      position: fixed;
+      top: 0; left: 0;
+      width: 6px; height: 6px;
+      background-color: var(--cursor-color);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: background-color 0.4s ease;
+    }
+
+    .cursor-outline {
+      position: fixed;
+      top: 0; left: 0;
+      width: 30px; height: 30px;
+      border: 1px solid var(--cursor-color);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      opacity: 0.6;
+      transition: width 0.2s ease, height 0.2s ease, background-color 0.2s ease, border-color 0.4s ease;
+    }
+
+    body.cursor-hover .cursor-outline {
+      width: 45px;
+      height: 45px;
+      background-color: var(--accent-glow);
+    }
 
     #canvas {
       position: fixed;
@@ -175,6 +215,12 @@
       font-family: 'JetBrains Mono', monospace;
       font-size: 12px;
       color: var(--text-muted);
+      user-select: none;
+      transition: color 0.2s ease;
+    }
+
+    .mac-title:hover {
+      color: var(--accent);
     }
 
     .window-body { padding: 28px; }
@@ -249,6 +295,14 @@
 
     .label { color: var(--text-muted); }
     .value { color: var(--text); word-break: break-word; }
+
+    .copyable {
+      position: relative;
+      transition: color 0.2s ease;
+    }
+    .copyable:hover {
+      color: var(--accent);
+    }
 
     .separator {
       height: 1px;
@@ -346,6 +400,29 @@
       color: var(--accent);
     }
 
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      bottom: 25px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--card-bg);
+      border: 1px solid var(--accent);
+      color: var(--text);
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(10px);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 999;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
     @keyframes float-window {
       0%, 100% { transform: translateY(0px); }
       50% { transform: translateY(-8px); }
@@ -364,6 +441,10 @@
 </head>
 
 <body>
+  <!-- Custom Cursor Elements -->
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-outline" id="cursorOutline"></div>
+
   <canvas id="canvas"></canvas>
 
   <header class="topbar">
@@ -386,7 +467,7 @@
           <div class="mac-btn min"></div>
           <div class="mac-btn max"></div>
         </div>
-        <div class="mac-title">bash - ynubo@macbook:~</div>
+        <div class="mac-title" id="macTitle" title="Click for easter egg">bash - ynubo@macbook:~</div>
       </div>
 
       <div class="window-body">
@@ -434,10 +515,10 @@
             <span class="label">projects</span>
             <span class="value">none yet — currently learning</span>
           </div>
-          <div class="row">
+          <div class="row" title="Нажмите, чтобы скопировать ID">
             <span class="material-symbols-outlined">badge</span>
             <span class="label">telegram id</span>
-            <span class="value">8613256620</span>
+            <span class="value copyable" id="tgId">8613256620</span>
           </div>
           <div class="row">
             <span class="material-symbols-outlined">location_on</span>
@@ -482,7 +563,54 @@
     <span id="visitorCount">1</span>
   </div>
 
+  <div class="toast" id="toast">ID скопирован в буфер обмена!</div>
+
   <script>
+    // Custom Cursor with Physics Delay
+    const dot = document.getElementById('cursorDot');
+    const outline = document.getElementById('cursorOutline');
+
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let outlineX = mouseX;
+    let outlineY = mouseY;
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      dot.style.left = `${mouseX}px`;
+      dot.style.top = `${mouseY}px`;
+    });
+
+    function animateCursor() {
+      // Плавное следование за курсором (задержка)
+      outlineX += (mouseX - outlineX) * 0.15;
+      outlineY += (mouseY - outlineY) * 0.15;
+      
+      outline.style.left = `${outlineX}px`;
+      outline.style.top = `${outlineY}px`;
+      
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    // Hover effect for cursor
+    const interactiveElements = document.querySelectorAll('a, button, .copyable, .mac-title');
+    interactiveElements.forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+    });
+
+    // Copy TG ID to Clipboard
+    const tgId = document.getElementById('tgId');
+    const toast = document.getElementById('toast');
+    tgId.addEventListener('click', () => {
+      navigator.clipboard.writeText('8613256620').then(() => {
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2000);
+      });
+    });
+
     // Audio Click Sound
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     function playClickSound() {
@@ -500,7 +628,7 @@
       osc.stop(audioCtx.currentTime + 0.04);
     }
 
-    document.querySelectorAll('.action-btn, .theme-toggle-btn').forEach(btn => {
+    document.querySelectorAll('.action-btn, .theme-toggle-btn, .copyable').forEach(btn => {
       btn.addEventListener('click', playClickSound);
     });
 
@@ -546,21 +674,19 @@
     }
     typeLoop();
 
-    // Reliable Local Visitor Counter
+    // Visitor Counter
     function updateVisits() {
       let visits = parseInt(localStorage.getItem('site_views') || '120');
-      
       if (!sessionStorage.getItem('already_visited')) {
         visits += 1;
         localStorage.setItem('site_views', visits);
         sessionStorage.setItem('already_visited', 'true');
       }
-      
       document.getElementById("visitorCount").textContent = visits;
     }
     updateVisits();
 
-    // Canvas Matrix & Particles (Slowed Matrix)
+    // Canvas Matrix & Particles
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
     let W, H, particles = [], matrixCols = [];
@@ -617,6 +743,42 @@
     window.onresize = initCanvas;
     initCanvas();
     renderCanvas();
+
+    // Easter Egg 1: Konami Code Sequence (↑ ↑ ↓ ↓ ← → ← → B A)
+    const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+    let konamiIndex = 0;
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key.toLowerCase() === konamiCode[konamiIndex].toLowerCase()) {
+        konamiIndex++;
+        if (konamiIndex === konamiCode.length) {
+          triggerEasterEgg();
+          konamiIndex = 0;
+        }
+      } else {
+        konamiIndex = 0;
+      }
+    });
+
+    function triggerEasterEgg() {
+      toast.textContent = "🎮 Easter Egg Unlocked: Matrix Mode!";
+      toast.classList.add('show');
+      if (!isRedTheme) themeToggleBtn.click();
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    // Easter Egg 2: Title Click Secret
+    const macTitle = document.getElementById('macTitle');
+    let titleClicks = 0;
+    macTitle.addEventListener('click', () => {
+      titleClicks++;
+      if (titleClicks === 5) {
+        toast.textContent = "🚀 Keep building quietly.";
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3000);
+        titleClicks = 0;
+      }
+    });
   </script>
 </body>
 </html>
