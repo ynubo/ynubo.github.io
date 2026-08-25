@@ -2,30 +2,84 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#050505">
-  <meta name="description" content="sacerdos — developer / Telegram / web">
-  <meta property="og:title" content="sacerdos // bio">
-  <meta property="og:description" content="developer / Telegram / web">
-  <meta property="og:image" content="https://i.ibb.co/W8JcZLm/photo-2026-05-05-20-50-18.jpg">
-  <meta name="twitter:card" content="summary_large_image">
-  <title>sacerdos // bio</title>
 
-  <link rel="icon" href="https://i.ibb.co/W8JcZLm/photo-2026-05-05-20-50-18.jpg">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=VT323&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="theme-color"
+    content="#050505"
+  >
+
+  <meta
+    name="description"
+    content="ynubo — developer / Telegram / web"
+  >
+
+  <meta
+    property="og:title"
+    content="ynubo // bio"
+  >
+
+  <meta
+    property="og:description"
+    content="developer / Telegram / web"
+  >
+
+  <meta
+    property="og:image"
+    content="https://i.ibb.co/W8JcZLm/photo-2026-05-05-20-50-18.jpg"
+  >
+
+  <meta
+    name="twitter:card"
+    content="summary_large_image"
+  >
+
+  <title>ynubo // bio</title>
+
+  <link
+    rel="icon"
+    href="https://i.ibb.co/W8JcZLm/photo-2026-05-05-20-50-18.jpg"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=VT323&display=swap"
+    rel="stylesheet"
+  >
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  >
+
 
   <style>
+
     :root {
       --bg: #030303;
       --panel: rgba(10, 10, 12, .78);
       --panel-2: rgba(255,255,255,.045);
+
       --line: rgba(255,255,255,.14);
       --line-strong: rgba(255,255,255,.3);
+
       --text: #f5f5f5;
       --muted: rgba(255,255,255,.48);
+
       --blue: #62a8ff;
       --cyan: #54e6d2;
       --purple: #b99cff;
@@ -34,942 +88,3338 @@
       --yellow: #ffd166;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+
     body {
       min-height: 100vh;
+
       overflow-x: hidden;
+
       color: var(--text);
+
       background:
-        radial-gradient(circle at 15% 15%, rgba(98,168,255,.08), transparent 30%),
-        radial-gradient(circle at 85% 80%, rgba(185,156,255,.07), transparent 32%),
+        radial-gradient(
+          circle at 15% 15%,
+          rgba(98,168,255,.08),
+          transparent 30%
+        ),
+        radial-gradient(
+          circle at 85% 80%,
+          rgba(185,156,255,.07),
+          transparent 32%
+        ),
         var(--bg);
-      font-family: "JetBrains Mono", monospace;
+
+      font-family:
+        "JetBrains Mono",
+        monospace;
+
       -webkit-font-smoothing: antialiased;
     }
 
-    a { color: inherit; }
-    button { font: inherit; }
-    ::selection { background: #fff; color: #000; }
+
+    a {
+      color: inherit;
+    }
+
+
+    button {
+      font: inherit;
+    }
+
+
+    ::selection {
+      background: #fff;
+      color: #000;
+    }
+
+
+    /* =========================================
+       PARTICLES
+       ========================================= */
 
     #particles {
       position: fixed;
+
       inset: 0;
+
       width: 100%;
       height: 100%;
+
       z-index: 0;
+
       pointer-events: none;
     }
 
-    .noise, .scanlines {
+
+    /* =========================================
+       EFFECTS
+       ========================================= */
+
+    .noise,
+    .scanlines {
       position: fixed;
+
       inset: 0;
+
       pointer-events: none;
+
       z-index: 2;
     }
 
+
     .noise {
       opacity: .025;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
-    }
 
-    .scanlines {
-      opacity: .11;
-      background: repeating-linear-gradient(
-        to bottom,
-        transparent 0,
-        transparent 3px,
-        rgba(255,255,255,.035) 4px
+      background-image: url(
+        "data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E"
       );
     }
 
+
+    .scanlines {
+      opacity: .11;
+
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          transparent 0,
+          transparent 3px,
+          rgba(255,255,255,.035) 4px
+        );
+    }
+
+
+    /* =========================================
+       TOP BAR
+       ========================================= */
+
     .topbar {
       position: fixed;
+
       top: 18px;
       left: 18px;
       right: 18px;
+
       z-index: 20;
+
       display: flex;
+
       justify-content: space-between;
       align-items: center;
+
       pointer-events: none;
     }
 
+
     .status {
       display: inline-flex;
+
       align-items: center;
+
       gap: 8px;
+
       padding: 8px 11px;
+
       border: 1px solid var(--line);
+
       border-radius: 999px;
+
       background: rgba(0,0,0,.45);
+
       backdrop-filter: blur(12px);
+
       color: var(--muted);
+
       font-size: 10px;
+
       letter-spacing: 1.5px;
+
       text-transform: uppercase;
     }
+
 
     .status-dot {
       width: 7px;
       height: 7px;
+
       border-radius: 50%;
+
       background: var(--green);
-      box-shadow: 0 0 12px var(--green);
-      animation: blink 1.8s infinite;
+
+      box-shadow:
+        0 0 12px var(--green);
+
+      animation:
+        blink 1.8s infinite;
     }
+
 
     .clock {
       color: rgba(255,255,255,.3);
+
       font-size: 10px;
+
       letter-spacing: 1px;
     }
 
+
     @keyframes blink {
-      0%, 100% { opacity: .55; }
-      50% { opacity: 1; }
+      0%,
+      100% {
+        opacity: .55;
+      }
+
+      50% {
+        opacity: 1;
+      }
     }
+
+
+    /* =========================================
+       LAYOUT
+       ========================================= */
 
     .layout {
       position: relative;
+
       z-index: 5;
-      width: min(1080px, calc(100% - 32px));
+
+      width:
+        min(
+          1080px,
+          calc(100% - 32px)
+        );
+
       min-height: 100vh;
+
       margin: 0 auto;
-      padding: 86px 0 42px;
+
+      padding:
+        86px 0 42px;
+
       display: grid;
-      grid-template-columns: minmax(0, 1.12fr) minmax(300px, .88fr);
+
+      grid-template-columns:
+        minmax(0, 1.12fr)
+        minmax(300px, .88fr);
+
       gap: 22px;
+
       align-items: center;
     }
+
+
+    /* =========================================
+       CARD
+       ========================================= */
 
     .card {
       position: relative;
+
       overflow: hidden;
-      border: 1px solid var(--line);
+
+      border:
+        1px solid var(--line);
+
       border-radius: 20px;
-      background: linear-gradient(145deg, rgba(255,255,255,.055), rgba(255,255,255,.018));
-      box-shadow: 0 24px 80px rgba(0,0,0,.45);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+
+      background:
+        linear-gradient(
+          145deg,
+          rgba(255,255,255,.055),
+          rgba(255,255,255,.018)
+        );
+
+      box-shadow:
+        0 24px 80px rgba(0,0,0,.45);
+
+      backdrop-filter:
+        blur(16px);
+
+      -webkit-backdrop-filter:
+        blur(16px);
     }
+
 
     .card::before {
       content: "";
+
       position: absolute;
+
       inset: 0;
+
       pointer-events: none;
+
       background:
-        linear-gradient(120deg, rgba(255,255,255,.08), transparent 25%),
-        radial-gradient(circle at 90% 10%, rgba(98,168,255,.07), transparent 25%);
+        linear-gradient(
+          120deg,
+          rgba(255,255,255,.08),
+          transparent 25%
+        ),
+        radial-gradient(
+          circle at 90% 10%,
+          rgba(98,168,255,.07),
+          transparent 25%
+        );
     }
+
+
+    /* =========================================
+       PROFILE
+       ========================================= */
 
     .profile {
       padding: 34px;
-      animation: appear .65s ease both;
+
+      animation:
+        appear .65s ease both;
     }
+
 
     .profile-head {
       display: flex;
+
       align-items: center;
+
       gap: 22px;
+
       margin-bottom: 28px;
     }
 
+
     .avatar-shell {
       position: relative;
+
       width: 104px;
       height: 104px;
+
       flex: 0 0 104px;
+
       padding: 3px;
+
       border-radius: 50%;
-      background: conic-gradient(from 0deg, #fff, #5a8cff, #bd8cff, #fff);
-      box-shadow: 0 0 35px rgba(98,168,255,.18);
-      animation: spin 8s linear infinite;
+
+      background:
+        conic-gradient(
+          from 0deg,
+          #fff,
+          #5a8cff,
+          #bd8cff,
+          #fff
+        );
+
+      box-shadow:
+        0 0 35px rgba(98,168,255,.18);
+
+      animation:
+        spin 8s linear infinite;
     }
+
 
     .avatar-shell::before {
       content: "";
+
       position: absolute;
+
       inset: -8px;
-      border: 1px solid rgba(255,255,255,.08);
+
+      border:
+        1px solid rgba(255,255,255,.08);
+
       border-radius: 50%;
     }
+
 
     .avatar {
       width: 100%;
       height: 100%;
+
       display: block;
+
       object-fit: cover;
+
+      border:
+        3px solid #050505;
+
       border-radius: 50%;
-      border: 3px solid #050505;
-      animation: spinReverse 8s linear infinite;
+
+      animation:
+        spinReverse 8s linear infinite;
     }
 
-    @keyframes spin { to { transform: rotate(360deg); } }
-    @keyframes spinReverse { to { transform: rotate(-360deg); } }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+
+    @keyframes spinReverse {
+      to {
+        transform: rotate(-360deg);
+      }
+    }
+
 
     .eyebrow {
       color: var(--muted);
+
       font-size: 10px;
+
       letter-spacing: 2px;
+
       text-transform: uppercase;
+
       margin-bottom: 6px;
     }
 
+
     h1 {
       font-family: "VT323", monospace;
-      font-size: clamp(38px, 6vw, 58px);
+
+      font-size:
+        clamp(
+          38px,
+          6vw,
+          58px
+        );
+
       line-height: .9;
+
       letter-spacing: 2px;
-      text-shadow: 0 0 24px rgba(255,255,255,.35);
+
+      text-shadow:
+        0 0 24px rgba(255,255,255,.35);
     }
+
 
     .subtitle {
       margin-top: 9px;
+
       color: var(--muted);
+
       font-size: 12px;
+
       letter-spacing: 2px;
+
       text-transform: uppercase;
     }
 
+
     .typing::after {
       content: "▋";
+
       margin-left: 3px;
+
       color: var(--blue);
-      animation: cursor .8s infinite;
+
+      animation:
+        cursor .8s infinite;
     }
 
-    @keyframes cursor { 50% { opacity: 0; } }
+
+    @keyframes cursor {
+      50% {
+        opacity: 0;
+      }
+    }
+
+
+    /* =========================================
+       TERMINAL
+       ========================================= */
 
     .terminal {
       position: relative;
+
       margin-top: 22px;
-      border: 1px solid var(--line);
+
+      border:
+        1px solid var(--line);
+
       border-radius: 14px;
+
       overflow: hidden;
-      background: rgba(0,0,0,.58);
-      box-shadow: inset 0 0 40px rgba(0,0,0,.5);
+
+      background:
+        rgba(0,0,0,.58);
+
+      box-shadow:
+        inset 0 0 40px rgba(0,0,0,.5);
     }
+
 
     .terminal-head {
       display: flex;
+
       align-items: center;
+
       gap: 7px;
+
       padding: 10px 13px;
-      border-bottom: 1px solid var(--line);
-      background: rgba(255,255,255,.035);
+
+      border-bottom:
+        1px solid var(--line);
+
+      background:
+        rgba(255,255,255,.035);
     }
+
 
     .dot {
       width: 10px;
       height: 10px;
+
       border-radius: 50%;
     }
-    .red { background: #ff5f56; }
-    .yellow { background: #ffbd2e; }
-    .green { background: #27c93f; }
+
+
+    .red {
+      background: #ff5f56;
+    }
+
+
+    .yellow {
+      background: #ffbd2e;
+    }
+
+
+    .green {
+      background: #27c93f;
+    }
+
+
     .terminal-title {
       margin-left: 7px;
-      color: rgba(255,255,255,.38);
+
+      color:
+        rgba(255,255,255,.38);
+
       font-size: 10px;
     }
+
 
     .terminal-body {
       padding: 17px;
+
       display: grid;
+
       gap: 10px;
+
       font-size: 12px;
+
       line-height: 1.65;
     }
 
+
     .row {
       display: grid;
-      grid-template-columns: 24px 76px 1fr;
+
+      grid-template-columns:
+        24px 76px 1fr;
+
       gap: 8px;
+
       align-items: start;
     }
 
-    .icon { color: var(--blue); text-align: center; padding-top: 2px; }
-    .label { color: rgba(255,255,255,.38); }
-    .value { color: rgba(255,255,255,.86); word-break: break-word; }
+
+    .icon {
+      color: var(--blue);
+
+      text-align: center;
+
+      padding-top: 2px;
+    }
+
+
+    .label {
+      color:
+        rgba(255,255,255,.38);
+    }
+
+
+    .value {
+      color:
+        rgba(255,255,255,.86);
+
+      word-break: break-word;
+    }
+
 
     .separator {
       height: 1px;
+
       margin: 3px 0;
-      background: linear-gradient(90deg, transparent, var(--line), transparent);
+
+      background:
+        linear-gradient(
+          90deg,
+          transparent,
+          var(--line),
+          transparent
+        );
     }
+
 
     .tag {
       display: inline-block;
+
       padding: 2px 7px;
-      margin: 2px 3px 2px 0;
-      border: 1px solid rgba(255,255,255,.15);
+
+      margin:
+        2px 3px 2px 0;
+
+      border:
+        1px solid rgba(255,255,255,.15);
+
       border-radius: 5px;
-      background: rgba(255,255,255,.055);
+
+      background:
+        rgba(255,255,255,.055);
+
       font-size: 10px;
     }
-    .tag-blue { color: #8ec5ff; border-color: rgba(98,168,255,.3); }
-    .tag-purple { color: #cbb7ff; border-color: rgba(185,156,255,.3); }
-    .tag-green { color: #91f1ba; border-color: rgba(110,231,162,.3); }
+
+
+    .tag-blue {
+      color: #8ec5ff;
+
+      border-color:
+        rgba(98,168,255,.3);
+    }
+
+
+    .tag-purple {
+      color: #cbb7ff;
+
+      border-color:
+        rgba(185,156,255,.3);
+    }
+
+
+    .tag-green {
+      color: #91f1ba;
+
+      border-color:
+        rgba(110,231,162,.3);
+    }
+
 
     .link {
       color: #8fc6ff;
+
       text-decoration: none;
-      border-bottom: 1px solid rgba(143,198,255,.25);
-      transition: .2s ease;
+
+      border-bottom:
+        1px solid rgba(143,198,255,.25);
+
+      transition:
+        .2s ease;
     }
+
+
     .link:hover {
       color: #b9e0ff;
+
       border-color: #b9e0ff;
-      text-shadow: 0 0 10px rgba(98,168,255,.7);
+
+      text-shadow:
+        0 0 10px rgba(98,168,255,.7);
     }
+
+
+    /* =========================================
+       ACTIONS
+       ========================================= */
 
     .actions {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+
+      grid-template-columns:
+        1fr 1fr;
+
       gap: 10px;
+
       margin-top: 22px;
     }
 
+
     .btn {
       position: relative;
+
       display: flex;
+
       align-items: center;
+
       justify-content: center;
+
       gap: 9px;
+
       min-height: 48px;
+
       padding: 11px 14px;
-      border: 1px solid var(--line);
+
+      border:
+        1px solid var(--line);
+
       border-radius: 11px;
+
       color: #fff;
-      background: rgba(255,255,255,.045);
+
+      background:
+        rgba(255,255,255,.045);
+
       text-decoration: none;
+
       font-family: "VT323", monospace;
+
       font-size: 18px;
+
       letter-spacing: 1.5px;
+
       overflow: hidden;
-      transition: .25s ease;
+
+      transition:
+        .25s ease;
     }
+
 
     .btn::before {
       content: "";
+
       position: absolute;
+
       top: 0;
       bottom: 0;
+
       left: -110%;
+
       width: 70%;
-      transform: skewX(-18deg);
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,.14), transparent);
-      transition: .55s ease;
+
+      transform:
+        skewX(-18deg);
+
+      background:
+        linear-gradient(
+          90deg,
+          transparent,
+          rgba(255,255,255,.14),
+          transparent
+        );
+
+      transition:
+        .55s ease;
     }
 
-    .btn:hover::before { left: 130%; }
-    .btn:hover {
-      transform: translateY(-2px);
-      border-color: var(--line-strong);
-      background: rgba(255,255,255,.085);
-      box-shadow: 0 10px 30px rgba(0,0,0,.28);
+
+    .btn:hover::before {
+      left: 130%;
     }
+
+
+    .btn:hover {
+      transform:
+        translateY(-2px);
+
+      border-color:
+        var(--line-strong);
+
+      background:
+        rgba(255,255,255,.085);
+
+      box-shadow:
+        0 10px 30px rgba(0,0,0,.28);
+    }
+
 
     .btn.primary {
-      grid-column: 1 / -1;
-      background: rgba(98,168,255,.08);
-      border-color: rgba(98,168,255,.3);
+      grid-column:
+        1 / -1;
+
+      background:
+        rgba(98,168,255,.08);
+
+      border-color:
+        rgba(98,168,255,.3);
     }
 
-    .btn i { font-size: 17px; }
+
+    .btn i {
+      font-size: 17px;
+    }
+
 
     .footer {
       margin-top: 20px;
+
       display: flex;
+
       justify-content: space-between;
-      color: rgba(255,255,255,.22);
+
+      color:
+        rgba(255,255,255,.22);
+
       font-size: 9px;
+
       letter-spacing: 1.5px;
+
       text-transform: uppercase;
     }
+
+
+    /* =========================================
+       PLAYER
+       ========================================= */
 
     .player {
       min-height: 600px;
+
       padding: 28px;
+
       display: flex;
+
       flex-direction: column;
+
       justify-content: center;
-      animation: appear .65s .1s ease both;
+
+      animation:
+        appear .65s .1s ease both;
     }
+
 
     .player-top {
       display: flex;
+
       align-items: center;
+
       justify-content: space-between;
+
       color: var(--muted);
+
       font-size: 10px;
+
       letter-spacing: 2px;
+
       text-transform: uppercase;
     }
 
+
     .equalizer {
       display: flex;
+
       align-items: end;
+
       justify-content: center;
+
       gap: 5px;
+
       height: 120px;
-      margin: 35px 0 25px;
+
+      margin:
+        35px 0 25px;
     }
+
 
     .bar {
       width: 7px;
+
       height: 18px;
+
       border-radius: 8px;
-      background: linear-gradient(to top, var(--blue), #fff);
-      box-shadow: 0 0 12px rgba(98,168,255,.4);
-      animation: equalize .9s ease-in-out infinite alternate;
-      animation-play-state: paused;
+
+      background:
+        linear-gradient(
+          to top,
+          var(--blue),
+          #fff
+        );
+
+      box-shadow:
+        0 0 12px rgba(98,168,255,.4);
+
+      animation:
+        equalize .9s
+        ease-in-out
+        infinite
+        alternate;
+
+      animation-play-state:
+        paused;
     }
 
-    .playing .bar { animation-play-state: running; }
-    .bar:nth-child(2) { animation-delay: -.25s; }
-    .bar:nth-child(3) { animation-delay: -.45s; }
-    .bar:nth-child(4) { animation-delay: -.15s; }
-    .bar:nth-child(5) { animation-delay: -.6s; }
-    .bar:nth-child(6) { animation-delay: -.35s; }
-    .bar:nth-child(7) { animation-delay: -.7s; }
+
+    .playing .bar {
+      animation-play-state:
+        running;
+    }
+
+
+    .bar:nth-child(2) {
+      animation-delay: -.25s;
+    }
+
+
+    .bar:nth-child(3) {
+      animation-delay: -.45s;
+    }
+
+
+    .bar:nth-child(4) {
+      animation-delay: -.15s;
+    }
+
+
+    .bar:nth-child(5) {
+      animation-delay: -.6s;
+    }
+
+
+    .bar:nth-child(6) {
+      animation-delay: -.35s;
+    }
+
+
+    .bar:nth-child(7) {
+      animation-delay: -.7s;
+    }
+
 
     @keyframes equalize {
-      from { height: 16px; opacity: .45; }
-      to { height: 105px; opacity: 1; }
+
+      from {
+        height: 16px;
+        opacity: .45;
+      }
+
+      to {
+        height: 105px;
+        opacity: 1;
+      }
+
     }
+
 
     .now {
       text-align: center;
     }
 
+
     .now-label {
       color: var(--muted);
+
       font-size: 9px;
+
       letter-spacing: 2px;
+
       text-transform: uppercase;
     }
 
+
     .track {
       margin-top: 9px;
+
       min-height: 48px;
+
       display: grid;
+
       place-items: center;
-      font-family: "VT323", monospace;
+
+      font-family:
+        "VT323",
+        monospace;
+
       font-size: 26px;
+
       letter-spacing: 1px;
-      text-shadow: 0 0 18px rgba(255,255,255,.25);
+
+      text-shadow:
+        0 0 18px rgba(255,255,255,.25);
+
+      text-align: center;
+
+      word-break: break-word;
     }
+
+
+    /* =========================================
+       CONTROLS
+       ========================================= */
 
     .controls {
       display: flex;
+
       justify-content: center;
+
       gap: 13px;
-      margin: 25px 0 18px;
+
+      margin:
+        25px 0 18px;
     }
+
 
     .control {
       width: 46px;
       height: 46px;
+
       display: grid;
+
       place-items: center;
-      border: 1px solid var(--line);
+
+      border:
+        1px solid var(--line);
+
       border-radius: 50%;
-      color: rgba(255,255,255,.8);
-      background: rgba(255,255,255,.045);
+
+      color:
+        rgba(255,255,255,.8);
+
+      background:
+        rgba(255,255,255,.045);
+
       cursor: pointer;
-      transition: .2s ease;
+
+      transition:
+        .2s ease;
     }
+
 
     .control:hover {
       color: #fff;
-      transform: translateY(-2px);
-      border-color: var(--line-strong);
-      box-shadow: 0 0 24px rgba(255,255,255,.1);
+
+      transform:
+        translateY(-2px);
+
+      border-color:
+        var(--line-strong);
+
+      box-shadow:
+        0 0 24px rgba(255,255,255,.1);
     }
+
 
     .control.main {
       width: 60px;
       height: 60px;
-      background: rgba(255,255,255,.12);
-      border-color: rgba(255,255,255,.32);
+
+      background:
+        rgba(255,255,255,.12);
+
+      border-color:
+        rgba(255,255,255,.32);
+
       font-size: 20px;
     }
 
+
+    /* =========================================
+       PROGRESS
+       ========================================= */
+
     .progress-wrap {
       cursor: pointer;
+
       padding: 8px 0;
     }
 
+
     .progress {
       height: 4px;
+
       border-radius: 5px;
+
       overflow: hidden;
-      background: rgba(255,255,255,.1);
+
+      background:
+        rgba(255,255,255,.1);
     }
+
 
     .progress-bar {
       width: 0%;
+
       height: 100%;
+
       background: #fff;
-      box-shadow: 0 0 12px #fff;
+
+      box-shadow:
+        0 0 12px #fff;
+
+      transition:
+        width .05s linear;
     }
+
 
     .time {
       display: flex;
+
       justify-content: space-between;
+
       margin-top: 7px;
-      color: rgba(255,255,255,.3);
+
+      color:
+        rgba(255,255,255,.3);
+
       font-size: 9px;
     }
 
+
+    /* =========================================
+       PLAYLIST
+       ========================================= */
+
     .playlist {
       margin-top: 25px;
+
       display: grid;
+
       gap: 7px;
+
+      max-height: 205px;
+
+      overflow-y: auto;
+
+      scrollbar-width: thin;
+
+      scrollbar-color:
+        rgba(255,255,255,.2)
+        transparent;
     }
+
+
+    .playlist::-webkit-scrollbar {
+      width: 4px;
+    }
+
+
+    .playlist::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+
+    .playlist::-webkit-scrollbar-thumb {
+      background:
+        rgba(255,255,255,.2);
+
+      border-radius: 10px;
+    }
+
 
     .playlist-item {
       display: flex;
+
       align-items: center;
+
       gap: 10px;
+
       width: 100%;
-      padding: 10px 12px;
-      border: 1px solid var(--line);
+
+      padding:
+        10px 12px;
+
+      border:
+        1px solid var(--line);
+
       border-radius: 9px;
-      background: rgba(255,255,255,.025);
-      color: rgba(255,255,255,.55);
+
+      background:
+        rgba(255,255,255,.025);
+
+      color:
+        rgba(255,255,255,.55);
+
       cursor: pointer;
+
       text-align: left;
-      transition: .2s ease;
+
+      transition:
+        .2s ease;
     }
 
-    .playlist-item:hover, .playlist-item.active {
+
+    .playlist-item:hover,
+    .playlist-item.active {
       color: #fff;
-      background: rgba(255,255,255,.07);
-      border-color: rgba(255,255,255,.28);
+
+      background:
+        rgba(255,255,255,.07);
+
+      border-color:
+        rgba(255,255,255,.28);
     }
 
-    .playlist-item i { width: 16px; text-align: center; }
+
+    .playlist-item i {
+      width: 16px;
+
+      flex: 0 0 16px;
+
+      text-align: center;
+    }
+
+
     .playlist-item span {
       overflow: hidden;
+
       white-space: nowrap;
+
       text-overflow: ellipsis;
+
       font-size: 10px;
     }
+
+
+    .playlist-loading,
+    .playlist-empty,
+    .playlist-error {
+      padding:
+        13px;
+
+      border:
+        1px solid var(--line);
+
+      border-radius: 9px;
+
+      color:
+        rgba(255,255,255,.35);
+
+      font-size: 10px;
+
+      text-align: center;
+    }
+
+
+    /* =========================================
+       TOAST
+       ========================================= */
 
     .copy-toast {
       position: fixed;
+
       left: 50%;
+
       bottom: 26px;
+
       z-index: 100;
-      transform: translate(-50%, 15px);
-      padding: 9px 13px;
-      border: 1px solid rgba(255,255,255,.25);
+
+      transform:
+        translate(-50%, 15px);
+
+      padding:
+        9px 13px;
+
+      border:
+        1px solid rgba(255,255,255,.25);
+
       border-radius: 8px;
-      background: rgba(10,10,10,.92);
+
+      background:
+        rgba(10,10,10,.92);
+
       color: #fff;
+
       font-size: 10px;
+
       opacity: 0;
+
       pointer-events: none;
-      transition: .25s ease;
-      backdrop-filter: blur(10px);
+
+      transition:
+        .25s ease;
+
+      backdrop-filter:
+        blur(10px);
     }
+
 
     .copy-toast.show {
       opacity: 1;
-      transform: translate(-50%, 0);
+
+      transform:
+        translate(-50%, 0);
     }
+
+
+    /* =========================================
+       ANIMATIONS
+       ========================================= */
 
     @keyframes appear {
-      from { opacity: 0; transform: translateY(12px) scale(.985); }
-      to { opacity: 1; transform: none; }
+
+      from {
+        opacity: 0;
+
+        transform:
+          translateY(12px)
+          scale(.985);
+      }
+
+      to {
+        opacity: 1;
+
+        transform: none;
+      }
+
     }
+
+
+    /* =========================================
+       RESPONSIVE
+       ========================================= */
 
     @media (max-width: 860px) {
+
       .layout {
         grid-template-columns: 1fr;
+
         max-width: 650px;
+
         padding-top: 78px;
       }
-      .player { min-height: 440px; }
-      .equalizer { margin: 20px 0; height: 90px; }
-      .bar { width: 6px; }
-      .profile { padding: 27px; }
+
+
+      .player {
+        min-height: 440px;
+      }
+
+
+      .equalizer {
+        margin:
+          20px 0;
+
+        height: 90px;
+      }
+
+
+      .bar {
+        width: 6px;
+      }
+
+
+      .profile {
+        padding: 27px;
+      }
+
     }
+
 
     @media (max-width: 520px) {
-      .layout { width: min(100% - 18px, 650px); }
-      .profile-head { flex-direction: column; text-align: center; }
-      .profile { padding: 22px 17px; }
-      .player { padding: 22px 17px; }
-      .actions { grid-template-columns: 1fr; }
-      .btn.primary { grid-column: auto; }
-      .row { grid-template-columns: 22px 62px 1fr; font-size: 11px; }
-      .footer { flex-direction: column; gap: 5px; text-align: center; }
-      .clock { display: none; }
+
+      .layout {
+        width:
+          min(
+            100% - 18px,
+            650px
+          );
+      }
+
+
+      .profile-head {
+        flex-direction: column;
+
+        text-align: center;
+      }
+
+
+      .profile {
+        padding:
+          22px 17px;
+      }
+
+
+      .player {
+        padding:
+          22px 17px;
+      }
+
+
+      .actions {
+        grid-template-columns:
+          1fr;
+      }
+
+
+      .btn.primary {
+        grid-column:
+          auto;
+      }
+
+
+      .row {
+        grid-template-columns:
+          22px 62px 1fr;
+
+        font-size: 11px;
+      }
+
+
+      .footer {
+        flex-direction: column;
+
+        gap: 5px;
+
+        text-align: center;
+      }
+
+
+      .clock {
+        display: none;
+      }
+
     }
 
+
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation-duration: .01ms !important;
-        animation-iteration-count: 1 !important;
-        scroll-behavior: auto !important;
+
+      *,
+      *::before,
+      *::after {
+        animation-duration:
+          .01ms !important;
+
+        animation-iteration-count:
+          1 !important;
+
+        scroll-behavior:
+          auto !important;
       }
+
     }
+
   </style>
 </head>
 
+
 <body>
+
+  <!-- =========================================
+       BACKGROUND
+       ========================================= -->
+
   <canvas id="particles"></canvas>
+
   <div class="noise"></div>
+
   <div class="scanlines"></div>
 
+
+  <!-- =========================================
+       TOP BAR
+       ========================================= -->
+
   <header class="topbar">
-    <div class="status"><span class="status-dot"></span> system online</div>
-    <div class="clock" id="clock">00:00:00</div>
+
+    <div class="status">
+      <span class="status-dot"></span>
+      system online
+    </div>
+
+    <div
+      class="clock"
+      id="clock"
+    >
+      00:00:00
+    </div>
+
   </header>
 
+
+  <!-- =========================================
+       MAIN
+       ========================================= -->
+
   <main class="layout">
+
+
+    <!-- =======================================
+         PROFILE
+         ======================================= -->
+
     <section class="card profile">
+
       <div class="profile-head">
-        <a href="https://t.me/ynubo" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
+
+        <a
+          href="https://t.me/ynubo"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Telegram"
+        >
+
           <div class="avatar-shell">
-            <img class="avatar" src="https://i.ibb.co/W8JcZLm/photo-2026-05-05-20-50-18.jpg" alt="sacerdos avatar">
+
+            <img
+              class="avatar"
+              src="https://i.ibb.co/W8JcZLm/photo-2026-05-05-20-50-18.jpg"
+              alt="ynubo avatar"
+            >
+
           </div>
+
         </a>
 
+
         <div>
-          <div class="eyebrow">personal node / 01</div>
-          <h1>&lt;/&gt; sacerdos</h1>
-          <p class="subtitle"><span class="typing" id="typing"></span></p>
+
+          <div class="eyebrow">
+            personal node / 01
+          </div>
+
+          <h1>
+            &lt;/&gt; ynubo
+          </h1>
+
+          <p class="subtitle">
+            <span
+              class="typing"
+              id="typing"
+            ></span>
+          </p>
+
         </div>
+
       </div>
 
+
+      <!-- =====================================
+           TERMINAL
+           ===================================== -->
+
       <div class="terminal">
+
         <div class="terminal-head">
+
           <span class="dot red"></span>
           <span class="dot yellow"></span>
           <span class="dot green"></span>
-          <span class="terminal-title">~/sacerdos-bio/info.yml</span>
+
+          <span class="terminal-title">
+            ~/ynubo-bio/info.yml
+          </span>
+
         </div>
 
+
         <div class="terminal-body">
+
+
           <div class="row">
+
             <i class="fa-solid fa-user icon"></i>
-            <span class="label">alias</span>
-            <span class="value">sacerdos</span>
+
+            <span class="label">
+              alias
+            </span>
+
+            <span class="value">
+              ynubo
+            </span>
+
           </div>
 
+
           <div class="row">
+
             <i class="fa-solid fa-code icon"></i>
-            <span class="label">stack</span>
-            <span class="value">
-              <span class="tag tag-blue">Python</span>
-              <span class="tag tag-purple">HTML/CSS</span>
-              <span class="tag tag-green">JavaScript</span>
+
+            <span class="label">
+              stack
             </span>
+
+            <span class="value">
+
+              <span class="tag tag-blue">
+                C#
+              </span>
+
+              <span class="tag tag-purple">
+                Rust
+              </span>
+
+              <span class="tag tag-green">
+                Python
+              </span>
+
+              <span class="tag tag-blue">
+                Kotlin
+              </span>
+
+            </span>
+
           </div>
 
+
           <div class="row">
+
             <i class="fa-brands fa-telegram icon"></i>
-            <span class="label">telegram</span>
-            <span class="value">
-              <a class="link" href="https://t.me/ynubo" target="_blank" rel="noopener noreferrer">@ynubo</a>
+
+            <span class="label">
+              telegram
             </span>
+
+            <span class="value">
+
+              <a
+                class="link"
+                href="https://t.me/ynubo"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                @ynubo
+              </a>
+
+            </span>
+
           </div>
+
 
           <div class="separator"></div>
 
+
           <div class="row">
+
             <i class="fa-solid fa-terminal icon"></i>
-            <span class="label">focus</span>
-            <span class="value">Telegram bots · web · system administration</span>
+
+            <span class="label">
+              focus
+            </span>
+
+            <span class="value">
+              Telegram bots · web · programming
+            </span>
+
           </div>
 
+
           <div class="row">
+
             <i class="fa-solid fa-puzzle-piece icon"></i>
-            <span class="label">projects</span>
-            <span class="value">bots, community tools & personal experiments</span>
+
+            <span class="label">
+              projects
+            </span>
+
+            <span class="value">
+              bots, community tools & personal experiments
+            </span>
+
           </div>
 
+
           <div class="row">
+
             <i class="fa-solid fa-fingerprint icon"></i>
-            <span class="label">type</span>
-            <span class="value">ISTP-T</span>
+
+            <span class="label">
+              type
+            </span>
+
+            <span class="value">
+              ISTP-T
+            </span>
+
           </div>
+
+
         </div>
+
       </div>
+
+
+      <!-- =====================================
+           ACTIONS
+           ===================================== -->
 
       <div class="actions">
-        <a class="btn primary" href="https://t.me/ynubo" target="_blank" rel="noopener noreferrer">
-          <i class="fa-brands fa-telegram"></i> TELEGRAM
+
+
+        <a
+          class="btn primary"
+          href="https://t.me/ynubo"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+
+          <i class="fa-brands fa-telegram"></i>
+
+          TELEGRAM
+
         </a>
-        <a class="btn" href="https://t.me/info_sacerdos" target="_blank" rel="noopener noreferrer">
-          <i class="fa-solid fa-broadcast-tower"></i> CHANNEL
+
+
+        <a
+          class="btn"
+          href="https://t.me/d031r"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+
+          <i class="fa-solid fa-broadcast-tower"></i>
+
+          CHANNEL
+
         </a>
-        <a class="btn" href="https://github.com/sacerdosxd" target="_blank" rel="noopener noreferrer">
-          <i class="fa-brands fa-github"></i> GITHUB
+
+
+        <a
+          class="btn"
+          href="https://github.com/ynubo"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+
+          <i class="fa-brands fa-github"></i>
+
+          GITHUB
+
         </a>
-        <a class="btn" href="https://steamcommunity.com/id/sacerdosxd" target="_blank" rel="noopener noreferrer">
-          <i class="fa-brands fa-steam"></i> STEAM
+
+
+        <a
+          class="btn"
+          href="https://steamcommunity.com/id/sacerdosxd"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+
+          <i class="fa-brands fa-steam"></i>
+
+          STEAM
+
         </a>
+
+
       </div>
+
+
+      <!-- =====================================
+           FOOTER
+           ===================================== -->
 
       <div class="footer">
-        <span>© 2026 sacerdos</span>
-        <span>built with &lt;/&gt;</span>
+
+        <span>
+          © 2026 ynubo
+        </span>
+
+        <span>
+          built with &lt;/&gt;
+        </span>
+
       </div>
+
+
     </section>
 
-    <aside class="card player" id="player">
+
+
+    <!-- =======================================
+         PLAYER
+         ======================================= -->
+
+    <aside
+      class="card player"
+      id="player"
+    >
+
+
       <div class="player-top">
-        <span>audio subsystem</span>
-        <span id="audioState">standby</span>
+
+        <span>
+          audio subsystem
+        </span>
+
+        <span id="audioState">
+          standby
+        </span>
+
       </div>
 
-      <div class="equalizer" id="equalizer">
-        <span class="bar"></span><span class="bar"></span><span class="bar"></span>
-        <span class="bar"></span><span class="bar"></span><span class="bar"></span>
+
+      <!-- =====================================
+           EQUALIZER
+           ===================================== -->
+
+      <div
+        class="equalizer"
+        id="equalizer"
+      >
+
         <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+
       </div>
+
+
+      <!-- =====================================
+           CURRENT TRACK
+           ===================================== -->
 
       <div class="now">
-        <div class="now-label">now playing</div>
-        <div class="track" id="trackName">KSB MUZIC — ВЕСНА</div>
+
+        <div class="now-label">
+          now playing
+        </div>
+
+        <div
+          class="track"
+          id="trackName"
+        >
+          no track selected
+        </div>
+
       </div>
+
+
+      <!-- =====================================
+           CONTROLS
+           ===================================== -->
 
       <div class="controls">
-        <button class="control" id="prev" aria-label="Previous"><i class="fa-solid fa-backward-step"></i></button>
-        <button class="control main" id="play" aria-label="Play/Pause"><i class="fa-solid fa-play"></i></button>
-        <button class="control" id="next" aria-label="Next"><i class="fa-solid fa-forward-step"></i></button>
+
+
+        <button
+          class="control"
+          id="prev"
+          aria-label="Previous"
+          type="button"
+        >
+
+          <i class="fa-solid fa-backward-step"></i>
+
+        </button>
+
+
+        <button
+          class="control main"
+          id="play"
+          aria-label="Play"
+          type="button"
+        >
+
+          <i class="fa-solid fa-play"></i>
+
+        </button>
+
+
+        <button
+          class="control"
+          id="next"
+          aria-label="Next"
+          type="button"
+        >
+
+          <i class="fa-solid fa-forward-step"></i>
+
+        </button>
+
+
       </div>
 
-      <div class="progress-wrap" id="progressWrap">
-        <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
-        <div class="time">
-          <span id="current">00:00</span>
-          <span id="duration">00:00</span>
+
+      <!-- =====================================
+           PROGRESS
+           ===================================== -->
+
+      <div
+        class="progress-wrap"
+        id="progressWrap"
+      >
+
+        <div class="progress">
+
+          <div
+            class="progress-bar"
+            id="progressBar"
+          ></div>
+
         </div>
+
+
+        <div class="time">
+
+          <span id="current">
+            00:00
+          </span>
+
+          <span id="duration">
+            00:00
+          </span>
+
+        </div>
+
       </div>
 
-      <div class="playlist">
-        <button class="playlist-item active" data-src="KSB_muzic_-_Vesna.mp3" data-name="KSB MUZIC — ВЕСНА">
-          <i class="fa-solid fa-music"></i><span>KSB MUZIC — ВЕСНА</span>
-        </button>
-        <button class="playlist-item" data-src="KSB_muzic_-_Vesna.mp3" data-name="KSB MUZIC — ВЕСНА / loop">
-          <i class="fa-solid fa-repeat"></i><span>KSB MUZIC — ВЕСНА / loop</span>
-        </button>
+
+      <!-- =====================================
+           PLAYLIST
+           ===================================== -->
+
+      <div
+        class="playlist"
+        id="playlist"
+      >
+
+        <div class="playlist-loading">
+          scanning /music...
+        </div>
+
       </div>
+
+
     </aside>
+
+
   </main>
 
-  <div class="copy-toast" id="toast">copied</div>
 
-  <audio id="audio" preload="metadata" loop>
-    <source src="KSB_muzic_-_Vesna.mp3" type="audio/mpeg">
-  </audio>
+  <!-- =========================================
+       TOAST
+       ========================================= -->
+
+  <div
+    class="copy-toast"
+    id="toast"
+  >
+    copied
+  </div>
+
+
+  <!-- =========================================
+       AUDIO
+       ========================================= -->
+
+  <audio
+    id="audio"
+    preload="metadata"
+  ></audio>
+
+
+  <!-- =========================================
+       SCRIPT
+       ========================================= -->
 
   <script>
-    // ---------- clock ----------
-    const clock = document.getElementById("clock");
-    function updateClock() {
-      clock.textContent = new Date().toLocaleTimeString("ru-RU", { hour12: false });
-    }
-    updateClock();
-    setInterval(updateClock, 1000);
 
-    // ---------- typing ----------
-    const typing = document.getElementById("typing");
+    /* =========================================
+       CLOCK
+       ========================================= */
+
+    const clock =
+      document.getElementById("clock");
+
+
+    function updateClock() {
+
+      clock.textContent =
+        new Date().toLocaleTimeString(
+          "ru-RU",
+          {
+            hour12: false
+          }
+        );
+
+    }
+
+
+    updateClock();
+
+    setInterval(
+      updateClock,
+      1000
+    );
+
+
+    /* =========================================
+       TYPING
+       ========================================= */
+
+    const typing =
+      document.getElementById("typing");
+
+
     const phrases = [
       "developer / telegram",
       "building things quietly",
       "python / web / systems",
       "minimalist by default"
     ];
-    let phrase = 0, pos = 0, deleting = false;
+
+
+    let phrase = 0;
+
+    let pos = 0;
+
+    let deleting = false;
+
 
     function typeLoop() {
-      const text = phrases[phrase];
-      typing.textContent = deleting ? text.slice(0, pos--) : text.slice(0, pos++);
-      let delay = deleting ? 38 : 72;
 
-      if (!deleting && pos > text.length) {
+      const text =
+        phrases[phrase];
+
+
+      typing.textContent =
+        deleting
+          ? text.slice(0, pos--)
+          : text.slice(0, pos++);
+
+
+      let delay =
+        deleting
+          ? 38
+          : 72;
+
+
+      if (
+        !deleting &&
+        pos > text.length
+      ) {
+
         deleting = true;
+
         delay = 1300;
-      } else if (deleting && pos < 0) {
-        deleting = false;
-        phrase = (phrase + 1) % phrases.length;
-        pos = 0;
-        delay = 300;
+
       }
-      setTimeout(typeLoop, delay);
+
+
+      else if (
+        deleting &&
+        pos < 0
+      ) {
+
+        deleting = false;
+
+        phrase =
+          (phrase + 1) %
+          phrases.length;
+
+        pos = 0;
+
+        delay = 300;
+
+      }
+
+
+      setTimeout(
+        typeLoop,
+        delay
+      );
+
     }
+
+
     typeLoop();
 
-    // ---------- audio ----------
-    const audio = document.getElementById("audio");
-    const player = document.getElementById("player");
-    const play = document.getElementById("play");
-    const prev = document.getElementById("prev");
-    const next = document.getElementById("next");
-    const progressBar = document.getElementById("progressBar");
-    const progressWrap = document.getElementById("progressWrap");
-    const current = document.getElementById("current");
-    const duration = document.getElementById("duration");
-    const trackName = document.getElementById("trackName");
-    const audioState = document.getElementById("audioState");
-    const items = [...document.querySelectorAll(".playlist-item")];
+
+    /* =========================================
+       MUSIC CONFIG
+       ========================================= */
+
+    const MUSIC_CONFIG = {
+
+      /*
+       * GitHub username
+       */
+      owner: "ynubo",
+
+
+      /*
+       * Название репозитория.
+       *
+       * Если сайт находится в:
+       *
+       * github.com/ynubo/ynubo
+       *
+       * оставляем "ynubo".
+       */
+      repo: "ynubo",
+
+
+      /*
+       * Папка с музыкой.
+       */
+      path: "music",
+
+
+      /*
+       * Ветка репозитория.
+       */
+      branch: "main"
+
+    };
+
+
+    /* =========================================
+       SUPPORTED FORMATS
+       ========================================= */
+
+    const SUPPORTED_AUDIO = [
+
+      ".mp3",
+      ".wav",
+      ".ogg",
+      ".m4a",
+      ".aac",
+      ".flac"
+
+    ];
+
+
+    /* =========================================
+       AUDIO ELEMENTS
+       ========================================= */
+
+    const audio =
+      document.getElementById("audio");
+
+
+    const player =
+      document.getElementById("player");
+
+
+    const play =
+      document.getElementById("play");
+
+
+    const prev =
+      document.getElementById("prev");
+
+
+    const next =
+      document.getElementById("next");
+
+
+    const progressBar =
+      document.getElementById("progressBar");
+
+
+    const progressWrap =
+      document.getElementById("progressWrap");
+
+
+    const current =
+      document.getElementById("current");
+
+
+    const duration =
+      document.getElementById("duration");
+
+
+    const trackName =
+      document.getElementById("trackName");
+
+
+    const audioState =
+      document.getElementById("audioState");
+
+
+    const playlistElement =
+      document.getElementById("playlist");
+
+
+    /* =========================================
+       MUSIC STATE
+       ========================================= */
+
+    let playlist = [];
+
     let currentTrack = 0;
 
-    function fmt(sec) {
-      if (!Number.isFinite(sec)) return "00:00";
-      const m = Math.floor(sec / 60);
-      const s = Math.floor(sec % 60).toString().padStart(2, "0");
-      return `${m.toString().padStart(2, "0")}:${s}`;
+
+    /* =========================================
+       GET MUSIC FROM GITHUB
+       ========================================= */
+
+    async function loadPlaylist() {
+
+      playlistElement.innerHTML = `
+        <div class="playlist-loading">
+          scanning /music...
+        </div>
+      `;
+
+
+      try {
+
+        const url =
+          `https://api.github.com/repos/` +
+          `${encodeURIComponent(MUSIC_CONFIG.owner)}/` +
+          `${encodeURIComponent(MUSIC_CONFIG.repo)}/contents/` +
+          `${MUSIC_CONFIG.path}` +
+          `?ref=${encodeURIComponent(MUSIC_CONFIG.branch)}`;
+
+
+        const response =
+          await fetch(
+            url,
+            {
+              headers: {
+                "Accept":
+                  "application/vnd.github+json"
+              }
+            }
+          );
+
+
+        if (!response.ok) {
+
+          throw new Error(
+            `GitHub API: ${response.status}`
+          );
+
+        }
+
+
+        const files =
+          await response.json();
+
+
+        if (!Array.isArray(files)) {
+
+          throw new Error(
+            "GitHub вернул неожиданный ответ."
+          );
+
+        }
+
+
+        playlist =
+          files
+
+            .filter(
+              file => {
+
+                if (
+                  file.type !==
+                  "file"
+                ) {
+                  return false;
+                }
+
+
+                const filename =
+                  file.name.toLowerCase();
+
+
+                return SUPPORTED_AUDIO.some(
+                  extension =>
+                    filename.endsWith(
+                      extension
+                    )
+                );
+
+              }
+            )
+
+
+            .map(
+              file => ({
+
+                name:
+                  removeExtension(
+                    file.name
+                  ),
+
+                fileName:
+                  file.name,
+
+                url:
+                  file.download_url
+
+              })
+            )
+
+
+            .sort(
+              (a, b) =>
+                a.name.localeCompare(
+                  b.name,
+                  "ru",
+                  {
+                    numeric: true,
+                    sensitivity:
+                      "base"
+                  }
+                )
+            );
+
+
+        if (
+          playlist.length === 0
+        ) {
+
+          playlistElement.innerHTML = `
+            <div class="playlist-empty">
+              /music is empty
+            </div>
+          `;
+
+
+          trackName.textContent =
+            "no tracks found";
+
+
+          return;
+
+        }
+
+
+        renderPlaylist();
+
+
+        /*
+         * Загружаем первый трек,
+         * но НЕ запускаем его.
+         */
+
+        loadTrack(
+          0,
+          false
+        );
+
+
+        console.log(
+          `ynubo music: ${playlist.length} tracks`
+        );
+
+
+      }
+
+      catch (error) {
+
+        console.error(
+          "Music loading error:",
+          error
+        );
+
+
+        playlistElement.innerHTML = `
+          <div class="playlist-error">
+            failed to scan /music
+          </div>
+        `;
+
+
+        trackName.textContent =
+          "music unavailable";
+
+      }
+
     }
 
-    function setTrack(index, autoplay = false) {
-      currentTrack = (index + items.length) % items.length;
-      const item = items[currentTrack];
-      audio.src = item.dataset.src;
-      trackName.textContent = item.dataset.name;
-      items.forEach((el, i) => el.classList.toggle("active", i === currentTrack));
-      progressBar.style.width = "0%";
-      current.textContent = "00:00";
-      duration.textContent = "00:00";
-      if (autoplay) audio.play().catch(() => {});
+
+    /* =========================================
+       REMOVE EXTENSION
+       ========================================= */
+
+    function removeExtension(
+      filename
+    ) {
+
+      return filename.replace(
+        /\.[^/.]+$/,
+        ""
+      );
+
     }
+
+
+    /* =========================================
+       LOAD TRACK
+       ========================================= */
+
+    function loadTrack(
+      index,
+      autoplay = false
+    ) {
+
+      if (
+        !playlist.length
+      ) {
+        return;
+      }
+
+
+      if (
+        index < 0
+      ) {
+
+        index =
+          playlist.length - 1;
+
+      }
+
+
+      if (
+        index >=
+        playlist.length
+      ) {
+
+        index = 0;
+
+      }
+
+
+      currentTrack =
+        index;
+
+
+      const track =
+        playlist[
+          currentTrack
+        ];
+
+
+      /*
+       * download_url GitHub уже содержит
+       * корректный URL, в том числе для
+       * кириллических названий.
+       */
+
+      audio.src =
+        track.url;
+
+
+      audio.load();
+
+
+      trackName.textContent =
+        track.name;
+
+
+      items.forEach(
+        (item, itemIndex) => {
+
+          item.classList.toggle(
+            "active",
+            itemIndex ===
+            currentTrack
+          );
+
+        }
+      );
+
+
+      progressBar.style.width =
+        "0%";
+
+
+      current.textContent =
+        "00:00";
+
+
+      duration.textContent =
+        "00:00";
+
+
+      syncPlayState();
+
+
+      /*
+       * Только явный переход на трек
+       * через кнопку/плейлист может
+       * вызвать autoplay.
+       */
+
+      if (autoplay) {
+
+        audio
+          .play()
+          .catch(
+            () => {}
+          );
+
+      }
+
+    }
+
+
+    /* =========================================
+       PLAY / PAUSE
+       ========================================= */
+
+    function togglePlay() {
+
+      if (
+        !audio.src
+      ) {
+        return;
+      }
+
+
+      if (
+        audio.paused
+      ) {
+
+        audio
+          .play()
+          .catch(
+            () => {}
+          );
+
+      }
+
+      else {
+
+        audio.pause();
+
+      }
+
+    }
+
+
+    /* =========================================
+       PLAY STATE
+       ========================================= */
 
     function syncPlayState() {
-      const playing = !audio.paused;
-      player.classList.toggle("playing", playing);
-      play.innerHTML = playing
-        ? '<i class="fa-solid fa-pause"></i>'
-        : '<i class="fa-solid fa-play"></i>';
-      audioState.textContent = playing ? "playing" : "standby";
+
+      const playing =
+        !audio.paused;
+
+
+      player.classList.toggle(
+        "playing",
+        playing
+      );
+
+
+      play.innerHTML =
+        playing
+          ? '<i class="fa-solid fa-pause"></i>'
+          : '<i class="fa-solid fa-play"></i>';
+
+
+      audioState.textContent =
+        playing
+          ? "playing"
+          : "standby";
+
     }
 
-    play.addEventListener("click", () => {
-      if (audio.paused) audio.play().catch(() => {});
-      else audio.pause();
-    });
 
-    prev.addEventListener("click", () => setTrack(currentTrack - 1, true));
-    next.addEventListener("click", () => setTrack(currentTrack + 1, true));
+    /* =========================================
+       NEXT
+       ========================================= */
 
-    items.forEach((item, i) => {
-      item.addEventListener("click", () => setTrack(i, true));
-    });
+    function nextTrack() {
 
-    audio.addEventListener("play", syncPlayState);
-    audio.addEventListener("pause", syncPlayState);
-    audio.addEventListener("loadedmetadata", () => duration.textContent = fmt(audio.duration));
-    audio.addEventListener("timeupdate", () => {
-      current.textContent = fmt(audio.currentTime);
-      if (audio.duration) progressBar.style.width = `${(audio.currentTime / audio.duration) * 100}%`;
-    });
+      if (
+        !playlist.length
+      ) {
+        return;
+      }
 
-    progressWrap.addEventListener("click", (e) => {
-      if (!audio.duration) return;
-      const rect = progressWrap.getBoundingClientRect();
-      audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
-    });
 
-    audio.addEventListener("ended", () => setTrack(currentTrack + 1, true));
+      let index =
+        currentTrack + 1;
 
-    // Browsers block unsolicited autoplay. The first interaction starts audio.
-    let audioPrimed = false;
-    document.addEventListener("pointerdown", () => {
-      if (audioPrimed) return;
-      audioPrimed = true;
-      audio.play().catch(() => {});
-    }, { once: true });
 
-    // ---------- particles ----------
-    const canvas = document.getElementById("particles");
-    const ctx = canvas.getContext("2d");
-    let W, H, particles = [];
-    const mouse = { x: -9999, y: -9999 };
+      if (
+        index >=
+        playlist.length
+      ) {
+
+        index = 0;
+
+      }
+
+
+      loadTrack(
+        index,
+        true
+      );
+
+    }
+
+
+    /* =========================================
+       PREVIOUS
+       ========================================= */
+
+    function previousTrack() {
+
+      if (
+        !playlist.length
+      ) {
+        return;
+      }
+
+
+      let index =
+        currentTrack - 1;
+
+
+      if (
+        index < 0
+      ) {
+
+        index =
+          playlist.length - 1;
+
+      }
+
+
+      loadTrack(
+        index,
+        true
+      );
+
+    }
+
+
+    /* =========================================
+       FORMAT TIME
+       ========================================= */
+
+    function formatTime(
+      seconds
+    ) {
+
+      if (
+        !Number.isFinite(
+          seconds
+        )
+      ) {
+
+        return "00:00";
+
+      }
+
+
+      const minutes =
+        Math.floor(
+          seconds / 60
+        );
+
+
+      const secondsPart =
+        Math.floor(
+          seconds % 60
+        );
+
+
+      return (
+        String(minutes)
+          .padStart(2, "0")
+        +
+        ":"
+        +
+        String(secondsPart)
+          .padStart(2, "0")
+      );
+
+    }
+
+
+    /* =========================================
+       AUDIO EVENTS
+       ========================================= */
+
+    audio.addEventListener(
+      "play",
+      syncPlayState
+    );
+
+
+    audio.addEventListener(
+      "pause",
+      syncPlayState
+    );
+
+
+    audio.addEventListener(
+      "loadedmetadata",
+      () => {
+
+        duration.textContent =
+          formatTime(
+            audio.duration
+          );
+
+      }
+    );
+
+
+    audio.addEventListener(
+      "timeupdate",
+      () => {
+
+        if (
+          !audio.duration
+        ) {
+          return;
+        }
+
+
+        const percent =
+          (
+            audio.currentTime /
+            audio.duration
+          ) * 100;
+
+
+        progressBar.style.width =
+          `${percent}%`;
+
+
+        current.textContent =
+          formatTime(
+            audio.currentTime
+          );
+
+
+        duration.textContent =
+          formatTime(
+            audio.duration
+          );
+
+      }
+    );
+
+
+    /*
+     * Когда трек закончился —
+     * автоматически следующий.
+     */
+
+    audio.addEventListener(
+      "ended",
+      () => {
+
+        nextTrack();
+
+      }
+    );
+
+
+    /* =========================================
+       PROGRESS CLICK
+       ========================================= */
+
+    progressWrap.addEventListener(
+      "click",
+      event => {
+
+        if (
+          !audio.duration
+        ) {
+          return;
+        }
+
+
+        const rect =
+          progressWrap
+            .getBoundingClientRect();
+
+
+        const percent =
+          (
+            event.clientX -
+            rect.left
+          ) / rect.width;
+
+
+        audio.currentTime =
+          percent *
+          audio.duration;
+
+      }
+    );
+
+
+    /* =========================================
+       BUTTONS
+       ========================================= */
+
+    play.addEventListener(
+      "click",
+      togglePlay
+    );
+
+
+    prev.addEventListener(
+      "click",
+      previousTrack
+    );
+
+
+    next.addEventListener(
+      "click",
+      nextTrack
+    );
+
+
+    /* =========================================
+       PLAYLIST
+       ========================================= */
+
+    function renderPlaylist() {
+
+      playlistElement.innerHTML =
+        "";
+
+
+      playlist.forEach(
+        (track, index) => {
+
+          const button =
+            document.createElement(
+              "button"
+            );
+
+
+          button.type =
+            "button";
+
+
+          button.className =
+            "playlist-item";
+
+
+          if (
+            index ===
+            currentTrack
+          ) {
+
+            button.classList.add(
+              "active"
+            );
+
+          }
+
+
+          const icon =
+            document.createElement(
+              "i"
+            );
+
+
+          icon.className =
+            "fa-solid fa-music";
+
+
+          const name =
+            document.createElement(
+              "span"
+            );
+
+
+          /*
+           * textContent, а не innerHTML.
+           *
+           * Поэтому названия вроде:
+           *
+           * "Моя музыка.mp3"
+           * "что-то — ремикс.mp3"
+           *
+           * будут нормально отображаться.
+           */
+
+          name.textContent =
+            track.name;
+
+
+          button.appendChild(
+            icon
+          );
+
+
+          button.appendChild(
+            name
+          );
+
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              loadTrack(
+                index,
+                true
+              );
+
+            }
+          );
+
+
+          playlistElement.appendChild(
+            button
+          );
+
+        }
+      );
+
+    }
+
+
+    /* =========================================
+       KEYBOARD
+       ========================================= */
+
+    document.addEventListener(
+      "keydown",
+      event => {
+
+        const target =
+          event.target;
+
+
+        if (
+          target.tagName ===
+            "INPUT" ||
+
+          target.tagName ===
+            "TEXTAREA" ||
+
+          target.tagName ===
+            "SELECT"
+        ) {
+
+          return;
+
+        }
+
+
+        /*
+         * Space = play/pause
+         */
+
+        if (
+          event.code ===
+          "Space"
+        ) {
+
+          event.preventDefault();
+
+          togglePlay();
+
+        }
+
+
+        /*
+         * ← = previous
+         */
+
+        if (
+          event.code ===
+          "ArrowLeft"
+        ) {
+
+          previousTrack();
+
+        }
+
+
+        /*
+         * → = next
+         */
+
+        if (
+          event.code ===
+          "ArrowRight"
+        ) {
+
+          nextTrack();
+
+        }
+
+      }
+    );
+
+
+    /* =========================================
+       PARTICLES
+       ========================================= */
+
+    const canvas =
+      document.getElementById(
+        "particles"
+      );
+
+
+    const ctx =
+      canvas.getContext(
+        "2d"
+      );
+
+
+    let W;
+
+    let H;
+
+    let particles = [];
+
+
+    const mouse = {
+      x: -9999,
+      y: -9999
+    };
+
 
     function resize() {
-      W = canvas.width = window.innerWidth * devicePixelRatio;
-      H = canvas.height = window.innerHeight * devicePixelRatio;
-      canvas.style.width = window.innerWidth + "px";
-      canvas.style.height = window.innerHeight + "px";
-      ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
-      W = window.innerWidth;
-      H = window.innerHeight;
-      const count = Math.min(100, Math.floor((W * H) / 15000));
-      particles = Array.from({ length: count }, () => ({
-        x: Math.random() * W,
-        y: Math.random() * H,
-        r: Math.random() * 1.5 + .35,
-        vx: (Math.random() - .5) * .25,
-        vy: Math.random() * .45 + .08,
-        a: Math.random() * .45 + .12
-      }));
+
+      W =
+        window.innerWidth;
+
+
+      H =
+        window.innerHeight;
+
+
+      const ratio =
+        window.devicePixelRatio ||
+        1;
+
+
+      canvas.width =
+        W * ratio;
+
+
+      canvas.height =
+        H * ratio;
+
+
+      canvas.style.width =
+        `${W}px`;
+
+
+      canvas.style.height =
+        `${H}px`;
+
+
+      ctx.setTransform(
+        ratio,
+        0,
+        0,
+        ratio,
+        0,
+        0
+      );
+
+
+      const count =
+        Math.min(
+          100,
+          Math.floor(
+            (W * H) /
+            15000
+          )
+        );
+
+
+      particles =
+        Array.from(
+          {
+            length:
+              count
+          },
+          () => ({
+
+            x:
+              Math.random() *
+              W,
+
+            y:
+              Math.random() *
+              H,
+
+            r:
+              Math.random() *
+              1.5 +
+              .35,
+
+            vx:
+              (
+                Math.random() -
+                .5
+              ) * .25,
+
+            vy:
+              Math.random() *
+              .45 +
+              .08,
+
+            a:
+              Math.random() *
+              .45 +
+              .12
+
+          })
+        );
+
     }
+
 
     function drawParticles() {
-      ctx.clearRect(0, 0, W, H);
 
-      for (const p of particles) {
-        const dx = p.x - mouse.x;
-        const dy = p.y - mouse.y;
-        const dist = Math.hypot(dx, dy);
+      ctx.clearRect(
+        0,
+        0,
+        W,
+        H
+      );
 
-        if (dist < 120) {
-          p.x += dx / Math.max(dist, 1) * .35;
-          p.y += dy / Math.max(dist, 1) * .35;
+
+      for (
+        const p of particles
+      ) {
+
+        const dx =
+          p.x -
+          mouse.x;
+
+
+        const dy =
+          p.y -
+          mouse.y;
+
+
+        const dist =
+          Math.hypot(
+            dx,
+            dy
+          );
+
+
+        if (
+          dist < 120
+        ) {
+
+          p.x +=
+            dx /
+            Math.max(
+              dist,
+              1
+            ) *
+            .35;
+
+
+          p.y +=
+            dy /
+            Math.max(
+              dist,
+              1
+            ) *
+            .35;
+
         }
 
-        p.x += p.vx;
-        p.y += p.vy;
 
-        if (p.y > H + 5) { p.y = -5; p.x = Math.random() * W; }
-        if (p.x > W + 5) p.x = -5;
-        if (p.x < -5) p.x = W + 5;
+        p.x +=
+          p.vx;
+
+
+        p.y +=
+          p.vy;
+
+
+        if (
+          p.y >
+          H + 5
+        ) {
+
+          p.y = -5;
+
+          p.x =
+            Math.random() *
+            W;
+
+        }
+
+
+        if (
+          p.x >
+          W + 5
+        ) {
+
+          p.x = -5;
+
+        }
+
+
+        if (
+          p.x <
+          -5
+        ) {
+
+          p.x =
+            W + 5;
+
+        }
+
 
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255,255,255,${p.a})`;
+
+
+        ctx.arc(
+          p.x,
+          p.y,
+          p.r,
+          0,
+          Math.PI * 2
+        );
+
+
+        ctx.fillStyle =
+          `rgba(255,255,255,${p.a})`;
+
+
         ctx.fill();
+
       }
 
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const a = particles[i], b = particles[j];
-          const dx = a.x - b.x, dy = a.y - b.y;
-          const d = Math.hypot(dx, dy);
-          if (d < 105) {
+
+      /*
+       * Соединяем близкие частицы.
+       */
+
+      for (
+        let i = 0;
+        i < particles.length;
+        i++
+      ) {
+
+        for (
+          let j = i + 1;
+          j < particles.length;
+          j++
+        ) {
+
+          const a =
+            particles[i];
+
+
+          const b =
+            particles[j];
+
+
+          const dx =
+            a.x - b.x;
+
+
+          const dy =
+            a.y - b.y;
+
+
+          const distance =
+            Math.hypot(
+              dx,
+              dy
+            );
+
+
+          if (
+            distance < 105
+          ) {
+
             ctx.beginPath();
-            ctx.moveTo(a.x, a.y);
-            ctx.lineTo(b.x, b.y);
-            ctx.strokeStyle = `rgba(120,170,255,${(1 - d / 105) * .07})`;
-            ctx.lineWidth = 1;
+
+
+            ctx.moveTo(
+              a.x,
+              a.y
+            );
+
+
+            ctx.lineTo(
+              b.x,
+              b.y
+            );
+
+
+            ctx.strokeStyle =
+              `rgba(120,170,255,${
+                (1 - distance / 105) * .07
+              })`;
+
+
+            ctx.lineWidth =
+              1;
+
+
             ctx.stroke();
+
           }
+
         }
+
       }
 
-      requestAnimationFrame(drawParticles);
+
+      requestAnimationFrame(
+        drawParticles
+      );
+
     }
 
-    window.addEventListener("resize", resize);
-    window.addEventListener("pointermove", e => {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
-    });
-    window.addEventListener("pointerleave", () => {
-      mouse.x = mouse.y = -9999;
-    });
+
+    window.addEventListener(
+      "resize",
+      resize
+    );
+
+
+    window.addEventListener(
+      "pointermove",
+      event => {
+
+        mouse.x =
+          event.clientX;
+
+
+        mouse.y =
+          event.clientY;
+
+      }
+    );
+
+
+    window.addEventListener(
+      "pointerleave",
+      () => {
+
+        mouse.x =
+          -9999;
+
+
+        mouse.y =
+          -9999;
+
+      }
+    );
+
+
+    /* =========================================
+       START
+       ========================================= */
 
     resize();
+
     drawParticles();
+
+    loadPlaylist();
+
   </script>
+
 </body>
 </html>
-
