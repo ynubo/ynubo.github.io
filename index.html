@@ -626,8 +626,14 @@
     // Reliable Local Visitor Counter
     function updateVisits() {
       let visits = parseInt(localStorage.getItem('site_views') || '120');
-      visits += 1;
-      localStorage.setItem('site_views', visits);
+      
+      // Проверяем, заходил ли юзер в текущей сессии браузера
+      if (!sessionStorage.getItem('already_visited')) {
+        visits += 1;
+        localStorage.setItem('site_views', visits);
+        sessionStorage.setItem('already_visited', 'true');
+      }
+      
       document.getElementById("visitorCount").textContent = visits;
     }
     updateVisits();
