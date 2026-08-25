@@ -529,6 +529,8 @@
       margin-top: 25px;
       display: grid;
       gap: 7px;
+      max-height: 200px;
+      overflow-y: auto;
     }
 
     .playlist-item {
@@ -559,7 +561,6 @@
       text-overflow: ellipsis;
       font-size: 10px;
     }
-
 
     .btn[data-tooltip]::after {
       content: attr(data-tooltip);
@@ -696,13 +697,13 @@
       <div class="profile-head">
         <a href="https://t.me/ynubo" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
           <div class="avatar-shell">
-            <img class="avatar" src="https://i.ibb.co/W8JcZLm/photo-2026-05-05-20-50-18.jpg" alt="sacerdos avatar">
+            <img class="avatar" src="https://i.ibb.co/W8JcZLm/photo-2026-05-05-20-50-18.jpg" alt="ynubo avatar">
           </div>
         </a>
 
         <div>
           <div class="eyebrow">personal node / 01</div>
-          <h1>&lt;/&gt; sacerdos</h1>
+          <h1>&lt;/&gt; ynubo</h1>
           <p class="subtitle"><span class="typing" id="typing"></span></p>
         </div>
       </div>
@@ -719,7 +720,7 @@
           <div class="row">
             <i class="fa-solid fa-user icon"></i>
             <span class="label">alias</span>
-            <span class="value">sacerdos</span>
+            <span class="value">ynubo</span>
           </div>
 
           <div class="row">
@@ -772,6 +773,12 @@
             <span class="label">type</span>
             <span class="value">ISTP-T</span>
           </div>
+
+          <div class="row">
+            <i class="fa-solid fa-triangle-exclamation icon" style="color: var(--red);"></i>
+            <span class="label">nohello</span>
+            <span class="value"><a class="link" href="https://nohello.com/" target="_blank" rel="noopener noreferrer">nohello.com</a> <span style="color: var(--red); font-weight: bold;">!</span></span>
+          </div>
         </div>
       </div>
 
@@ -785,11 +792,11 @@
         <a class="btn" href="https://github.com/ynubo" target="_blank" rel="noopener noreferrer">
           <i class="fa-brands fa-github"></i> GITHUB
         </a>
-        <a class="btn" href="https://steamcommunity.com/id/sacerdosxd" target="_blank" rel="noopener noreferrer">
+        <a class="btn" href="https://steamcommunity.com/id/ynuboxd" target="_blank" rel="noopener noreferrer">
           <i class="fa-brands fa-steam"></i> STEAM
         </a>
         <a class="btn nohello-btn" href="https://nohello.com/" target="_blank" rel="noopener noreferrer" data-tooltip="nohello.com — прочитай перед тем, как писать «привет»">
-          <span class="check-triangle">✓</span> NOHELLO
+          <span class="check-triangle">!</span> NOHELLO
         </a>
         <button class="btn visitor-btn" id="visitorBtn" type="button" data-tooltip="загрузка статистики...">
           <i class="fa-solid fa-eye"></i> VISITORS <span id="visitorCount">—</span>
@@ -816,7 +823,7 @@
 
       <div class="now">
         <div class="now-label">now playing</div>
-        <div class="track" id="trackName">KSB MUZIC — ВЕСНА</div>
+        <div class="track" id="trackName">Загрузка плейлиста...</div>
       </div>
 
       <div class="controls">
@@ -833,25 +840,17 @@
         </div>
       </div>
 
-      <div class="playlist">
+      <div class="playlist" id="playlistContainer">
         <div style="color:rgba(255,255,255,.28);font-size:9px;line-height:1.5;margin-bottom:2px;">
-          /music — добавляй .mp3 в репозиторий и указывай имя файла ниже
+          /music — сканирование аудиофайлов...
         </div>
-        <button class="playlist-item active" data-src="KSB_muzic_-_Vesna.mp3" data-name="KSB MUZIC — ВЕСНА">
-          <i class="fa-solid fa-music"></i><span>KSB MUZIC — ВЕСНА</span>
-        </button>
-        <button class="playlist-item" data-src="KSB_muzic_-_Vesna.mp3" data-name="KSB MUZIC — ВЕСНА / loop">
-          <i class="fa-solid fa-repeat"></i><span>KSB MUZIC — ВЕСНА / loop</span>
-        </button>
       </div>
     </aside>
   </main>
 
   <div class="copy-toast" id="toast">copied</div>
 
-  <audio id="audio" preload="metadata" loop>
-    <source src="KSB_muzic_-_Vesna.mp3" type="audio/mpeg">
-  </audio>
+  <audio id="audio" preload="metadata"></audio>
 
   <script>
     // ---------- clock ----------
@@ -890,7 +889,7 @@
     }
     typeLoop();
 
-    // ---------- audio ----------
+    // ---------- auto playlist from /music ----------
     const audio = document.getElementById("audio");
     const player = document.getElementById("player");
     const play = document.getElementById("play");
@@ -902,8 +901,52 @@
     const duration = document.getElementById("duration");
     const trackName = document.getElementById("trackName");
     const audioState = document.getElementById("audioState");
-    const items = [...document.querySelectorAll(".playlist-item")];
+    const playlistContainer = document.getElementById("playlistContainer");
+
+    let playlistTracks = [];
     let currentTrack = 0;
+
+    // Автоматическое сканирование папки /music в GitHub-репозитории
+    async function fetchMusicFiles() {
+      try {
+        const res = await fetch("https://api.github.com/repos/ynubo/ynubo.github.io/contents/music");
+        if (!res.ok) throw new Error("API error");
+        const files = await res.json();
+        
+        return files
+          .filter(file => file.name.endsWith('.mp3'))
+          .map(file => ({
+            name: file.name.replace(/\.mp3$/i, '').replace(/_/g, ' '),
+            src: `music/${file.name}`
+          }));
+      } catch (err) {
+        // Запасной локальный вариант
+        return [
+          { name: "KSB MUZIC — ВЕСНА", src: "music/KSB_muzic_-_Vesna.mp3" }
+        ];
+      }
+    }
+
+    async function initAudioSystem() {
+      playlistTracks = await fetchMusicFiles();
+      renderPlaylist();
+      if (playlistTracks.length > 0) {
+        setTrack(0, false);
+      } else {
+        trackName.textContent = "Музыка не найдена";
+      }
+    }
+
+    function renderPlaylist() {
+      playlistContainer.innerHTML = '<div style="color:rgba(255,255,255,.28);font-size:9px;line-height:1.5;margin-bottom:2px;">/music — файлы загружены автоматически</div>';
+      playlistTracks.forEach((track, index) => {
+        const btn = document.createElement("button");
+        btn.className = `playlist-item ${index === 0 ? 'active' : ''}`;
+        btn.innerHTML = `<i class="fa-solid fa-music"></i><span>${track.name}</span>`;
+        btn.addEventListener("click", () => setTrack(index, true));
+        playlistContainer.appendChild(btn);
+      });
+    }
 
     function fmt(sec) {
       if (!Number.isFinite(sec)) return "00:00";
@@ -913,11 +956,15 @@
     }
 
     function setTrack(index, autoplay = false) {
-      currentTrack = (index + items.length) % items.length;
-      const item = items[currentTrack];
-      audio.src = item.dataset.src;
-      trackName.textContent = item.dataset.name;
+      if (!playlistTracks.length) return;
+      currentTrack = (index + playlistTracks.length) % playlistTracks.length;
+      const track = playlistTracks[currentTrack];
+      audio.src = track.src;
+      trackName.textContent = track.name;
+      
+      const items = playlistContainer.querySelectorAll(".playlist-item");
       items.forEach((el, i) => el.classList.toggle("active", i === currentTrack));
+      
       progressBar.style.width = "0%";
       current.textContent = "00:00";
       duration.textContent = "00:00";
@@ -941,10 +988,6 @@
     prev.addEventListener("click", () => setTrack(currentTrack - 1, true));
     next.addEventListener("click", () => setTrack(currentTrack + 1, true));
 
-    items.forEach((item, i) => {
-      item.addEventListener("click", () => setTrack(i, true));
-    });
-
     audio.addEventListener("play", syncPlayState);
     audio.addEventListener("pause", syncPlayState);
     audio.addEventListener("loadedmetadata", () => duration.textContent = fmt(audio.duration));
@@ -961,13 +1004,9 @@
 
     audio.addEventListener("ended", () => setTrack(currentTrack + 1, true));
 
-    // Autoplay is intentionally disabled.
-    // Music starts only after pressing the play button or selecting a playlist item.
-
+    initAudioSystem();
 
     // ---------- visitor counter ----------
-    // Uses Page Views API: no backend is required on GitHub Pages.
-    // The button reveals the current count when hovered.
     const visitorBtn = document.getElementById("visitorBtn");
     const visitorCount = document.getElementById("visitorCount");
     const COUNTER_SITE = "ynubo.github.io";
@@ -1121,4 +1160,3 @@
   </script>
 </body>
 </html>
-
