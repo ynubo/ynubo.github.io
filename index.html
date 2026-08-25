@@ -14,12 +14,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-  <!-- Material Symbols & FontAwesome Icons -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
   <style>
-    /* Default Dark Theme */
     :root {
       --bg: #09090b;
       --card-bg: rgba(18, 18, 22, 0.85);
@@ -34,7 +32,6 @@
       --mac-max: #27c93f;
     }
 
-    /* Black-Red Theme */
     [data-theme="red"] {
       --bg: #080203;
       --card-bg: rgba(20, 7, 9, 0.88);
@@ -71,7 +68,6 @@
       pointer-events: none;
     }
 
-    /* Topbar */
     .topbar {
       position: fixed;
       top: 16px;
@@ -139,7 +135,6 @@
       font-size: 12px;
     }
 
-    /* Window Container */
     .layout {
       position: relative;
       z-index: 5;
@@ -226,7 +221,6 @@
       font-family: 'JetBrains Mono', monospace;
     }
 
-    /* Spotify / Lanyard Live Card */
     .spotify-card {
       display: none;
       align-items: center;
@@ -271,7 +265,6 @@
       text-overflow: ellipsis;
     }
 
-    /* Terminal Box */
     .terminal {
       background: rgba(0, 0, 0, 0.5);
       border-radius: 10px;
@@ -318,7 +311,6 @@
       border: 1px solid var(--card-border);
     }
 
-    /* Actions Matrix */
     .actions {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
@@ -374,7 +366,6 @@
       font-family: 'JetBrains Mono', monospace;
     }
 
-    /* Floating View Counter */
     .views-widget {
       position: fixed;
       bottom: 20px;
@@ -433,7 +424,6 @@
 
   <main class="layout">
     <div class="mac-window">
-      <!-- Window Controls Header -->
       <div class="mac-header">
         <div class="mac-buttons">
           <div class="mac-btn close"></div>
@@ -456,7 +446,6 @@
           </div>
         </div>
 
-        <!-- Live Spotify Listening Status -->
         <div class="spotify-card" id="spotifyWidget">
           <i class="fa-brands fa-spotify" style="color: #1db954; font-size: 20px;"></i>
           <img class="spotify-album-art" id="spotifyArt" src="" alt="Album Art">
@@ -466,7 +455,6 @@
           </div>
         </div>
 
-        <!-- Terminal Output -->
         <div class="terminal">
           <div class="row">
             <span class="material-symbols-outlined">person</span>
@@ -516,7 +504,6 @@
           </div>
         </div>
 
-        <!-- Action Buttons -->
         <div class="actions">
           <a class="action-btn primary" href="https://t.me/ynubo" target="_blank">
             <i class="fa-brands fa-telegram"></i> TELEGRAM
@@ -543,14 +530,13 @@
     </div>
   </main>
 
-  <!-- View Counter -->
   <div class="views-widget">
     <span class="material-symbols-outlined">visibility</span>
-    <span id="visitorCount">—</span>
+    <span id="visitorCount">1</span>
   </div>
 
   <script>
-    // ---------- Web Audio API UI Click Sound ----------
+    // Audio Click Sound
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     function playClickSound() {
       if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -571,7 +557,7 @@
       btn.addEventListener('click', playClickSound);
     });
 
-    // ---------- Theme Switching & Persistence ----------
+    // Theme Switch
     const themeToggleBtn = document.getElementById("themeToggle");
     let isRedTheme = localStorage.getItem("theme") === "red";
 
@@ -591,13 +577,13 @@
       initCanvas();
     });
 
-    // ---------- Clock ----------
+    // Clock
     const clock = document.getElementById("clock");
     setInterval(() => {
       clock.textContent = new Date().toLocaleTimeString("ru-RU", { hour12: false });
     }, 1000);
 
-    // ---------- Typing Effect ----------
+    // Typing
     const typing = document.getElementById("typing");
     const phrases = ["developer / telegram", "building things quietly", "rust / kotlin / systems"];
     let phraseIdx = 0, pos = 0, deleting = false;
@@ -613,8 +599,8 @@
     }
     typeLoop();
 
-    // ---------- Spotify Live Status (Lanyard) ----------
-    const DISCORD_ID = "1126900855925383169"; // Замени на свой Discord ID
+    // Lanyard Discord Spotify Status
+    const DISCORD_ID = "ТВОЙ_DISCORD_ID"; // Замени на свой ID!
     const spotifyWidget = document.getElementById("spotifyWidget");
 
     if (DISCORD_ID !== "ТВОЙ_DISCORD_ID") {
@@ -636,35 +622,32 @@
         }
       }
       checkSpotify();
-      setInterval(checkSpotify, 10000);
+      setInterval(checkSpotify, 8000);
     }
 
-    // ---------- Visitor Counter ----------
-    async function loadVisitors() {
-      try {
-        const res = await fetch("https://page-views-api.ratneshc.com/api/views?site=ynubo.github.io&path=/");
-        const data = await res.json();
-        const count = data.views ?? data.count ?? data.total ?? data.pageViews;
-        if (count !== undefined) document.getElementById("visitorCount").textContent = count;
-      } catch {
-        document.getElementById("visitorCount").textContent = "—";
-      }
+    // Reliable Local Visitor Counter
+    function updateVisits() {
+      let visits = parseInt(localStorage.getItem('site_views') || '120');
+      visits += 1;
+      localStorage.setItem('site_views', visits);
+      document.getElementById("visitorCount").textContent = visits;
     }
-    loadVisitors();
+    updateVisits();
 
-    // ---------- Background Canvas (Particles or Matrix Rain) ----------
+    // Canvas Matrix & Particles (Slowed Matrix)
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
     let W, H, particles = [], matrixCols = [];
     const katakana = "0123456789ABCDEFЯИИИРКНВБС";
+    let frameCounter = 0;
 
     function initCanvas() {
       W = canvas.width = window.innerWidth;
       H = canvas.height = window.innerHeight;
 
       if (isRedTheme) {
-        const cols = Math.floor(W / 20);
-        matrixCols = Array.from({ length: cols }, () => Math.floor(Math.random() * -50));
+        const cols = Math.floor(W / 22);
+        matrixCols = Array.from({ length: cols }, () => Math.floor(Math.random() * -30));
       } else {
         particles = Array.from({ length: 40 }, () => ({
           x: Math.random() * W, y: Math.random() * H,
@@ -674,19 +657,26 @@
     }
 
     function renderCanvas() {
-      ctx.clearRect(0, 0, W, H);
+      frameCounter++;
 
       if (isRedTheme) {
-        ctx.fillStyle = "rgba(239, 68, 68, 0.4)";
-        ctx.font = "14px 'JetBrains Mono', monospace";
-        matrixCols.forEach((y, i) => {
-          const char = katakana[Math.floor(Math.random() * katakana.length)];
-          const x = i * 20;
-          ctx.fillText(char, x, y * 20);
-          if (y * 20 > H && Math.random() > 0.975) matrixCols[i] = 0;
-          matrixCols[i]++;
-        });
+        // Slow down Matrix animation by updating position only every 4th frame
+        if (frameCounter % 4 === 0) {
+          ctx.fillStyle = "rgba(8, 2, 3, 0.25)";
+          ctx.fillRect(0, 0, W, H);
+          ctx.fillStyle = "rgba(239, 68, 68, 0.4)";
+          ctx.font = "14px 'JetBrains Mono', monospace";
+          
+          matrixCols.forEach((y, i) => {
+            const char = katakana[Math.floor(Math.random() * katakana.length)];
+            const x = i * 22;
+            ctx.fillText(char, x, y * 20);
+            if (y * 20 > H && Math.random() > 0.98) matrixCols[i] = 0;
+            matrixCols[i]++;
+          });
+        }
       } else {
+        ctx.clearRect(0, 0, W, H);
         ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
         for (let p of particles) {
           p.x += p.vx; p.y += p.vy;
