@@ -599,19 +599,23 @@
     }
     typeLoop();
 
-    // Lanyard Discord Spotify Status
-    const DISCORD_ID = "1126900855925383169"; 
+    // Spotify Vercel API Integration (замена Lanyard)
+    const SPOTIFY_API_URL = "https://spotify-currently-playing-liart.vercel.app/api/spotify";
     const spotifyWidget = document.getElementById("spotifyWidget");
 
     async function checkSpotify() {
       try {
-        const res = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_ID}`);
+        const res = await fetch(SPOTIFY_API_URL);
+        if (res.status === 204 || res.status >= 400) {
+          spotifyWidget.style.display = "none";
+          return;
+        }
+        
         const data = await res.json();
-        if (data.success && data.data.spotify) {
-          const sp = data.data.spotify;
-          document.getElementById("spotifyArt").src = sp.album_art_url;
-          document.getElementById("spotifyTitle").textContent = sp.song;
-          document.getElementById("spotifyArtist").textContent = `by ${sp.artist}`;
+        if (data && data.isPlaying) {
+          document.getElementById("spotifyArt").src = data.albumImageUrl || data.albumCover || "";
+          document.getElementById("spotifyTitle").textContent = data.title || data.songTitle || "Слушает Spotify";
+          document.getElementById("spotifyArtist").textContent = `by ${data.artist || data.artistName || ""}`;
           spotifyWidget.style.display = "flex";
         } else {
           spotifyWidget.style.display = "none";
@@ -621,13 +625,12 @@
       }
     }
     checkSpotify();
-    setInterval(checkSpotify, 8000);
+    setInterval(checkSpotify, 5000);
 
     // Reliable Local Visitor Counter
     function updateVisits() {
       let visits = parseInt(localStorage.getItem('site_views') || '120');
       
-      // Проверяем, заходил ли юзер в текущей сессии браузера
       if (!sessionStorage.getItem('already_visited')) {
         visits += 1;
         localStorage.setItem('site_views', visits);
