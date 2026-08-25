@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0d0e11">
+  <meta name="theme-color" content="#0a0a0c">
   <meta name="description" content="ynubo — developer / Telegram / web">
   <meta property="og:title" content="ynubo // bio">
   <meta property="og:description" content="developer / Telegram / web">
@@ -19,17 +19,31 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
   <style>
+    /* Default Dark Theme */
     :root {
-      --bg: #0d0e11;
-      --card-bg: rgba(22, 24, 29, 0.75);
+      --bg: #09090b;
+      --card-bg: rgba(18, 18, 22, 0.85);
       --card-border: rgba(255, 255, 255, 0.08);
-      --accent: #6ee7b7;
-      --accent-glow: rgba(110, 231, 183, 0.2);
-      --text: #e2e8f0;
-      --text-muted: #94a3b8;
+      --accent: #e2e8f0;
+      --accent-glow: rgba(255, 255, 255, 0.15);
+      --text: #f1f5f9;
+      --text-muted: #64748b;
+      --particle-color: rgba(255, 255, 255, 0.2);
       --mac-close: #ff5f56;
       --mac-min: #ffbd2e;
       --mac-max: #27c93f;
+    }
+
+    /* Black-Red Theme */
+    [data-theme="red"] {
+      --bg: #080203;
+      --card-bg: rgba(20, 7, 9, 0.88);
+      --card-border: rgba(239, 68, 68, 0.2);
+      --accent: #ef4444;
+      --accent-glow: rgba(239, 68, 68, 0.35);
+      --text: #fef2f2;
+      --text-muted: #991b1b;
+      --particle-color: rgba(239, 68, 68, 0.3);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -44,9 +58,11 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      transition: background 0.4s ease, color 0.4s ease;
     }
 
     a { color: inherit; text-decoration: none; }
+    button { font: inherit; border: none; background: none; cursor: pointer; }
 
     #particles {
       position: fixed;
@@ -55,7 +71,7 @@
       pointer-events: none;
     }
 
-    /* macOS Status Bar */
+    /* Topbar & Theme Toggle */
     .topbar {
       position: fixed;
       top: 16px;
@@ -68,18 +84,26 @@
       pointer-events: none;
     }
 
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      pointer-events: auto;
+    }
+
     .status-chip {
       display: inline-flex;
       align-items: center;
       gap: 8px;
       padding: 6px 14px;
       border-radius: 20px;
-      background: rgba(255, 255, 255, 0.03);
+      background: rgba(0, 0, 0, 0.4);
       border: 1px solid var(--card-border);
       backdrop-filter: blur(10px);
       color: var(--text-muted);
       font-size: 12px;
       font-family: 'JetBrains Mono', monospace;
+      transition: border-color 0.4s ease;
     }
 
     .status-dot {
@@ -88,6 +112,26 @@
       border-radius: 50%;
       background: var(--accent);
       box-shadow: 0 0 8px var(--accent);
+      animation: pulse-dot 2s infinite;
+    }
+
+    .theme-toggle-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--card-border);
+      color: var(--accent);
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+
+    .theme-toggle-btn:hover {
+      transform: rotate(180deg) scale(1.1);
+      border-color: var(--accent);
     }
 
     .clock {
@@ -96,42 +140,36 @@
       font-size: 12px;
     }
 
-    /* Hacker / MacBook Card Structure */
+    /* Window Container & Animations */
     .layout {
       position: relative;
       z-index: 5;
       width: min(680px, calc(100% - 32px));
       margin: 60px auto;
+      animation: float-window 6s ease-in-out infinite, fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .mac-window {
       background: var(--card-bg);
-      border-radius: 12px;
+      border-radius: 14px;
       border: 1px solid var(--card-border);
-      backdrop-filter: blur(16px);
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px var(--accent-glow);
       overflow: hidden;
+      transition: border-color 0.4s ease, box-shadow 0.4s ease, background 0.4s ease;
     }
 
     .mac-header {
       display: flex;
       align-items: center;
       padding: 12px 16px;
-      background: rgba(0, 0, 0, 0.2);
+      background: rgba(0, 0, 0, 0.4);
       border-bottom: 1px solid var(--card-border);
       position: relative;
     }
 
-    .mac-buttons {
-      display: flex;
-      gap: 8px;
-    }
-
-    .mac-btn {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-    }
+    .mac-buttons { display: flex; gap: 8px; }
+    .mac-btn { width: 12px; height: 12px; border-radius: 50%; }
     .mac-btn.close { background: var(--mac-close); }
     .mac-btn.min { background: var(--mac-min); }
     .mac-btn.max { background: var(--mac-max); }
@@ -145,9 +183,7 @@
       color: var(--text-muted);
     }
 
-    .window-body {
-      padding: 28px;
-    }
+    .window-body { padding: 28px; }
 
     .profile-head {
       display: flex;
@@ -163,7 +199,13 @@
       flex: 0 0 88px;
       border-radius: 50%;
       padding: 3px;
-      background: linear-gradient(135deg, var(--accent), rgba(255,255,255,0.1));
+      background: linear-gradient(135deg, var(--accent), transparent);
+      box-shadow: 0 0 20px var(--accent-glow);
+      transition: transform 0.3s ease, box-shadow 0.4s ease;
+    }
+
+    .avatar-shell:hover {
+      transform: scale(1.05) rotate(3deg);
     }
 
     .avatar {
@@ -178,6 +220,7 @@
       font-size: 32px;
       font-weight: 700;
       color: var(--text);
+      letter-spacing: -0.5px;
     }
 
     .subtitle {
@@ -185,18 +228,20 @@
       font-size: 13px;
       margin-top: 4px;
       font-family: 'JetBrains Mono', monospace;
+      transition: color 0.4s ease;
     }
 
     /* Terminal Box */
     .terminal {
-      background: rgba(0, 0, 0, 0.35);
-      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 10px;
       border: 1px solid var(--card-border);
       padding: 16px;
       font-family: 'JetBrains Mono', monospace;
       font-size: 13px;
       display: grid;
       gap: 12px;
+      transition: border-color 0.4s ease;
     }
 
     .row {
@@ -204,11 +249,17 @@
       grid-template-columns: 28px 110px 1fr;
       gap: 8px;
       align-items: center;
+      transition: transform 0.2s ease;
+    }
+
+    .row:hover {
+      transform: translateX(4px);
     }
 
     .row .material-symbols-outlined {
       font-size: 18px;
       color: var(--accent);
+      transition: color 0.4s ease;
     }
 
     .label { color: var(--text-muted); }
@@ -224,14 +275,20 @@
       display: inline-block;
       padding: 2px 8px;
       border-radius: 4px;
-      background: rgba(255, 255, 255, 0.06);
+      background: rgba(255, 255, 255, 0.04);
       color: var(--accent);
       font-size: 11px;
       margin-right: 4px;
-      border: 1px solid rgba(110, 231, 183, 0.2);
+      border: 1px solid var(--card-border);
+      transition: all 0.3s ease;
     }
 
-    /* Buttons Matrix */
+    .tag:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    /* Actions Matrix */
     .actions {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -252,14 +309,15 @@
       color: var(--text);
       font-size: 13px;
       font-weight: 500;
-      transition: all 0.2s ease;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .action-btn:hover {
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.06);
       border-color: var(--accent);
       color: var(--accent);
-      transform: translateY(-2px);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px var(--accent-glow);
     }
 
     .action-btn.primary {
@@ -271,8 +329,9 @@
     }
 
     .action-btn.primary:hover {
-      background: #86efac;
-      box-shadow: 0 0 15px var(--accent-glow);
+      opacity: 0.9;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 20px var(--accent-glow);
       color: #000;
     }
 
@@ -285,7 +344,7 @@
       font-family: 'JetBrains Mono', monospace;
     }
 
-    /* Floating View Counter (Bottom Right) */
+    /* Floating View Counter */
     .views-widget {
       position: fixed;
       bottom: 20px;
@@ -296,18 +355,37 @@
       gap: 8px;
       padding: 8px 14px;
       border-radius: 20px;
-      background: rgba(22, 24, 29, 0.85);
+      background: var(--card-bg);
       border: 1px solid var(--card-border);
       backdrop-filter: blur(10px);
       color: var(--text);
       font-family: 'JetBrains Mono', monospace;
       font-size: 12px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+      transition: all 0.4s ease;
+      animation: fadeIn 1s ease;
     }
 
     .views-widget .material-symbols-outlined {
       font-size: 16px;
       color: var(--accent);
+      transition: color 0.4s ease;
+    }
+
+    /* Keyframes */
+    @keyframes float-window {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
@@ -316,8 +394,13 @@
   <canvas id="particles"></canvas>
 
   <header class="topbar">
-    <div class="status-chip">
-      <span class="status-dot"></span> macOS Terminal
+    <div class="topbar-left">
+      <div class="status-chip">
+        <span class="status-dot"></span> macOS Terminal
+      </div>
+      <button class="theme-toggle-btn" id="themeToggle" title="Сменить тему">
+        <span class="material-symbols-outlined" style="font-size: 18px;">palette</span>
+      </button>
     </div>
     <div class="clock" id="clock">00:00:00</div>
   </header>
@@ -358,9 +441,7 @@
             <span class="material-symbols-outlined">code</span>
             <span class="label">stack</span>
             <span class="value">
-              <span class="tag">C#</span>
               <span class="tag">Rust</span>
-              <span class="tag">Python</span>
               <span class="tag">Kotlin</span>
             </span>
           </div>
@@ -375,7 +456,7 @@
           <div class="row">
             <span class="material-symbols-outlined">school</span>
             <span class="label">learning</span>
-            <span class="value">C# · Rust · Python · Kotlin</span>
+            <span class="value">Rust · Kotlin</span>
           </div>
           <div class="row">
             <span class="material-symbols-outlined">folder_open</span>
@@ -430,6 +511,25 @@
   </div>
 
   <script>
+    // ---------- Theme Switching & Persistence ----------
+    const themeToggleBtn = document.getElementById("themeToggle");
+    const currentTheme = localStorage.getItem("theme") || "dark";
+
+    if (currentTheme === "red") {
+      document.documentElement.setAttribute("data-theme", "red");
+    }
+
+    themeToggleBtn.addEventListener("click", () => {
+      const isRed = document.documentElement.getAttribute("data-theme") === "red";
+      if (isRed) {
+        document.documentElement.removeAttribute("data-theme");
+        localStorage.setItem("theme", "dark");
+      } else {
+        document.documentElement.setAttribute("data-theme", "red");
+        localStorage.setItem("theme", "red");
+      }
+    });
+
     // ---------- Clock ----------
     const clock = document.getElementById("clock");
     setInterval(() => {
@@ -438,7 +538,7 @@
 
     // ---------- Typing Effect ----------
     const typing = document.getElementById("typing");
-    const phrases = ["developer / telegram", "building things quietly", "python / web / systems"];
+    const phrases = ["developer / telegram", "building things quietly", "rust / kotlin / systems"];
     let phraseIdx = 0, pos = 0, deleting = false;
 
     function typeLoop() {
@@ -473,7 +573,7 @@
     function resize() {
       W = canvas.width = window.innerWidth;
       H = canvas.height = window.innerHeight;
-      particles = Array.from({ length: 35 }, () => ({
+      particles = Array.from({ length: 40 }, () => ({
         x: Math.random() * W, y: Math.random() * H,
         r: Math.random() * 1.5 + 1, vx: (Math.random() - .5) * .2, vy: Math.random() * .2 + .1
       }));
@@ -481,7 +581,9 @@
 
     function render() {
       ctx.clearRect(0, 0, W, H);
-      ctx.fillStyle = "rgba(110, 231, 183, 0.2)";
+      const style = getComputedStyle(document.documentElement);
+      ctx.fillStyle = style.getPropertyValue('--particle-color').trim() || "rgba(255, 255, 255, 0.2)";
+      
       for (let p of particles) {
         p.x += p.vx; p.y += p.vy;
         if (p.y > H) p.y = 0;
