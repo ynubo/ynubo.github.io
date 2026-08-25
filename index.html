@@ -221,50 +221,6 @@
       font-family: 'JetBrains Mono', monospace;
     }
 
-    .spotify-card {
-      display: none;
-      align-items: center;
-      gap: 12px;
-      padding: 10px 14px;
-      background: rgba(0, 0, 0, 0.4);
-      border: 1px solid var(--card-border);
-      border-radius: 8px;
-      margin-bottom: 16px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      animation: fadeIn 0.5s ease;
-    }
-
-    .spotify-album-art {
-      width: 42px;
-      height: 42px;
-      border-radius: 6px;
-      object-fit: cover;
-    }
-
-    .spotify-details {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      overflow: hidden;
-    }
-
-    .spotify-title {
-      color: var(--text);
-      font-weight: 700;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .spotify-artist {
-      color: var(--text-muted);
-      font-size: 11px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
     .terminal {
       background: rgba(0, 0, 0, 0.5);
       border-radius: 10px;
@@ -446,15 +402,6 @@
           </div>
         </div>
 
-        <div class="spotify-card" id="spotifyWidget">
-          <i class="fa-brands fa-spotify" style="color: #1db954; font-size: 20px;"></i>
-          <img class="spotify-album-art" id="spotifyArt" src="" alt="Album Art">
-          <div class="spotify-details">
-            <span class="spotify-title" id="spotifyTitle">Слушает Spotify</span>
-            <span class="spotify-artist" id="spotifyArtist">...</span>
-          </div>
-        </div>
-
         <div class="terminal">
           <div class="row">
             <span class="material-symbols-outlined">person</span>
@@ -598,34 +545,6 @@
       setTimeout(typeLoop, delay);
     }
     typeLoop();
-
-    // Spotify Vercel API Integration (замена Lanyard)
-    const SPOTIFY_API_URL = "https://spotify-currently-playing-liart.vercel.app/api/spotify";
-    const spotifyWidget = document.getElementById("spotifyWidget");
-
-    async function checkSpotify() {
-      try {
-        const res = await fetch(SPOTIFY_API_URL);
-        if (res.status === 204 || res.status >= 400) {
-          spotifyWidget.style.display = "none";
-          return;
-        }
-        
-        const data = await res.json();
-        if (data && data.isPlaying) {
-          document.getElementById("spotifyArt").src = data.albumImageUrl || data.albumCover || "";
-          document.getElementById("spotifyTitle").textContent = data.title || data.songTitle || "Слушает Spotify";
-          document.getElementById("spotifyArtist").textContent = `by ${data.artist || data.artistName || ""}`;
-          spotifyWidget.style.display = "flex";
-        } else {
-          spotifyWidget.style.display = "none";
-        }
-      } catch {
-        spotifyWidget.style.display = "none";
-      }
-    }
-    checkSpotify();
-    setInterval(checkSpotify, 5000);
 
     // Reliable Local Visitor Counter
     function updateVisits() {
