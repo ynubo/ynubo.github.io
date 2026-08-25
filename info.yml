@@ -1,0 +1,36 @@
+name: ynubo
+
+description: personal website
+
+status: online
+
+language: ru
+
+personality: ISTP-T
+
+nohello: !
+
+github: ynubo
+
+telegram: "@ynubo"
+
+channel: "https://t.me/d031r"
+
+year: 2026
+
+skills:
+  - C#
+  - Rust
+  - Python
+  - Kotlin
+
+music:
+  directory: /music
+  autoplay: false
+  extensions:
+    - mp3
+    - wav
+    - ogg
+    - m4a
+    - aac
+    - flac
