@@ -17,6 +17,9 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
+  <!-- Telegram WebApp SDK для доступа к Telegram RPC session -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
   <style>
     :root {
       --bg: #09090b;
@@ -207,7 +210,7 @@
     }
 
     .mac-buttons { display: flex; gap: 8px; }
-    .mac-btn { width: 12px; height: 12px; border-radius: 50%; }
+    .mac-btn { width: 12px; height: 12px; border-radius: 50%; cursor: pointer; }
     .mac-btn.close { background: var(--mac-close); }
     .mac-btn.min { background: var(--mac-min); }
     .mac-btn.max { background: var(--mac-max); }
@@ -238,6 +241,8 @@
       border-radius: 50%;
       padding: 2px;
       background: linear-gradient(135deg, var(--accent), transparent);
+      user-select: none;
+      -webkit-user-drag: none;
     }
 
     .avatar {
@@ -245,6 +250,7 @@
       height: 100%;
       object-fit: cover;
       border-radius: 50%;
+      pointer-events: auto;
     }
 
     .title-area h1 {
@@ -307,19 +313,25 @@
       border: 1px solid var(--card-border);
     }
 
-    /* CLI Console Widget */
+    /* CLI Console Widget (По умолчанию скрыта) */
     .cli-box {
       margin-top: 14px;
-      background: rgba(0, 0, 0, 0.6);
+      background: rgba(0, 0, 0, 0.7);
       border: 1px solid var(--card-border);
       border-radius: 8px;
       padding: 10px 12px;
       font-family: 'JetBrains Mono', monospace;
       font-size: 12px;
+      display: none; /* Скрыто до ввода пасхалки */
+      animation: expandConsole 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .cli-box.active {
+      display: block;
     }
 
     .cli-output {
-      max-height: 120px;
+      max-height: 140px;
       overflow-y: auto;
       margin-bottom: 6px;
       display: flex;
@@ -331,6 +343,7 @@
     .cli-output-line { line-height: 1.4; word-break: break-all; }
     .cli-output-line.cmd { color: var(--accent); }
     .cli-output-line.system { color: #27c93f; }
+    .cli-output-line.error { color: #ff5f56; }
 
     .cli-input-wrapper {
       display: flex;
@@ -430,6 +443,11 @@
 
     .toast.show { transform: translateX(-50%) translateY(0); }
 
+    @keyframes expandConsole {
+      from { opacity: 0; transform: translateY(-10px); scale: 0.98; }
+      to { opacity: 1; transform: translateY(0); scale: 1; }
+    }
+
     @keyframes float-window {
       0%, 100% { transform: translateY(0px); }
       50% { transform: translateY(-5px); }
@@ -456,7 +474,7 @@
   <header class="topbar">
     <div class="topbar-left">
       <div class="status-chip">
-        <span class="status-dot"></span> macOS
+        <span class="status-dot"></span> Windows 11
       </div>
       <button class="top-btn theme-toggle-btn" id="themeToggle" title="Theme">
         <span class="material-symbols-outlined" style="font-size: 16px;">palette</span>
@@ -470,17 +488,17 @@
     <div class="mac-window">
       <div class="mac-header">
         <div class="mac-buttons">
-          <div class="mac-btn close"></div>
+          <div class="mac-btn close" id="macCloseBtn"></div>
           <div class="mac-btn min"></div>
           <div class="mac-btn max"></div>
         </div>
-        <div class="mac-title" id="macTitle">bash - ynubo@macbook:~</div>
+        <div class="mac-title" id="macTitle">powershell - ynubo@windows:~</div>
       </div>
 
       <div class="window-body">
         <div class="profile-head">
           <a href="https://t.me/ynubo" target="_blank" rel="noopener">
-            <div class="avatar-shell">
+            <div class="avatar-shell" id="avatarTrigger">
               <img class="avatar" src="https://i.ibb.co/W8JcZLm/photo-2026-05-05-20-50-18.jpg" alt="ynubo">
             </div>
           </a>
@@ -512,7 +530,7 @@
           <div class="row">
             <span class="material-symbols-outlined">schedule</span>
             <span class="label" data-i18n="status_label">статус tg</span>
-            <span class="value" id="tgStatusVal">online · 2m ago</span>
+            <span class="value" id="tgStatusVal">RPC sync...</span>
           </div>
 
           <div class="separator"></div>
@@ -544,14 +562,12 @@
           </div>
         </div>
 
-        <!-- CLI Console -->
-        <div class="cli-box">
-          <div class="cli-output" id="cliOutput">
-            <div class="cli-output-line system">Type 'help' to show available commands.</div>
-          </div>
+        <!-- CLI Console (Изначально скрыта) -->
+        <div class="cli-box" id="cliBox">
+          <div class="cli-output" id="cliOutput"></div>
           <div class="cli-input-wrapper">
-            <span class="cli-prompt">$</span>
-            <input type="text" class="cli-input" id="cliInput" placeholder="enter command..." spellcheck="false" autocomplete="off">
+            <span class="cli-prompt">PS C:\Users\ynubo></span>
+            <input type="text" class="cli-input" id="cliInput" placeholder="введите команду..." spellcheck="false" autocomplete="off">
           </div>
         </div>
 
@@ -575,7 +591,7 @@
 
         <div class="footer">
           <span>© 2026 ynubo</span>
-          <span>macOS / zsh</span>
+          <span>Windows / PowerShell</span>
         </div>
       </div>
     </div>
@@ -624,21 +640,33 @@
 
     document.getElementById("langToggle").addEventListener("click", () => setLanguage(currentLang === "ru" ? "en" : "ru"));
 
-    // Dynamic Unix/Telegram Status Simulation
-    function updateTgStatus() {
+    // Telegram RPC Session & Real-time Status Calculation
+    function initTelegramRPCStatus() {
       const statusEl = document.getElementById('tgStatusVal');
-      const statuses = [
-        'online · active now',
-        'recently · last seen 4m ago',
-        'online · building rust app',
-        'recently · last seen 12m ago'
-      ];
-      // Случайное обновление раз в несколько секунд для живого вида
-      let idx = Math.floor(Math.random() * statuses.length);
-      statusEl.textContent = statuses[idx];
+      const tg = window.Telegram ? window.Telegram.WebApp : null;
+
+      if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
+        // Запущено внутри WebApp Telegram с реальной сессией
+        const user = tg.initDataUnsafe.user;
+        statusEl.textContent = `online · RPC session active (@${user.username || user.first_name})`;
+      } else {
+        // Эмуляция захода и сессии Telegram RPC
+        const sessionStartTime = Date.now();
+        setInterval(() => {
+          const now = Date.now();
+          const elapsedSec = Math.floor((now - sessionStartTime) / 1000);
+          
+          if (elapsedSec < 60) {
+            statusEl.textContent = `online · RPC active (session: ${elapsedSec}s)`;
+          } else {
+            const mins = Math.floor(elapsedSec / 60);
+            statusEl.textContent = `online · active ${mins}m ago (DC-2)`;
+          }
+        }, 10000);
+        statusEl.textContent = `online · RPC session active`;
+      }
     }
-    updateTgStatus();
-    setInterval(updateTgStatus, 25000);
+    initTelegramRPCStatus();
 
     // Cursor
     if (!isMobile) {
@@ -698,7 +726,7 @@
 
     document.querySelectorAll('.action-btn, .top-btn, .copyable').forEach(btn => btn.addEventListener('click', playClickSound));
 
-    // Theme Switch
+    // Theme Switcher
     const themeToggleBtn = document.getElementById("themeToggle");
     let isRedTheme = localStorage.getItem("theme") === "red";
     if (isRedTheme) document.documentElement.setAttribute("data-theme", "red");
@@ -747,11 +775,24 @@
     }
     updateVisits();
 
-    // CLI Console Logic
+    // --- CONSOLE & EASTER EGGS SYSTEM ---
+    const cliBox = document.getElementById('cliBox');
     const cliInput = document.getElementById('cliInput');
     const cliOutput = document.getElementById('cliOutput');
     let cmdHistory = [];
     let historyIndex = -1;
+
+    function openConsole(initialCommand = '') {
+      if (!cliBox.classList.contains('active')) {
+        cliBox.classList.add('active');
+        printCli('[System] Terminal unlocked via easter egg / hotkey trigger.', 'system');
+        printCli('Type "help" to list all commands.', 'system');
+      }
+      cliInput.focus();
+      if (initialCommand) {
+        executeCommand(initialCommand);
+      }
+    }
 
     function printCli(text, type = '') {
       const line = document.createElement('div');
@@ -761,44 +802,72 @@
       cliOutput.scrollTop = cliOutput.scrollHeight;
     }
 
+    function executeCommand(val) {
+      printCli(`PS C:\\Users\\ynubo> ${val}`, 'cmd');
+      cmdHistory.push(val);
+      historyIndex = cmdHistory.length;
+
+      const cleanCmd = val.trim().toLowerCase();
+
+      switch (cleanCmd) {
+        case 'help':
+          printCli('Available commands: help, clear, theme, ping, whoami, stack, matrix, sudo, bsod');
+          break;
+        case 'clear':
+          cliOutput.innerHTML = '';
+          break;
+        case 'theme':
+          themeToggleBtn.click();
+          printCli('Theme toggled.', 'system');
+          break;
+        case 'ping':
+          // Ping google.com
+          printCli('Pinging google.com [142.250.185.206] with 32 bytes of data:');
+          let count = 0;
+          const pingInterval = setInterval(() => {
+            const time = Math.floor(Math.random() * 12) + 8;
+            printCli(`Reply from 142.250.185.206: bytes=32 time=${time}ms TTL=117`, 'system');
+            count++;
+            if (count >= 4) {
+              clearInterval(pingInterval);
+              printCli('Ping statistics for google.com:\n    Packets: Sent = 4, Received = 4, Lost = 0 (0% loss)');
+            }
+          }, 300);
+          break;
+        case 'whoami':
+          printCli('ynubo — developer (Rust / Kotlin / Windows)');
+          break;
+        case 'stack':
+          // OS: Windows по требованию
+          printCli('Primary: Rust, Kotlin. OS: Windows 11.');
+          break;
+        case 'matrix':
+          if (!isRedTheme) themeToggleBtn.click();
+          printCli('Matrix stream initialized...', 'system');
+          break;
+        case 'sudo':
+          printCli('Access granted. Welcome, root userynubo.', 'system');
+          printCli('Secret unlocked: "Building tools for quietly changing the digital world."', 'cmd');
+          break;
+        case 'bsod':
+          printCli('CRITICAL_PROCESS_DIED. System rebooting...', 'error');
+          setTimeout(() => location.reload(), 2000);
+          break;
+        case 'secret':
+        case 'heyes':
+          printCli('EGG_FOUND: Developer mode unlocked!', 'system');
+          break;
+        default:
+          printCli(`'${val}' is not recognized as an internal or external command.`, 'error');
+      }
+    }
+
     cliInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
-        const val = cliInput.value.trim().toLowerCase();
-        if (!val) return;
-
-        printCli(`$ ${val}`, 'cmd');
-        cmdHistory.push(val);
-        historyIndex = cmdHistory.length;
+        const val = cliInput.value;
+        if (!val.trim()) return;
+        executeCommand(val);
         cliInput.value = '';
-
-        switch (val) {
-          case 'help':
-            printCli('Available commands: help, clear, theme, ping, whoami, stack, matrix');
-            break;
-          case 'clear':
-            cliOutput.innerHTML = '';
-            break;
-          case 'theme':
-            themeToggleBtn.click();
-            printCli('Theme toggled.', 'system');
-            break;
-          case 'ping':
-            const ms = Math.floor(Math.random() * 25) + 12;
-            printCli(`64 bytes from t.me: icmp_seq=1 ttl=116 time=${ms} ms`, 'system');
-            break;
-          case 'whoami':
-            printCli('ynubo — developer (Rust / Kotlin)');
-            break;
-          case 'stack':
-            printCli('Primary: Rust, Kotlin. OS: macOS/Linux.');
-            break;
-          case 'matrix':
-            if (!isRedTheme) themeToggleBtn.click();
-            printCli('Matrix code stream initialized.', 'system');
-            break;
-          default:
-            printCli(`zsh: command not found: ${val}`, 'cli-output-line');
-        }
       } else if (e.key === 'ArrowUp') {
         if (historyIndex > 0) {
           historyIndex--;
@@ -815,7 +884,67 @@
       }
     });
 
-    // Optimized Canvas
+    // --- EASTER EGGS LISTENERS (ДЛЯ ПК И ТЕЛЕФОНОВ) ---
+
+    // 1. Клавиатурный ввод пасхалок на ПК (без открытия консоли)
+    let keyBuffer = '';
+    const easterEggs = ['matrix', 'sudo', 'ping', 'help', 'stack', 'bsod', 'secret', 'heyes'];
+
+    window.addEventListener('keydown', (e) => {
+      // Игнорируем ввод, если активен инпут консоли
+      if (document.activeElement === cliInput) return;
+
+      if (e.key.length === 1) {
+        keyBuffer += e.key.toLowerCase();
+        if (keyBuffer.length > 20) keyBuffer = keyBuffer.slice(-20);
+
+        easterEggs.forEach(egg => {
+          if (keyBuffer.endsWith(egg)) {
+            openConsole(egg);
+            keyBuffer = '';
+          }
+        });
+      }
+    });
+
+    // 2. Пасхалка для Мобилок #1: Triple-Tap по аватарке
+    const avatarTrigger = document.getElementById('avatarTrigger');
+    let tapCount = 0;
+    let tapTimer = null;
+
+    avatarTrigger.addEventListener('touchstart', (e) => {
+      tapCount++;
+      if (tapTimer) clearTimeout(tapTimer);
+
+      if (tapCount >= 3) {
+        tapCount = 0;
+        openConsole('matrix'); // При тройном тапе открывается консоль с матрицей
+      } else {
+        tapTimer = setTimeout(() => { tapCount = 0; }, 400);
+      }
+    }, { passive: true });
+
+    // 3. Пасхалка для Мобилок #2: Long Press (Зажатие аватара)
+    let touchHoldTimer = null;
+    avatarTrigger.addEventListener('touchstart', () => {
+      touchHoldTimer = setTimeout(() => {
+        const code = prompt("Введите секретную пасхалку (matrix, sudo, stack, ping):");
+        if (code) {
+          openConsole(code);
+        }
+      }, 1200);
+    }, { passive: true });
+
+    avatarTrigger.addEventListener('touchend', () => {
+      if (touchHoldTimer) clearTimeout(touchHoldTimer);
+    });
+
+    // Закрытие/сворачивание по кнопке Mac Close
+    document.getElementById('macCloseBtn').addEventListener('click', () => {
+      cliBox.classList.remove('active');
+    });
+
+    // Canvas Matrix / Starfield Animation
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
     let W, H, particles = [], matrixCols = [];
