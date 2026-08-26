@@ -565,6 +565,11 @@
             <span class="label">telegram</span>
             <span class="value"><a href="https://t.me/ynubo" target="_blank" style="color: var(--accent);">@ynubo</a></span>
           </div>
+          <div class="row">
+            <span class="material-symbols-outlined">nest_clock_faint</span>
+            <span class="label" data-i18n="time_status_label">статус (киров)</span>
+            <span class="value" id="kirovStatusVal">Определение...</span>
+          </div>
 
           <div class="separator"></div>
 
@@ -643,14 +648,14 @@
     const translations = {
       ru: {
         alias_label: "псевдоним", stack_label: "стек", learning_label: "изучаю",
-        projects_label: "проекты", projects_val: "пока нет — в процессе обучения",
+        time_status_label: "статус (киров)", projects_label: "проекты", projects_val: "пока нет — в процессе обучения",
         location_label: "локация", location_val: "Киров · ~15-16 лет", type_label: "тип",
         btn_channel: "КАНАЛ", toast_copy: "ID скопирован в буфер обмена!",
         phrases: ["разработчик / telegram", "создаю вещи в тишине", "rust / kotlin"]
       },
       en: {
         alias_label: "alias", stack_label: "stack", learning_label: "learning",
-        projects_label: "projects", projects_val: "none yet — currently learning",
+        time_status_label: "status (kirov)", projects_label: "projects", projects_val: "none yet — currently learning",
         location_label: "location", location_val: "Kirov · ~15-16 y.o.", type_label: "type",
         btn_channel: "CHANNEL", toast_copy: "ID copied to clipboard!",
         phrases: ["developer / telegram", "building things quietly", "rust / kotlin"]
@@ -668,10 +673,47 @@
         if (translations[lang][key]) el.textContent = translations[lang][key];
       });
       phraseIdx = 0; pos = 0; deleting = false;
+      updateKirovStatus();
     }
 
     document.getElementById("langToggle").addEventListener("click", () => setLanguage(currentLang === "ru" ? "en" : "ru"));
 
+    // --- Dynamic Time Status for Kirov (UTC+3) ---
+    function getRandomMinute(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+    
+    // Случайное время подъёма (8:10 - 8:50) и отхода ко сну (23:25 - 23:59)
+    const wakeMinute = getRandomMinute(10, 50);
+    const sleepMinute = getRandomMinute(25, 59);
+    
+    const wakeTimeMinutes = 8 * 60 + wakeMinute;     // в минутах от начала суток
+    const sleepTimeMinutes = 23 * 60 + sleepMinute;   // в минутах от начала суток
+    
+    function updateKirovStatus() {
+      const now = new Date();
+      // Вычисляем текущее время по Кирову (UTC+3)
+      const kirovTimeStr = now.toLocaleTimeString("ru-RU", { timeZone: "Europe/Moscow", hour: '2-digit', minute: '2-digit' });
+      const [h, m] = kirovTimeStr.split(':').map(Number);
+      const currentMinutes = h * 60 + m;
+    
+      const statusEl = document.getElementById("kirovStatusVal");
+      let statusText = "";
+    
+      // Если время больше/равно уходу ко сну ИЛИ меньше времени подъёма — сплю
+      if (currentMinutes >= sleepTimeMinutes || currentMinutes < wakeTimeMinutes) {
+        statusText = currentLang === "ru" ? `🌙 сплю (${kirovTimeStr})` : `🌙 sleeping (${kirovTimeStr})`;
+      } else {
+        statusText = currentLang === "ru" ? `💻 в сети (${kirovTimeStr})` : `💻 online (${kirovTimeStr})`;
+      }
+    
+      statusEl.textContent = statusText;
+    }
+    
+    setInterval(updateKirovStatus, 10000);
+    updateKirovStatus();
+
+    // Cursor
     if (!isMobile) {
       const dot = document.getElementById('cursorDot');
       const outline = document.getElementById('cursorOutline');
