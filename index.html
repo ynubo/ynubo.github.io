@@ -45,7 +45,6 @@
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     
-    /* Курсор показывается ТОЛЬКО на ПК с мышью */
     .cursor-dot, .cursor-outline { display: none; }
     
     @media (pointer: fine) {
@@ -70,7 +69,6 @@
     a { color: inherit; text-decoration: none; }
     button { font: inherit; border: none; background: none; }
 
-    /* Custom Cursor */
     .cursor-dot {
       position: fixed;
       top: 0; left: 0;
@@ -193,7 +191,6 @@
       overflow: hidden;
     }
 
-    /* Backdrop filter включает только ПК для экономии ресурсов смартфона */
     @media (min-width: 768px) {
       .mac-window, .status-chip, .top-btn, .views-widget, .toast {
         backdrop-filter: blur(12px);
@@ -308,6 +305,49 @@
       font-size: 11px;
       margin-right: 4px;
       border: 1px solid var(--card-border);
+    }
+
+    /* CLI Console Widget */
+    .cli-box {
+      margin-top: 14px;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+    }
+
+    .cli-output {
+      max-height: 120px;
+      overflow-y: auto;
+      margin-bottom: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      color: var(--text-muted);
+    }
+
+    .cli-output-line { line-height: 1.4; word-break: break-all; }
+    .cli-output-line.cmd { color: var(--accent); }
+    .cli-output-line.system { color: #27c93f; }
+
+    .cli-input-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .cli-prompt { color: var(--accent); font-weight: bold; }
+
+    .cli-input {
+      flex: 1;
+      background: none;
+      border: none;
+      outline: none;
+      color: var(--text);
+      font-family: inherit;
+      font-size: inherit;
     }
 
     .actions {
@@ -469,6 +509,11 @@
             <span class="label">telegram</span>
             <span class="value"><a href="https://t.me/ynubo" target="_blank" style="color: var(--accent);">@ynubo</a></span>
           </div>
+          <div class="row">
+            <span class="material-symbols-outlined">schedule</span>
+            <span class="label" data-i18n="status_label">статус tg</span>
+            <span class="value" id="tgStatusVal">online · 2m ago</span>
+          </div>
 
           <div class="separator"></div>
 
@@ -496,6 +541,17 @@
             <span class="material-symbols-outlined">psychology</span>
             <span class="label" data-i18n="type_label">тип</span>
             <span class="value">ISTP-T</span>
+          </div>
+        </div>
+
+        <!-- CLI Console -->
+        <div class="cli-box">
+          <div class="cli-output" id="cliOutput">
+            <div class="cli-output-line system">Type 'help' to show available commands.</div>
+          </div>
+          <div class="cli-input-wrapper">
+            <span class="cli-prompt">$</span>
+            <input type="text" class="cli-input" id="cliInput" placeholder="enter command..." spellcheck="false" autocomplete="off">
           </div>
         </div>
 
@@ -539,14 +595,14 @@
     const translations = {
       ru: {
         alias_label: "псевдоним", stack_label: "стек", learning_label: "изучаю",
-        projects_label: "проекты", projects_val: "пока нет — в процессе обучения",
+        status_label: "статус tg", projects_label: "проекты", projects_val: "пока нет — в процессе обучения",
         location_label: "локация", location_val: "Киров · ~15-16 лет", type_label: "тип",
         btn_channel: "КАНАЛ", toast_copy: "ID скопирован в буфер обмена!",
         phrases: ["разработчик / telegram", "создаю вещи в тишине", "rust / kotlin / системный софт"]
       },
       en: {
         alias_label: "alias", stack_label: "stack", learning_label: "learning",
-        projects_label: "projects", projects_val: "none yet — currently learning",
+        status_label: "tg status", projects_label: "projects", projects_val: "none yet — currently learning",
         location_label: "location", location_val: "Kirov · ~15-16 y.o.", type_label: "type",
         btn_channel: "CHANNEL", toast_copy: "ID copied to clipboard!",
         phrases: ["developer / telegram", "building things quietly", "rust / kotlin / systems"]
@@ -568,7 +624,23 @@
 
     document.getElementById("langToggle").addEventListener("click", () => setLanguage(currentLang === "ru" ? "en" : "ru"));
 
-    // Cursor - Запускается ТОЛЬКО на ПК
+    // Dynamic Unix/Telegram Status Simulation
+    function updateTgStatus() {
+      const statusEl = document.getElementById('tgStatusVal');
+      const statuses = [
+        'online · active now',
+        'recently · last seen 4m ago',
+        'online · building rust app',
+        'recently · last seen 12m ago'
+      ];
+      // Случайное обновление раз в несколько секунд для живого вида
+      let idx = Math.floor(Math.random() * statuses.length);
+      statusEl.textContent = statuses[idx];
+    }
+    updateTgStatus();
+    setInterval(updateTgStatus, 25000);
+
+    // Cursor
     if (!isMobile) {
       const dot = document.getElementById('cursorDot');
       const outline = document.getElementById('cursorOutline');
@@ -675,6 +747,74 @@
     }
     updateVisits();
 
+    // CLI Console Logic
+    const cliInput = document.getElementById('cliInput');
+    const cliOutput = document.getElementById('cliOutput');
+    let cmdHistory = [];
+    let historyIndex = -1;
+
+    function printCli(text, type = '') {
+      const line = document.createElement('div');
+      line.className = `cli-output-line ${type}`;
+      line.textContent = text;
+      cliOutput.appendChild(line);
+      cliOutput.scrollTop = cliOutput.scrollHeight;
+    }
+
+    cliInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const val = cliInput.value.trim().toLowerCase();
+        if (!val) return;
+
+        printCli(`$ ${val}`, 'cmd');
+        cmdHistory.push(val);
+        historyIndex = cmdHistory.length;
+        cliInput.value = '';
+
+        switch (val) {
+          case 'help':
+            printCli('Available commands: help, clear, theme, ping, whoami, stack, matrix');
+            break;
+          case 'clear':
+            cliOutput.innerHTML = '';
+            break;
+          case 'theme':
+            themeToggleBtn.click();
+            printCli('Theme toggled.', 'system');
+            break;
+          case 'ping':
+            const ms = Math.floor(Math.random() * 25) + 12;
+            printCli(`64 bytes from t.me: icmp_seq=1 ttl=116 time=${ms} ms`, 'system');
+            break;
+          case 'whoami':
+            printCli('ynubo — developer (Rust / Kotlin)');
+            break;
+          case 'stack':
+            printCli('Primary: Rust, Kotlin. OS: macOS/Linux.');
+            break;
+          case 'matrix':
+            if (!isRedTheme) themeToggleBtn.click();
+            printCli('Matrix code stream initialized.', 'system');
+            break;
+          default:
+            printCli(`zsh: command not found: ${val}`, 'cli-output-line');
+        }
+      } else if (e.key === 'ArrowUp') {
+        if (historyIndex > 0) {
+          historyIndex--;
+          cliInput.value = cmdHistory[historyIndex];
+        }
+      } else if (e.key === 'ArrowDown') {
+        if (historyIndex < cmdHistory.length - 1) {
+          historyIndex++;
+          cliInput.value = cmdHistory[historyIndex];
+        } else {
+          historyIndex = cmdHistory.length;
+          cliInput.value = '';
+        }
+      }
+    });
+
     // Optimized Canvas
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
@@ -690,7 +830,6 @@
         const cols = Math.floor(W / 24);
         matrixCols = Array.from({ length: cols }, () => Math.floor(Math.random() * -20));
       } else {
-        // Меньше частиц для мобильных
         const count = isMobile ? 18 : 35;
         particles = Array.from({ length: count }, () => ({
           x: Math.random() * W, y: Math.random() * H,
@@ -700,8 +839,7 @@
     }
 
     function renderCanvas(time) {
-      // Ограничение FPS для сохранения батареи и снижения нагрузки
-      if (time - lastTime > 40) { // ~25 FPS для эффектов
+      if (time - lastTime > 40) {
         lastTime = time;
 
         if (isRedTheme) {
@@ -734,54 +872,6 @@
     window.addEventListener('resize', initCanvas);
     initCanvas();
     requestAnimationFrame(renderCanvas);
-
-    // Easter Eggs
-    const easterEggs = [
-      { code: ['ArrowUp', 'ArrowUp', 'ArrowUp'], msg: "🚀 Speedrunner unlocked!" },
-      { code: ['r', 'u', 's', 't'],              msg: "🦀 Crab power: Rust mode activated!" },
-      { code: ['d', 'e', 'v'],                  msg: "💻 Developer mode initialized!" },
-      { code: ['k', 'o', 't', 'l', 'i', 'n'],   msg: "🎯 Powered by Kotlin!" },
-      { code: ['y', 'n', 'u', 'b', 'o'],        msg: "⚡ ynubo mode activated!" }
-    ];
-
-    let keyProgress = new Array(easterEggs.length).fill(0);
-
-    document.addEventListener('keydown', (e) => {
-      if (e.ctrlKey || e.altKey || e.metaKey) return;
-      const key = e.key.toLowerCase();
-
-      easterEggs.forEach((egg, index) => {
-        const expectedKey = egg.code[keyProgress[index]].toLowerCase();
-        if (key === expectedKey) {
-          keyProgress[index]++;
-          if (keyProgress[index] === egg.code.length) {
-            triggerEasterEgg(egg.msg);
-            keyProgress[index] = 0;
-          }
-        } else {
-          keyProgress[index] = (key === egg.code[0].toLowerCase()) ? 1 : 0;
-        }
-      });
-    });
-
-    function triggerEasterEgg(message) {
-      toast.textContent = message;
-      toast.classList.add('show');
-      if (!isRedTheme) themeToggleBtn.click();
-      setTimeout(() => toast.classList.remove('show'), 3000);
-    }
-
-    const macTitle = document.getElementById('macTitle');
-    let titleClicks = 0;
-    macTitle.addEventListener('click', () => {
-      titleClicks++;
-      if (titleClicks === 5) {
-        toast.textContent = "🚀 Keep building quietly.";
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 3000);
-        titleClicks = 0;
-      }
-    });
 
     setLanguage(currentLang);
   </script>
