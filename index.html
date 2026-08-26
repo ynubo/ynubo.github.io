@@ -683,16 +683,14 @@
       return Math.floor(Math.random() * (max - min + 1)) + min;
     }
     
-    // Случайное время подъёма (8:10 - 8:50) и отхода ко сну (23:25 - 23:59)
     const wakeMinute = getRandomMinute(10, 50);
     const sleepMinute = getRandomMinute(25, 59);
     
-    const wakeTimeMinutes = 8 * 60 + wakeMinute;     // в минутах от начала суток
-    const sleepTimeMinutes = 23 * 60 + sleepMinute;   // в минутах от начала суток
+    const wakeTimeMinutes = 8 * 60 + wakeMinute;
+    const sleepTimeMinutes = 23 * 60 + sleepMinute;
     
     function updateKirovStatus() {
       const now = new Date();
-      // Вычисляем текущее время по Кирову (UTC+3)
       const kirovTimeStr = now.toLocaleTimeString("ru-RU", { timeZone: "Europe/Moscow", hour: '2-digit', minute: '2-digit' });
       const [h, m] = kirovTimeStr.split(':').map(Number);
       const currentMinutes = h * 60 + m;
@@ -700,7 +698,6 @@
       const statusEl = document.getElementById("kirovStatusVal");
       let statusText = "";
     
-      // Если время больше/равно уходу ко сну ИЛИ меньше времени подъёма — сплю
       if (currentMinutes >= sleepTimeMinutes || currentMinutes < wakeTimeMinutes) {
         statusText = currentLang === "ru" ? `🌙 сплю (${kirovTimeStr})` : `🌙 sleeping (${kirovTimeStr})`;
       } else {
@@ -826,6 +823,7 @@
         printCli('[System] Terminal unlocked via easter egg code.', 'system');
         printCli('Type "help" to list available commands.', 'system');
       }
+      cliInput.value = '';
       cliInput.focus();
       if (initialCommand) {
         executeCommand(initialCommand);
@@ -849,7 +847,7 @@
 
       switch (cleanCmd) {
         case 'help':
-          printCli('Available commands: help, clear, theme, ping, whoami, stack, matrix, sudo, dev, rust, kotlin, ynubo');
+          printCli('Available commands: help, clear, theme, ping, whoami, stack, matrix, sudo');
           break;
         case 'clear':
           cliOutput.innerHTML = '';
@@ -935,8 +933,10 @@
 
         easterEggs.forEach(egg => {
           if (keyBuffer.endsWith(egg)) {
+            e.preventDefault();
             openConsole(egg);
             keyBuffer = '';
+            setTimeout(() => { cliInput.value = ''; }, 0);
           }
         });
       }
