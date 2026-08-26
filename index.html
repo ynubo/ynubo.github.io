@@ -1123,14 +1123,14 @@ ynubo // sacerdos (Иван)
         ctx.fillStyle = themeConfig.bg;
         ctx.fillRect(0, 0, W, H);
 
-        if (frameCount % 4 === 0) { // Стабильная скорость прокрутки
+        if (frameCount % 3 === 0) { // Стабильная скорость прокрутки
           ctx.fillStyle = themeConfig.text;
           ctx.font = "14px 'JetBrains Mono', monospace";
 
           for (let i = 0; i < matrixCols.length; i++) {
             const char = matrixChars[Math.floor(Math.random() * matrixChars.length)];
             const x = i * 20;
-            const y = matrixCols[i] * 0.5;
+            const y = matrixCols[i] * 10;
 
             ctx.fillText(char, x, y);
 
