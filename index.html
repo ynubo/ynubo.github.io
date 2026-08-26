@@ -634,7 +634,6 @@
           </div>
         </div>
 
-        <!-- CLI Console Widget -->
         <div class="cli-box" id="cliBox">
           <div class="cli-output" id="cliOutput"></div>
           <div class="cli-input-wrapper">
@@ -679,9 +678,7 @@
   <script>
     const isMobile = window.matchMedia("(pointer: coarse)").matches;
 
-    // --- Web Audio Synthesizer ---
     let audioCtx;
-
     function initAudio() {
       if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       if (audioCtx.state === 'suspended') audioCtx.resume();
@@ -764,7 +761,6 @@
 
     document.getElementById("langToggle").addEventListener("click", () => setLanguage(currentLang === "ru" ? "en" : "ru"));
 
-    // --- Dynamic Time Status for Kirov (UTC+3) ---
     function getRandomMinute(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     }
@@ -796,7 +792,6 @@
     setInterval(updateKirovStatus, 10000);
     updateKirovStatus();
 
-    // Cursor
     if (!isMobile) {
       const dot = document.getElementById('cursorDot');
       const outline = document.getElementById('cursorOutline');
@@ -852,8 +847,6 @@
       initCanvas();
     }
 
-    if (currentTheme !== "dark") applyTheme(currentTheme);
-
     themeToggleBtn.addEventListener("click", () => {
       const nextIdx = (themes.indexOf(currentTheme) + 1) % themes.length;
       applyTheme(themes[nextIdx]);
@@ -888,7 +881,7 @@
     }
     updateVisits();
 
-    // --- CLI Engine & Commands ---
+    // CLI Engine
     const cliBox = document.getElementById('cliBox');
     const cliInput = document.getElementById('cliInput');
     const cliOutput = document.getElementById('cliOutput');
@@ -1076,9 +1069,7 @@ ynubo // sacerdos (Иван)
     avatarTrigger.addEventListener('touchstart', () => {
       touchHoldTimer = setTimeout(() => {
         const code = prompt("Введите команду (neofetch, theme green, sacerdos, sudo):");
-        if (code) {
-          openConsole(code);
-        }
+        if (code) openConsole(code);
       }, 1000);
     }, { passive: true });
 
@@ -1090,64 +1081,85 @@ ynubo // sacerdos (Иван)
       cliBox.classList.remove('active');
     });
 
+    // --- Fixed Canvas Engine ---
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
     let W, H, particles = [], matrixCols = [];
-    const katakana = "0123456789ABCDEFЯИИИРКНВБС";
-    let lastTime = 0;
+    const matrixChars = "0123456789ABCDEFGHJKLMNOPQRSTUVWXYZ";
 
     function initCanvas() {
       W = canvas.width = window.innerWidth;
       H = canvas.height = window.innerHeight;
 
-      if (currentTheme === "red" || currentTheme === "green") {
-        const cols = Math.floor(W / 24);
-        matrixCols = Array.from({ length: cols }, () => Math.floor(Math.random() * -20));
+      if (currentTheme !== "dark") {
+        const cols = Math.floor(W / 20);
+        matrixCols = Array.from({ length: cols }, () => Math.floor(Math.random() * -50));
       } else {
-        const count = isMobile ? 18 : 35;
+        const count = isMobile ? 20 : 40;
         particles = Array.from({ length: count }, () => ({
           x: Math.random() * W, y: Math.random() * H,
-          r: Math.random() * 1.2 + 1, vx: (Math.random() - .5) * .2, vy: Math.random() * .2 + .1
+          r: Math.random() * 1.5 + 1, vx: (Math.random() - .5) * .3, vy: Math.random() * .3 + .1
         }));
       }
     }
 
-    function renderCanvas(time) {
-      if (time - lastTime > 40) {
-        lastTime = time;
+    const themeColors = {
+      red: { bg: "rgba(8, 2, 3, 0.15)", text: "#ef4444" },
+      green: { bg: "rgba(2, 10, 4, 0.15)", text: "#22c55e" },
+      purple: { bg: "rgba(9, 3, 13, 0.15)", text: "#a855f7" },
+      blue: { bg: "rgba(3, 7, 18, 0.15)", text: "#3b82f6" }
+    };
 
-        if (currentTheme === "red" || currentTheme === "green") {
-          ctx.fillStyle = currentTheme === "red" ? "rgba(8, 2, 3, 0.25)" : "rgba(2, 10, 4, 0.25)";
-          ctx.fillRect(0, 0, W, H);
-          ctx.fillStyle = currentTheme === "red" ? "rgba(239, 68, 68, 0.4)" : "rgba(34, 197, 94, 0.4)";
+    let frameCount = 0;
+    function renderCanvas() {
+      frameCount++;
+
+      if (currentTheme !== "dark") {
+        const themeConfig = themeColors[currentTheme] || themeColors.red;
+        
+        ctx.fillStyle = themeConfig.bg;
+        ctx.fillRect(0, 0, W, H);
+
+        if (frameCount % 2 === 0) { // Стабильная скорость прокрутки
+          ctx.fillStyle = themeConfig.text;
           ctx.font = "14px 'JetBrains Mono', monospace";
-          
-          matrixCols.forEach((y, i) => {
-            const char = katakana[Math.floor(Math.random() * katakana.length)];
-            ctx.fillText(char, i * 24, y * 20);
-            if (y * 20 > H && Math.random() > 0.98) matrixCols[i] = 0;
+
+          for (let i = 0; i < matrixCols.length; i++) {
+            const char = matrixChars[Math.floor(Math.random() * matrixChars.length)];
+            const x = i * 20;
+            const y = matrixCols[i] * 20;
+
+            ctx.fillText(char, x, y);
+
+            if (y > H && Math.random() > 0.975) {
+              matrixCols[i] = 0;
+            }
             matrixCols[i]++;
-          });
-        } else {
-          ctx.clearRect(0, 0, W, H);
-          ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
-          for (let p of particles) {
-            p.x += p.vx; p.y += p.vy;
-            if (p.y > H) p.y = 0;
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-            ctx.fill();
           }
+        }
+      } else {
+        ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = "rgba(255, 255, 255, 0.25)";
+        for (let p of particles) {
+          p.x += p.vx;
+          p.y += p.vy;
+          if (p.y > H) p.y = 0;
+          if (p.x > W) p.x = 0;
+          if (p.x < 0) p.x = W;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fill();
         }
       }
       requestAnimationFrame(renderCanvas);
     }
 
     window.addEventListener('resize', initCanvas);
-    initCanvas();
-    requestAnimationFrame(renderCanvas);
-
+    
+    // Инициализация при загрузке
+    applyTheme(currentTheme);
     setLanguage(currentLang);
+    requestAnimationFrame(renderCanvas);
   </script>
 </body>
 </html>
