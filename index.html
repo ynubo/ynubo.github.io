@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#0a0a0c">
-  <meta name="description" content="ynubo — developer / Telegram / web">
+  <meta name="description" content="ynubo // sacerdos — developer / Telegram / web">
   <meta property="og:title" content="ynubo // bio">
   <meta property="og:description" content="developer / Telegram / web">
   <meta property="og:image" content="https://i.ibb.co/W8JcZLm/photo-2026-05-05-20-50-18.jpg">
@@ -41,6 +41,39 @@
       --text: #fef2f2;
       --text-muted: #991b1b;
       --cursor-color: #ef4444;
+    }
+
+    [data-theme="green"] {
+      --bg: #020a04;
+      --card-bg: rgba(6, 20, 10, 0.95);
+      --card-border: rgba(34, 197, 94, 0.2);
+      --accent: #22c55e;
+      --accent-glow: rgba(34, 197, 94, 0.35);
+      --text: #f0fdf4;
+      --text-muted: #15803d;
+      --cursor-color: #22c55e;
+    }
+
+    [data-theme="purple"] {
+      --bg: #09030d;
+      --card-bg: rgba(20, 8, 28, 0.95);
+      --card-border: rgba(168, 85, 247, 0.2);
+      --accent: #a855f7;
+      --accent-glow: rgba(168, 85, 247, 0.35);
+      --text: #faf5ff;
+      --text-muted: #7e22ce;
+      --cursor-color: #a855f7;
+    }
+
+    [data-theme="blue"] {
+      --bg: #030712;
+      --card-bg: rgba(10, 18, 36, 0.95);
+      --card-border: rgba(59, 130, 246, 0.2);
+      --accent: #3b82f6;
+      --accent-glow: rgba(59, 130, 246, 0.35);
+      --text: #eff6ff;
+      --text-muted: #1d4ed8;
+      --cursor-color: #3b82f6;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -289,13 +322,8 @@
       transition: transform 0.2s ease;
     }
 
-    .row:hover {
-      transform: translateX(4px);
-    }
-
-    .row:hover .label {
-      color: var(--text);
-    }
+    .row:hover { transform: translateX(4px); }
+    .row:hover .label { color: var(--text); }
 
     .row .material-symbols-outlined {
       font-size: 18px;
@@ -304,9 +332,7 @@
       user-select: none;
     }
 
-    .row:hover .material-symbols-outlined {
-      transform: scale(1.2);
-    }
+    .row:hover .material-symbols-outlined { transform: scale(1.2); }
 
     .label {
       color: var(--text-muted);
@@ -359,24 +385,24 @@
       animation: expandConsole 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
-    .cli-box.active {
-      display: block;
-    }
+    .cli-box.active { display: block; }
 
     .cli-output {
-      max-height: 140px;
+      max-height: 220px;
       overflow-y: auto;
       margin-bottom: 6px;
       display: flex;
       flex-direction: column;
       gap: 4px;
       color: var(--text-muted);
+      white-space: pre-wrap;
     }
 
     .cli-output-line { line-height: 1.4; word-break: break-all; }
     .cli-output-line.cmd { color: var(--accent); }
     .cli-output-line.system { color: #27c93f; }
     .cli-output-line.error { color: #ff5f56; }
+    .cli-output-line.neofetch { color: var(--text); font-size: 11px; }
 
     .cli-input-wrapper {
       display: flex;
@@ -435,9 +461,7 @@
       border: none;
     }
 
-    .action-btn.primary:hover {
-      box-shadow: 0 0 15px var(--accent-glow);
-    }
+    .action-btn.primary:hover { box-shadow: 0 0 15px var(--accent-glow); }
 
     .footer {
       margin-top: 18px;
@@ -555,7 +579,7 @@
           <div class="row">
             <span class="material-symbols-outlined">person</span>
             <span class="label" data-i18n="alias_label">псевдоним</span>
-            <span class="value">ynubo</span>
+            <span class="value">ynubo · sacerdos</span>
           </div>
           <div class="row">
             <span class="material-symbols-outlined">desktop_windows</span>
@@ -654,6 +678,58 @@
 
   <script>
     const isMobile = window.matchMedia("(pointer: coarse)").matches;
+
+    // --- Web Audio Synthesizer (Звуки без файлов) ---
+    let audioCtx;
+
+    function initAudio() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+    }
+
+    function playClickSound() {
+      initAudio();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.03);
+      gain.gain.setValueAtTime(0.03, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.03);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.03);
+    }
+
+    function playKeyTypeSound() {
+      initAudio();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(300 + Math.random() * 200, audioCtx.currentTime);
+      gain.gain.setValueAtTime(0.015, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.02);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.02);
+    }
+
+    function playCmdSound(success = true) {
+      initAudio();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = success ? 'sine' : 'sawtooth';
+      const freq = success ? 800 : 150;
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+      gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.08);
+    }
 
     const translations = {
       ru: {
@@ -757,39 +833,30 @@
       });
     });
 
-    let audioCtx;
-    function playClickSound() {
-      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      if (audioCtx.state === 'suspended') audioCtx.resume();
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(600, audioCtx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.03);
-      gain.gain.setValueAtTime(0.03, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.03);
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.start();
-      osc.stop(audioCtx.currentTime + 0.03);
-    }
-
     document.querySelectorAll('.action-btn, .top-btn, .copyable, .tag').forEach(btn => btn.addEventListener('click', playClickSound));
 
+    // --- Theme Switcher Logic ---
+    const themes = ["dark", "red", "green", "purple", "blue"];
     const themeToggleBtn = document.getElementById("themeToggle");
-    let isRedTheme = localStorage.getItem("theme") === "red";
-    if (isRedTheme) document.documentElement.setAttribute("data-theme", "red");
+    let currentTheme = localStorage.getItem("theme") || "dark";
+
+    function applyTheme(theme) {
+      if (!themes.includes(theme)) theme = "dark";
+      currentTheme = theme;
+      if (theme === "dark") {
+        document.documentElement.removeAttribute("data-theme");
+      } else {
+        document.documentElement.setAttribute("data-theme", theme);
+      }
+      localStorage.setItem("theme", theme);
+      initCanvas();
+    }
+
+    if (currentTheme !== "dark") applyTheme(currentTheme);
 
     themeToggleBtn.addEventListener("click", () => {
-      isRedTheme = !isRedTheme;
-      if (isRedTheme) {
-        document.documentElement.setAttribute("data-theme", "red");
-        localStorage.setItem("theme", "red");
-      } else {
-        document.documentElement.removeAttribute("data-theme");
-        localStorage.setItem("theme", "dark");
-      }
-      initCanvas();
+      const nextIdx = (themes.indexOf(currentTheme) + 1) % themes.length;
+      applyTheme(themes[nextIdx]);
     });
 
     const clock = document.getElementById("clock");
@@ -821,6 +888,7 @@
     }
     updateVisits();
 
+    // --- CLI Engine & Commands ---
     const cliBox = document.getElementById('cliBox');
     const cliInput = document.getElementById('cliInput');
     const cliOutput = document.getElementById('cliOutput');
@@ -831,7 +899,7 @@
       if (!cliBox.classList.contains('active')) {
         cliBox.classList.add('active');
         printCli('[System] Terminal unlocked via easter egg code.', 'system');
-        printCli('Type "help" to list available commands.', 'system');
+        printCli('Type "help" or "neofetch" to begin.', 'system');
       }
       cliInput.value = '';
       cliInput.focus();
@@ -848,23 +916,72 @@
       cliOutput.scrollTop = cliOutput.scrollHeight;
     }
 
+    function printNeofetch() {
+      const bioText = 
+`  ______   __  __  __  __  _____   ______  
+ /  __  \\ /  \\/  \\/  \\/  \\/  _  \\ /  __  \\ 
+ |  \\/  / |  ||  ||  ||  ||  |/  ||  \\/  / 
+ \\_____/  \\______/\\______/|_____/ \\_____/  
+
+ynubo // sacerdos (Иван)
+------------------------------------------
+• Имя / Ник: Иван / sacerdos (Сакердос)
+• Дата рождения: 18.05.20xx (~15-16 лет)
+• Местоимения: He/His (он/его)
+• Психотип: ISTP-T
+• Локация: Киров (UTC+3)
+------------------------------------------
+• Статус: свободен
+• Связь: @ynubo | sacerdos@xyecoc.com
+• ID: 8613256620
+• ТГ Канал: https://t.me/d031r
+• Приватка: https://t.me/+Cs-YuueM26w3ZTEy
+------------------------------------------
+• Администратор:
+  - Airis (Агент 3)
+  - Крик. Пожирание (Владелец)
+  - Koto bar (Тех. админ)
+------------------------------------------
+• Особенности:
+  Меланхолия · Апатия · Ангедония · Эмоциональная пустота`;
+      
+      printCli(bioText, 'neofetch');
+    }
+
     function executeCommand(val) {
       printCli(`ynubo@macbook:~ $ ${val}`, 'cmd');
       cmdHistory.push(val);
       historyIndex = cmdHistory.length;
 
       const cleanCmd = val.trim().toLowerCase();
+      const parts = cleanCmd.split(' ');
+
+      if (parts[0] === 'theme') {
+        if (parts[1] && themes.includes(parts[1])) {
+          applyTheme(parts[1]);
+          printCli(`Theme changed to '${parts[1]}'.`, 'system');
+          playCmdSound(true);
+        } else {
+          printCli(`Available themes: ${themes.join(', ')}`, 'error');
+          playCmdSound(false);
+        }
+        return;
+      }
 
       switch (cleanCmd) {
         case 'help':
-          printCli('Available commands: help, clear, theme, ping, whoami, stack, matrix, sudo');
+          printCli('Available commands: help, clear, theme <name>, neofetch, whoami, stack, ping, sudo');
+          playCmdSound(true);
+          break;
+        case 'neofetch':
+        case 'bio':
+        case 'sacerdos':
+          printNeofetch();
+          playCmdSound(true);
           break;
         case 'clear':
           cliOutput.innerHTML = '';
-          break;
-        case 'theme':
-          themeToggleBtn.click();
-          printCli('Theme toggled.', 'system');
+          playCmdSound(true);
           break;
         case 'ping':
           printCli('PING google.com (142.250.185.206): 56 data bytes');
@@ -878,38 +995,32 @@
               printCli('--- google.com ping statistics ---\n4 packets transmitted, 4 packets received, 0.0% packet loss');
             }
           }, 300);
+          playCmdSound(true);
           break;
         case 'whoami':
-          printCli('ynubo — developer (Rust / Kotlin / Windows 10)');
+          printCli('sacerdos (Иван) — developer / Telegram admin (Rust, Kotlin)');
+          playCmdSound(true);
           break;
         case 'stack':
           printCli('Primary: Rust, Kotlin. OS: Windows 10.');
+          playCmdSound(true);
           break;
         case 'ynubo':
           printCli('EGG_FOUND: Main alias recognized. Welcome back, ynubo!', 'system');
-          break;
-        case 'dev':
-          printCli('EGG_FOUND: Developer mode active. Keep crafting.', 'system');
-          break;
-        case 'rust':
-          printCli('EGG_FOUND: fn main() { println!("Hello, Rustacean!"); }', 'system');
-          break;
-        case 'kotlin':
-          printCli('EGG_FOUND: fun main() = println("Kotlin mode active")', 'system');
-          break;
-        case 'matrix':
-          if (!isRedTheme) themeToggleBtn.click();
-          printCli('Matrix mode initialized.', 'system');
+          playCmdSound(true);
           break;
         case 'sudo':
           printCli('Access granted: root@ynubo. System fully initialized.', 'system');
+          playCmdSound(true);
           break;
         default:
           printCli(`zsh: command not found: ${val}`, 'error');
+          playCmdSound(false);
       }
     }
 
     cliInput.addEventListener('keydown', (e) => {
+      playKeyTypeSound();
       if (e.key === 'Enter') {
         const val = cliInput.value;
         if (!val.trim()) return;
@@ -932,7 +1043,7 @@
     });
 
     let keyBuffer = '';
-    const easterEggs = ['ynubo', 'dev', 'kotlin', 'rust', 'matrix', 'sudo', 'ping', 'help', 'stack'];
+    const easterEggs = ['ynubo', 'dev', 'kotlin', 'rust', 'matrix', 'sudo', 'ping', 'help', 'stack', 'neofetch', 'sacerdos', 'bio'];
 
     window.addEventListener('keydown', (e) => {
       if (document.activeElement === cliInput) return;
@@ -962,7 +1073,7 @@
 
       if (tapCount >= 3) {
         tapCount = 0;
-        openConsole('ynubo');
+        openConsole('neofetch');
       } else {
         tapTimer = setTimeout(() => { tapCount = 0; }, 400);
       }
@@ -971,7 +1082,7 @@
     let touchHoldTimer = null;
     avatarTrigger.addEventListener('touchstart', () => {
       touchHoldTimer = setTimeout(() => {
-        const code = prompt("Введите пасхалку (ynubo, dev, rust, kotlin, matrix, sudo):");
+        const code = prompt("Введите команду (neofetch, theme green, sacerdos, sudo):");
         if (code) {
           openConsole(code);
         }
@@ -996,7 +1107,7 @@
       W = canvas.width = window.innerWidth;
       H = canvas.height = window.innerHeight;
 
-      if (isRedTheme) {
+      if (currentTheme === "red" || currentTheme === "green") {
         const cols = Math.floor(W / 24);
         matrixCols = Array.from({ length: cols }, () => Math.floor(Math.random() * -20));
       } else {
@@ -1012,10 +1123,10 @@
       if (time - lastTime > 40) {
         lastTime = time;
 
-        if (isRedTheme) {
-          ctx.fillStyle = "rgba(8, 2, 3, 0.25)";
+        if (currentTheme === "red" || currentTheme === "green") {
+          ctx.fillStyle = currentTheme === "red" ? "rgba(8, 2, 3, 0.25)" : "rgba(2, 10, 4, 0.25)";
           ctx.fillRect(0, 0, W, H);
-          ctx.fillStyle = "rgba(239, 68, 68, 0.4)";
+          ctx.fillStyle = currentTheme === "red" ? "rgba(239, 68, 68, 0.4)" : "rgba(34, 197, 94, 0.4)";
           ctx.font = "14px 'JetBrains Mono', monospace";
           
           matrixCols.forEach((y, i) => {
