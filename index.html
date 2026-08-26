@@ -17,9 +17,6 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-  <!-- Telegram WebApp SDK -->
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
   <style>
     :root {
       --bg: #09090b;
@@ -292,7 +289,6 @@
       transition: transform 0.2s ease;
     }
 
-    /* Ховер анимация строк терминала */
     .row:hover {
       transform: translateX(4px);
     }
@@ -323,7 +319,6 @@
       margin: 2px 0;
     }
 
-    /* Анимированные плашки (tags) */
     .tag {
       display: inline-block;
       padding: 2px 6px;
@@ -342,7 +337,6 @@
       transform: translateY(-2px);
     }
 
-    /* CLI Console Widget (По умолчанию скрыта) */
     .cli-box {
       margin-top: 14px;
       background: rgba(0, 0, 0, 0.75);
@@ -399,7 +393,6 @@
       margin-top: 20px;
     }
 
-    /* Анимированные кнопки */
     .action-btn {
       display: flex;
       align-items: center;
@@ -557,7 +550,7 @@
           <div class="row">
             <span class="material-symbols-outlined">desktop_windows</span>
             <span class="label">система</span>
-            <span class="value">Windows 11</span>
+            <span class="value">Windows 10</span>
           </div>
           <div class="row">
             <span class="material-symbols-outlined">code</span>
@@ -571,11 +564,6 @@
             <span class="material-symbols-outlined">send</span>
             <span class="label">telegram</span>
             <span class="value"><a href="https://t.me/ynubo" target="_blank" style="color: var(--accent);">@ynubo</a></span>
-          </div>
-          <div class="row">
-            <span class="material-symbols-outlined">schedule</span>
-            <span class="label" data-i18n="status_label">статус tg</span>
-            <span class="value" id="tgStatusVal">RPC session active...</span>
           </div>
 
           <div class="separator"></div>
@@ -607,7 +595,7 @@
           </div>
         </div>
 
-        <!-- CLI Console -->
+        <!-- CLI Console Widget -->
         <div class="cli-box" id="cliBox">
           <div class="cli-output" id="cliOutput"></div>
           <div class="cli-input-wrapper">
@@ -652,21 +640,20 @@
   <script>
     const isMobile = window.matchMedia("(pointer: coarse)").matches;
 
-    // Translations
     const translations = {
       ru: {
         alias_label: "псевдоним", stack_label: "стек", learning_label: "изучаю",
-        status_label: "статус tg", projects_label: "проекты", projects_val: "пока нет — в процессе обучения",
+        projects_label: "проекты", projects_val: "пока нет — в процессе обучения",
         location_label: "локация", location_val: "Киров · ~15-16 лет", type_label: "тип",
         btn_channel: "КАНАЛ", toast_copy: "ID скопирован в буфер обмена!",
-        phrases: ["разработчик / telegram", "создаю вещи в тишине", "rust / kotlin / системный софт"]
+        phrases: ["разработчик / telegram", "создаю вещи в тишине", "rust / kotlin"]
       },
       en: {
         alias_label: "alias", stack_label: "stack", learning_label: "learning",
-        status_label: "tg status", projects_label: "projects", projects_val: "none yet — currently learning",
+        projects_label: "projects", projects_val: "none yet — currently learning",
         location_label: "location", location_val: "Kirov · ~15-16 y.o.", type_label: "type",
         btn_channel: "CHANNEL", toast_copy: "ID copied to clipboard!",
-        phrases: ["developer / telegram", "building things quietly", "rust / kotlin / systems"]
+        phrases: ["developer / telegram", "building things quietly", "rust / kotlin"]
       }
     };
 
@@ -685,34 +672,6 @@
 
     document.getElementById("langToggle").addEventListener("click", () => setLanguage(currentLang === "ru" ? "en" : "ru"));
 
-    // Telegram RPC Integration & Session Status
-    function initTelegramRPCStatus() {
-      const statusEl = document.getElementById('tgStatusVal');
-      const tg = window.Telegram ? window.Telegram.WebApp : null;
-
-      if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
-        // Запущено внутри WebApp сессии Telegram
-        tg.expand();
-        const user = tg.initDataUnsafe.user;
-        statusEl.textContent = `online · Telegram Session (@${user.username || user.first_name})`;
-      } else {
-        // Симуляция живого Telegram RPC соединения
-        const sessionStartTime = Date.now();
-        setInterval(() => {
-          const elapsedSec = Math.floor((Date.now() - sessionStartTime) / 1000);
-          if (elapsedSec < 60) {
-            statusEl.textContent = `online · RPC active (${elapsedSec}s)`;
-          } else {
-            const mins = Math.floor(elapsedSec / 60);
-            statusEl.textContent = `online · active ${mins}m ago`;
-          }
-        }, 8000);
-        statusEl.textContent = `online · RPC session active`;
-      }
-    }
-    initTelegramRPCStatus();
-
-    // Cursor
     if (!isMobile) {
       const dot = document.getElementById('cursorDot');
       const outline = document.getElementById('cursorOutline');
@@ -739,7 +698,6 @@
       });
     }
 
-    // Copy TG ID
     const tgId = document.getElementById('tgId');
     const toast = document.getElementById('toast');
     tgId.addEventListener('click', () => {
@@ -750,7 +708,6 @@
       });
     });
 
-    // Audio Click Sound
     let audioCtx;
     function playClickSound() {
       if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -770,7 +727,6 @@
 
     document.querySelectorAll('.action-btn, .top-btn, .copyable, .tag').forEach(btn => btn.addEventListener('click', playClickSound));
 
-    // Theme Switch
     const themeToggleBtn = document.getElementById("themeToggle");
     let isRedTheme = localStorage.getItem("theme") === "red";
     if (isRedTheme) document.documentElement.setAttribute("data-theme", "red");
@@ -787,11 +743,9 @@
       initCanvas();
     });
 
-    // Clock
     const clock = document.getElementById("clock");
     setInterval(() => clock.textContent = new Date().toLocaleTimeString("ru-RU", { hour12: false }), 1000);
 
-    // Dynamic Typing
     const typing = document.getElementById("typing");
     let phraseIdx = 0, pos = 0, deleting = false;
 
@@ -807,7 +761,6 @@
     }
     typeLoop();
 
-    // Visitor Counter
     function updateVisits() {
       let visits = parseInt(localStorage.getItem('site_views') || '120');
       if (!sessionStorage.getItem('already_visited')) {
@@ -819,7 +772,6 @@
     }
     updateVisits();
 
-    // --- CLI Console & Secrets Logic ---
     const cliBox = document.getElementById('cliBox');
     const cliInput = document.getElementById('cliInput');
     const cliOutput = document.getElementById('cliOutput');
@@ -878,11 +830,10 @@
           }, 300);
           break;
         case 'whoami':
-          printCli('ynubo — developer (Rust / Kotlin / Windows 11)');
+          printCli('ynubo — developer (Rust / Kotlin / Windows 10)');
           break;
         case 'stack':
-          // ОС изменена на Windows 11
-          printCli('Primary: Rust, Kotlin. OS: Windows 11.');
+          printCli('Primary: Rust, Kotlin. OS: Windows 10.');
           break;
         case 'ynubo':
           printCli('EGG_FOUND: Main alias recognized. Welcome back, ynubo!', 'system');
@@ -930,9 +881,6 @@
       }
     });
 
-    // --- EASTER EGGS LISTENERS (ДЛЯ ПК И ТЕЛЕФОНОВ) ---
-
-    // 1. Отслеживание слов пасхалок при наборе на ПК
     let keyBuffer = '';
     const easterEggs = ['ynubo', 'dev', 'kotlin', 'rust', 'matrix', 'sudo', 'ping', 'help', 'stack'];
 
@@ -952,7 +900,6 @@
       }
     });
 
-    // 2. Пасхалки для мобилок: Тройной тап по аватарке
     const avatarTrigger = document.getElementById('avatarTrigger');
     let tapCount = 0;
     let tapTimer = null;
@@ -969,7 +916,6 @@
       }
     }, { passive: true });
 
-    // 3. Пасхалка для мобилок: Долгое зажатие аватара
     let touchHoldTimer = null;
     avatarTrigger.addEventListener('touchstart', () => {
       touchHoldTimer = setTimeout(() => {
@@ -984,12 +930,10 @@
       if (touchHoldTimer) clearTimeout(touchHoldTimer);
     });
 
-    // Закрытие консоли по кнопке в терминале
     document.getElementById('macCloseBtn').addEventListener('click', () => {
       cliBox.classList.remove('active');
     });
 
-    // Canvas Background
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
     let W, H, particles = [], matrixCols = [];
