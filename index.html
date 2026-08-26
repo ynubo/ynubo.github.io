@@ -283,7 +283,7 @@
 
     .row {
       display: grid;
-      grid-template-columns: 24px 100px 1fr;
+      grid-template-columns: 24px 110px 1fr;
       gap: 8px;
       align-items: center;
       transition: transform 0.2s ease;
@@ -301,14 +301,24 @@
       font-size: 18px;
       color: var(--accent);
       transition: transform 0.2s ease;
+      user-select: none;
     }
 
     .row:hover .material-symbols-outlined {
       transform: scale(1.2);
     }
 
-    .label { color: var(--text-muted); transition: color 0.2s ease; }
-    .value { color: var(--text); word-break: break-word; }
+    .label {
+      color: var(--text-muted);
+      transition: color 0.2s ease;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .value {
+      color: var(--text);
+      word-break: break-word;
+      font-family: 'JetBrains Mono', monospace;
+    }
 
     .copyable { transition: color 0.2s ease; }
     .copyable:hover { color: var(--accent); cursor: pointer; }
@@ -566,7 +576,7 @@
             <span class="value"><a href="https://t.me/ynubo" target="_blank" style="color: var(--accent);">@ynubo</a></span>
           </div>
           <div class="row">
-            <span class="material-symbols-outlined">nest_clock_faint</span>
+            <span class="material-symbols-outlined">schedule</span>
             <span class="label" data-i18n="time_status_label">статус (киров)</span>
             <span class="value" id="kirovStatusVal">Определение...</span>
           </div>
@@ -584,7 +594,7 @@
             <span class="value" data-i18n="projects_val">пока нет — в процессе обучения</span>
           </div>
           <div class="row">
-            <span class="material-symbols-outlined">badge</span>
+            <span class="material-symbols-outlined">id_card</span>
             <span class="label">telegram id</span>
             <span class="value copyable" id="tgId">8613256620</span>
           </div>
