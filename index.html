@@ -583,7 +583,7 @@
           </div>
           <div class="row">
             <span class="material-symbols-outlined">desktop_windows</span>
-            <span class="label">система</span>
+            <span class="label" data-i18n="system_label">система</span>
             <span class="value">Windows 10</span>
           </div>
           <div class="row">
@@ -727,17 +727,17 @@
       osc.start();
       osc.stop(audioCtx.currentTime + 0.08);
     }
-
+    
     const translations = {
       ru: {
-        alias_label: "псевдоним", stack_label: "стек", learning_label: "изучаю",
+        alias_label: "псевдоним", system_label: "система", stack_label: "стек", learning_label: "изучаю",
         time_status_label: "статус (киров)", projects_label: "проекты", projects_val: "пока нет — в процессе обучения",
         location_label: "локация", location_val: "Киров · ~15-16 лет", type_label: "тип",
         btn_channel: "КАНАЛ", toast_copy: "ID скопирован в буфер обмена!",
         phrases: ["разработчик / telegram", "создаю вещи в тишине", "rust / kotlin"]
       },
       en: {
-        alias_label: "alias", stack_label: "stack", learning_label: "learning",
+        alias_label: "alias", system_label: "system", stack_label: "stack", learning_label: "learning",
         time_status_label: "status (kirov)", projects_label: "projects", projects_val: "none yet — currently learning",
         location_label: "location", location_val: "Kirov · ~15-16 y.o.", type_label: "type",
         btn_channel: "CHANNEL", toast_copy: "ID copied to clipboard!",
