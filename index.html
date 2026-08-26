@@ -591,7 +591,6 @@
             <span class="label" data-i18n="stack_label">стек</span>
             <span class="value">
               <span class="tag">Rust</span>
-              <span class="tag">Kotlin</span>
             </span>
           </div>
           <div class="row">
@@ -610,7 +609,7 @@
           <div class="row">
             <span class="material-symbols-outlined">school</span>
             <span class="label" data-i18n="learning_label">изучаю</span>
-            <span class="value">Rust · Kotlin</span>
+            <span class="value">Rust</span>
           </div>
           <div class="row">
             <span class="material-symbols-outlined">folder_open</span>
@@ -734,14 +733,14 @@
         time_status_label: "статус (киров)", projects_label: "проекты", projects_val: "пока нет — в процессе обучения",
         location_label: "локация", location_val: "Киров · ~15-16 лет", type_label: "тип",
         btn_channel: "КАНАЛ", toast_copy: "ID скопирован в буфер обмена!",
-        phrases: ["разработчик / telegram", "создаю вещи в тишине", "rust / kotlin"]
+        phrases: ["разработчик / telegram", "создаю вещи в тишине"]
       },
       en: {
         alias_label: "alias", system_label: "system", stack_label: "stack", learning_label: "learning",
         time_status_label: "status (kirov)", projects_label: "projects", projects_val: "none yet — currently learning",
         location_label: "location", location_val: "Kirov · ~15-16 y.o.", type_label: "type",
         btn_channel: "CHANNEL", toast_copy: "ID copied to clipboard!",
-        phrases: ["developer / telegram", "building things quietly", "rust / kotlin"]
+        phrases: ["developer / telegram", "building things quietly"]
       }
     };
 
@@ -986,11 +985,11 @@ ynubo // sacerdos (Иван)
           playCmdSound(true);
           break;
         case 'whoami':
-          printCli('sacerdos (Иван) — developer / Telegram admin (Rust, Kotlin)');
+          printCli('sacerdos (Иван) — developer');
           playCmdSound(true);
           break;
         case 'stack':
-          printCli('Primary: Rust, Kotlin. OS: Windows 10.');
+          printCli('Primary: Rust. OS: Windows 10.');
           playCmdSound(true);
           break;
         case 'ynubo':
@@ -1031,7 +1030,7 @@ ynubo // sacerdos (Иван)
     });
 
     let keyBuffer = '';
-    const easterEggs = ['ynubo', 'dev', 'kotlin', 'rust', 'matrix', 'sudo', 'ping', 'help', 'stack', 'neofetch', 'sacerdos', 'bio'];
+    const easterEggs = ['ynubo', 'dev', 'rust', 'matrix', 'sudo', 'ping', 'help', 'stack', 'neofetch', 'sacerdos', 'bio'];
 
     window.addEventListener('keydown', (e) => {
       if (document.activeElement === cliInput || document.activeElement.tagName === 'INPUT') return;
