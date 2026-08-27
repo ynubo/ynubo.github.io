@@ -1103,7 +1103,7 @@ ynubo // sacerdos (Иван)
         const cols = Math.floor(W / 20);
         matrixCols = Array.from({ length: cols }, () => Math.floor(Math.random() * -50));
       } else {
-        const count = isMobile ? 50 : 120;
+        const count = isMobile ? 50 : 250;
         particles = Array.from({ length: count }, () => ({
           x: Math.random() * W, y: Math.random() * H,
           r: Math.random() * 1.5 + 1, vx: (Math.random() - .5) * .3, vy: Math.random() * .3 + .1
@@ -1128,7 +1128,7 @@ ynubo // sacerdos (Иван)
         ctx.fillStyle = themeConfig.bg;
         ctx.fillRect(0, 0, W, H);
 
-        if (frameCount % 3 === 0) { // Стабильная скорость прокрутки
+        if (frameCount % 2.5 === 0) { // Стабильная скорость прокрутки
           ctx.fillStyle = themeConfig.text;
           ctx.font = "14px 'JetBrains Mono', monospace";
 
