@@ -18,7 +18,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
   <style>
-    /* Material Design 3 Expressive System (по образцу yzewe.ru) */
+    /* Material Design 3 Expressive System (Темная и Светлая темы) */
     :root {
       --bg: #181311;
       --surface: #221a17;
@@ -26,61 +26,36 @@
       --outline: rgba(255, 203, 178, 0.12);
       --primary: #ffb59d;
       --on-primary: #561f0f;
-      --primary-container: #3d2a23;
-      --on-primary-container: #ffdbd1;
       --text: #f5dfd8;
       --text-muted: #a08c85;
       --chip-bg: rgba(255, 181, 157, 0.08);
       --chip-border: rgba(255, 181, 157, 0.15);
+      --card-hover-shadow: rgba(255, 181, 157, 0.08);
+      --divider-opacity: 0.15;
     }
 
-    [data-theme="purple"] {
-      --bg: #15111a;
-      --surface: #1e1824;
-      --surface-variant: #282030;
-      --outline: rgba(220, 184, 255, 0.12);
-      --primary: #dcb8ff;
-      --on-primary: #431278;
-      --primary-container: #332342;
-      --on-primary-container: #f0e0ff;
-      --text: #f1eafd;
-      --text-muted: #9c8eab;
-      --chip-bg: rgba(220, 184, 255, 0.08);
-      --chip-border: rgba(220, 184, 255, 0.15);
-    }
-
-    [data-theme="green"] {
-      --bg: #0e1511;
-      --surface: #141f18;
-      --surface-variant: #1c2b22;
-      --outline: rgba(162, 211, 178, 0.12);
-      --primary: #a2d3b2;
-      --on-primary: #0f3820;
-      --primary-container: #22382a;
-      --on-primary-container: #beeedd;
-      --text: #e7f5ed;
-      --text-muted: #8ba895;
-      --chip-bg: rgba(162, 211, 178, 0.08);
-      --chip-border: rgba(162, 211, 178, 0.15);
-    }
-
-    [data-theme="blue"] {
-      --bg: #10141d;
-      --surface: #161c28;
-      --surface-variant: #1e2636;
-      --outline: rgba(161, 201, 255, 0.12);
-      --primary: #a1c9ff;
-      --on-primary: #00315e;
-      --primary-container: #21354d;
-      --on-primary-container: #d2e4ff;
-      --text: #e8f0fe;
-      --text-muted: #8b9eba;
-      --chip-bg: rgba(161, 201, 255, 0.08);
-      --chip-border: rgba(161, 201, 255, 0.15);
+    [data-theme="light"] {
+      --bg: #fcf8f6;
+      --surface: #f4ebe6;
+      --surface-variant: #e8dcd5;
+      --outline: rgba(83, 67, 60, 0.15);
+      --primary: #9c432a;
+      --on-primary: #ffffff;
+      --text: #231916;
+      --text-muted: #705d56;
+      --chip-bg: rgba(156, 67, 42, 0.08);
+      --chip-border: rgba(156, 67, 42, 0.2);
+      --card-hover-shadow: rgba(156, 67, 42, 0.12);
+      --divider-opacity: 0.25;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    
+
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+      animation-duration: 0.5s;
+    }
+
     body {
       min-height: 100vh;
       color: var(--text);
@@ -92,6 +67,7 @@
       align-items: center;
       transition: background 0.4s ease, color 0.4s ease;
       padding-bottom: 60px;
+      overflow-x: hidden;
     }
 
     a { color: inherit; text-decoration: none; }
@@ -104,57 +80,41 @@
       z-index: 100;
       display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 20px;
-      padding: 6px 16px;
-      background: rgba(34, 26, 23, 0.85);
+      padding: 8px 20px;
+      width: min(520px, calc(100% - 32px));
+      background: rgba(34, 26, 23, 0.75);
       border: 1px solid var(--outline);
       border-radius: 100px;
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      animation: slideDown 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    [data-theme="purple"] .nav-bar { background: rgba(30, 24, 36, 0.85); }
-    [data-theme="green"] .nav-bar { background: rgba(20, 31, 24, 0.85); }
-    [data-theme="blue"] .nav-bar { background: rgba(22, 28, 40, 0.85); }
+    [data-theme="light"] .nav-bar {
+      background: rgba(244, 235, 230, 0.85);
+    }
 
     .brand {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       font-weight: 700;
       font-size: 15px;
     }
 
     .brand-avatar {
-      width: 28px;
-      height: 28px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
       object-fit: cover;
+      transition: transform 0.4s ease;
     }
 
-    .nav-items {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      background: var(--surface-variant);
-      padding: 4px;
-      border-radius: 100px;
-    }
-
-    .nav-btn {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--text-muted);
-      transition: all 0.2s ease;
-    }
-
-    .nav-btn.active, .nav-btn:hover {
-      background: var(--primary);
-      color: var(--on-primary);
+    .brand:hover .brand-avatar {
+      transform: rotate(15deg) scale(1.1);
     }
 
     .nav-right {
@@ -164,24 +124,40 @@
     }
 
     .icon-btn {
-      width: 36px;
-      height: 36px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       color: var(--text);
-      transition: background 0.2s ease;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
     }
 
     .icon-btn:hover {
       background: var(--outline);
+      transform: scale(1.08);
+    }
+
+    .icon-btn:active {
+      transform: scale(0.92);
+    }
+
+    .icon-btn .material-symbols-outlined {
+      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .icon-btn:hover .material-symbols-outlined {
+      transform: rotate(30deg);
     }
 
     /* Main Container */
     .container {
-      width: min(720px, calc(100% - 32px));
-      margin-top: 120px;
+      width: min(680px, calc(100% - 32px));
+      margin-top: 110px;
+      animation: fadeIn 1s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     /* Hero Section */
@@ -193,15 +169,16 @@
     }
 
     .badge-blob {
-      width: 80px;
-      height: 80px;
+      width: 86px;
+      height: 86px;
       background: var(--primary);
       border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      animation: morph 8s ease-in-out infinite;
+      animation: morph 8s ease-in-out infinite, float 4s ease-in-out infinite;
       overflow: hidden;
+      box-shadow: 0 10px 30px var(--card-hover-shadow);
     }
 
     .badge-blob img {
@@ -216,19 +193,26 @@
       67% { border-radius: 100% 60% 60% 100% / 100% 100% 60% 60%; }
     }
 
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+
     .hero-title {
-      font-size: clamp(48px, 8vw, 72px);
+      font-size: clamp(48px, 8vw, 76px);
       font-weight: 800;
       letter-spacing: -2px;
       line-height: 1;
       color: var(--text);
+      transition: color 0.4s ease;
     }
 
     .hero-subtitle {
       font-size: clamp(20px, 4vw, 28px);
       font-weight: 700;
-      color: var(--text);
+      color: var(--primary);
       letter-spacing: -0.5px;
+      min-height: 38px;
     }
 
     .hero-desc {
@@ -236,6 +220,7 @@
       line-height: 1.6;
       color: var(--text-muted);
       max-width: 580px;
+      transition: color 0.4s ease;
     }
 
     /* Action Buttons (MD3 Style) */
@@ -254,18 +239,27 @@
       border-radius: 100px;
       font-size: 14px;
       font-weight: 700;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+      overflow: hidden;
     }
 
-    .btn-md3:active { transform: scale(0.97); }
+    .btn-md3:hover {
+      transform: translateY(-3px) scale(1.02);
+    }
+
+    .btn-md3:active {
+      transform: translateY(0) scale(0.96);
+    }
 
     .btn-filled {
       background: var(--primary);
       color: var(--on-primary);
+      box-shadow: 0 4px 15px var(--card-hover-shadow);
     }
 
     .btn-filled:hover {
-      box-shadow: 0 4px 20px rgba(255, 181, 157, 0.25);
+      box-shadow: 0 8px 25px var(--card-hover-shadow);
     }
 
     .btn-outlined {
@@ -296,23 +290,33 @@
       font-size: 12px;
       font-weight: 500;
       font-family: 'JetBrains Mono', monospace;
+      transition: all 0.3s ease;
+    }
+
+    .md-chip:hover {
+      transform: translateY(-2px);
+      background: var(--primary);
+      color: var(--on-primary);
+      border-color: var(--primary);
     }
 
     /* MD3 Wavy Divider */
     .wavy-divider {
       width: 100%;
       height: 20px;
-      margin: 40px 0;
+      margin: 36px 0;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 20' preserveAspectRatio='none'%3E%3Cpath d='M0,10 C150,20 350,0 500,10 C650,20 850,0 1000,10 C1150,20 1200,10 1200,10' fill='none' stroke='%23ffffff' stroke-opacity='0.15' stroke-width='2'/%3E%3C/svg%3E");
       background-size: 600px 20px;
+      transition: opacity 0.4s ease;
+      opacity: var(--divider-opacity);
     }
 
     /* Information Sections */
     .section-title {
-      font-size: 28px;
+      font-size: 26px;
       font-weight: 800;
       letter-spacing: -0.5px;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
     .info-grid {
@@ -328,11 +332,14 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      transition: background 0.2s ease;
+      transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
     }
 
     .info-card:hover {
       background: var(--surface-variant);
+      transform: translateX(6px);
+      border-color: var(--chip-border);
+      box-shadow: 0 4px 20px var(--card-hover-shadow);
     }
 
     .info-left {
@@ -344,16 +351,22 @@
     .info-icon {
       color: var(--primary);
       font-size: 22px;
+      transition: transform 0.3s ease;
+    }
+
+    .info-card:hover .info-icon {
+      transform: scale(1.2) rotate(5deg);
     }
 
     .info-label {
-      font-size: 13px;
+      font-size: 12px;
       color: var(--text-muted);
       font-family: 'JetBrains Mono', monospace;
+      text-transform: lowercase;
     }
 
     .info-value {
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 600;
       color: var(--text);
     }
@@ -361,61 +374,14 @@
     .copyable { cursor: pointer; }
     .copyable:hover .info-value { color: var(--primary); }
 
-    /* CLI / Terminal Overlay */
-    .cli-box {
-      margin-top: 20px;
-      background: #0d0a09;
-      border: 1px solid var(--outline);
-      border-radius: 16px;
-      padding: 16px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 13px;
-      display: none;
-    }
-
-    .cli-box.active { display: block; }
-
-    .cli-output {
-      max-height: 200px;
-      overflow-y: auto;
-      margin-bottom: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      color: var(--text-muted);
-      white-space: pre-wrap;
-    }
-
-    .cli-output-line.cmd { color: var(--primary); }
-    .cli-output-line.system { color: #82c91e; }
-    .cli-output-line.error { color: #ff6b6b; }
-    .cli-output-line.neofetch { color: var(--text); font-size: 11px; }
-
-    .cli-input-wrapper {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .cli-prompt { color: var(--primary); font-weight: bold; }
-    .cli-input {
-      flex: 1;
-      background: none;
-      border: none;
-      outline: none;
-      color: var(--text);
-      font-family: inherit;
-      font-size: inherit;
-    }
-
-    /* Footer & Widgets */
+    /* Footer */
     .footer {
       margin-top: 40px;
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       align-items: center;
       color: var(--text-muted);
-      font-size: 12px;
+      font-size: 13px;
       font-family: 'JetBrains Mono', monospace;
     }
 
@@ -426,35 +392,42 @@
       transform: translateX(-50%) translateY(100px);
       background: var(--primary);
       color: var(--on-primary);
-      padding: 10px 20px;
+      padding: 10px 24px;
       border-radius: 100px;
       font-weight: 700;
       font-size: 13px;
-      transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1);
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
       z-index: 1000;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
     }
 
     .toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* Animations */
+    @keyframes slideDown {
+      from { transform: translateY(-60px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 
 <body>
 
-  <!-- Top Floating MD3 Navigation Bar -->
+  <!-- Top Floating Navigation Bar -->
   <nav class="nav-bar">
     <div class="brand">
-      <img src="https://i.ibb.co/5gjqPwNk/photo-2026-08-26-13-14-52.jpg" class="brand-avatar" alt="ynubo" id="avatarTrigger">
+      <img src="https://i.ibb.co/5gjqPwNk/photo-2026-08-26-13-14-52.jpg" class="brand-avatar" alt="ynubo">
       <span>ynubo</span>
     </div>
 
-    <div class="nav-items">
-      <button class="nav-btn active" title="Bio"><span class="material-symbols-outlined">alternate_email</span></button>
-      <button class="nav-btn" id="terminalToggle" title="Терминал"><span class="material-symbols-outlined">terminal</span></button>
-    </div>
-
     <div class="nav-right">
-      <button class="icon-btn" id="themeToggle" title="Тема">
-        <span class="material-symbols-outlined">dark_mode</span>
+      <button class="icon-btn" id="themeToggle" title="Переключить тему">
+        <span class="material-symbols-outlined" id="themeIcon">dark_mode</span>
       </button>
       <button class="icon-btn" id="langToggle" style="font-family: 'JetBrains Mono'; font-weight: 700; font-size: 12px;">
         RU
@@ -510,16 +483,6 @@
           </div>
         </div>
 
-        <div class="info-card">
-          <div class="info-left">
-            <span class="material-symbols-outlined info-icon">schedule</span>
-            <div>
-              <div class="info-label" data-i18n="time_status_label">статус (киров)</div>
-              <div class="info-value" id="kirovStatusVal">Определение...</div>
-            </div>
-          </div>
-        </div>
-
         <div class="info-card copyable" id="tgIdCard">
           <div class="info-left">
             <span class="material-symbols-outlined info-icon">badge</span>
@@ -553,15 +516,6 @@
       </div>
     </section>
 
-    <!-- Terminal Overlay -->
-    <div class="cli-box" id="cliBox">
-      <div class="cli-output" id="cliOutput"></div>
-      <div class="cli-input-wrapper">
-        <span class="cli-prompt">ynubo@md3:~ $</span>
-        <input type="text" class="cli-input" id="cliInput" placeholder="введите команду (help, neofetch)..." spellcheck="false" autocomplete="off">
-      </div>
-    </div>
-
     <div class="wavy-divider"></div>
 
     <!-- Links / Social Section -->
@@ -583,7 +537,6 @@
 
     <footer class="footer">
       <span>© 2026 ynubo</span>
-      <span>Просмотров: <strong id="visitorCount">1</strong></span>
     </footer>
   </div>
 
@@ -593,13 +546,13 @@
     // --- Translations ---
     const translations = {
       ru: {
-        alias_label: "псевдоним", time_status_label: "статус (киров)", telegram_id: "телеграм id",
+        alias_label: "псевдоним", telegram_id: "телеграм id",
         location_label: "локация", location_val: "Киров · ~15-16 лет", type_label: "тип личности",
         btn_channel: "Канал", btn_telegram: "Написать", toast_copy: "ID скопирован в буфер обмена!",
         phrases: ["frontendDeveloper & sacerdos", "создаю вещи в тишине", "ТГК: @d031r"], virtuoso: "ISTP-T (Виртуоз)"
       },
       en: {
-        alias_label: "alias", time_status_label: "status (kirov)", telegram_id: "telegram id",
+        alias_label: "alias", telegram_id: "telegram id",
         location_label: "location", location_val: "Kirov · ~15-16 y.o.", type_label: "personality type",
         btn_channel: "Channel", btn_telegram: "Contact", toast_copy: "ID copied to clipboard!",
         phrases: ["frontendDeveloper & sacerdos", "building things quietly", "TGK: @d031r"], virtuoso: "ISTP-T (Virtuoso)"
@@ -619,26 +572,9 @@
         }
       });
       phraseIdx = 0; pos = 0; deleting = false;
-      updateKirovStatus();
     }
 
     document.getElementById("langToggle").addEventListener("click", () => setLanguage(currentLang === "ru" ? "en" : "ru"));
-
-    // --- Time Status Kirov ---
-    function updateKirovStatus() {
-      const now = new Date();
-      const kirovTimeStr = now.toLocaleTimeString("ru-RU", { timeZone: "Europe/Moscow", hour: '2-digit', minute: '2-digit' });
-      const [h] = kirovTimeStr.split(':').map(Number);
-      const statusEl = document.getElementById("kirovStatusVal");
-      
-      if (h >= 23 || h < 8) {
-        statusEl.textContent = currentLang === "ru" ? `🌙 сплю (${kirovTimeStr})` : `🌙 sleeping (${kirovTimeStr})`;
-      } else {
-        statusEl.textContent = currentLang === "ru" ? `💻 в сети (${kirovTimeStr})` : `💻 online (${kirovTimeStr})`;
-      }
-    }
-    setInterval(updateKirovStatus, 10000);
-    updateKirovStatus();
 
     // --- Typing Effect ---
     const typing = document.getElementById("typing");
@@ -650,29 +586,38 @@
       typing.textContent = deleting ? text.slice(0, pos--) : text.slice(0, pos++);
       let delay = deleting ? 30 : 70;
 
-      if (!deleting && pos > text.length) { deleting = true; delay = 1200; }
+      if (!deleting && pos > text.length) { deleting = true; delay = 1400; }
       else if (deleting && pos < 0) { deleting = false; phraseIdx = (phraseIdx + 1) % phrases.length; pos = 0; delay = 300; }
       setTimeout(typeLoop, delay);
     }
     typeLoop();
 
-    // --- Themes ---
-    const themes = ["dark", "purple", "green", "blue"];
+    // --- Smooth Theme Toggle (Dark / Light) ---
+    const themeToggleBtn = document.getElementById("themeToggle");
+    const themeIcon = document.getElementById("themeIcon");
     let currentTheme = localStorage.getItem("theme") || "dark";
 
     function applyTheme(theme) {
       currentTheme = theme;
-      if (theme === "dark") {
-        document.documentElement.removeAttribute("data-theme");
+      if (theme === "light") {
+        document.documentElement.setAttribute("data-theme", "light");
+        themeIcon.textContent = "light_mode";
       } else {
-        document.documentElement.setAttribute("data-theme", theme);
+        document.documentElement.removeAttribute("data-theme");
+        themeIcon.textContent = "dark_mode";
       }
       localStorage.setItem("theme", theme);
     }
 
-    document.getElementById("themeToggle").addEventListener("click", () => {
-      const nextIdx = (themes.indexOf(currentTheme) + 1) % themes.length;
-      applyTheme(themes[nextIdx]);
+    themeToggleBtn.addEventListener("click", () => {
+      const newTheme = currentTheme === "dark" ? "light" : "dark";
+
+      // Анимация переключения через View Transitions API (если поддерживается)
+      if (document.startViewTransition) {
+        document.startViewTransition(() => applyTheme(newTheme));
+      } else {
+        applyTheme(newTheme);
+      }
     });
 
     // --- Copy ID ---
@@ -684,58 +629,6 @@
         toast.classList.add('show');
         setTimeout(() => toast.classList.remove('show'), 2000);
       });
-    });
-
-    // --- Visitor Count ---
-    let visits = parseInt(localStorage.getItem('site_views') || '120');
-    if (!sessionStorage.getItem('already_visited')) {
-      visits += 1;
-      localStorage.setItem('site_views', visits);
-      sessionStorage.setItem('already_visited', 'true');
-    }
-    document.getElementById("visitorCount").textContent = visits;
-
-    // --- CLI Console Engine ---
-    const cliBox = document.getElementById('cliBox');
-    const cliInput = document.getElementById('cliInput');
-    const cliOutput = document.getElementById('cliOutput');
-    const terminalToggle = document.getElementById('terminalToggle');
-
-    terminalToggle.addEventListener('click', () => {
-      cliBox.classList.toggle('active');
-      if (cliBox.classList.contains('active')) {
-        cliInput.focus();
-        printCli('[System] Terminal initialized.', 'system');
-      }
-    });
-
-    function printCli(text, type = '') {
-      const line = document.createElement('div');
-      line.className = `cli-output-line ${type}`;
-      line.textContent = text;
-      cliOutput.appendChild(line);
-      cliOutput.scrollTop = cliOutput.scrollHeight;
-    }
-
-    cliInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        const val = cliInput.value.trim();
-        if (!val) return;
-        printCli(`ynubo@md3:~ $ ${val}`, 'cmd');
-
-        if (val === 'help') {
-          printCli('Available commands: help, clear, neofetch, whoami');
-        } else if (val === 'clear') {
-          cliOutput.innerHTML = '';
-        } else if (val === 'neofetch' || val === 'bio') {
-          printCli('ynubo // sacerdos (Иван) — Frontend Developer\nLocation: Kirov\nTelegram: @ynubo', 'neofetch');
-        } else if (val === 'whoami') {
-          printCli('sacerdos (Иван)');
-        } else {
-          printCli(`Command not found: ${val}`, 'error');
-        }
-        cliInput.value = '';
-      }
     });
 
     // Init
