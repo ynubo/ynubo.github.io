@@ -1,177 +1,639 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ynubo</title>
-  <meta name="description" content="ynubo — связь и каналы">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#181311">
+  <meta name="description" content="ynubo // sacerdos — developer / Frontend">
+  <meta property="og:title" content="ynubo // bio">
+  <meta property="og:description" content="developer / Frontend">
+  <meta property="og:image" content="https://i.ibb.co/5gjqPwNk/photo-2026-08-26-13-14-52.jpg">
+  <title>ynubo // bio</title>
+
+  <link rel="icon" href="https://i.ibb.co/5gjqPwNk/photo-2026-08-26-13-14-52.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    /* Material Design 3 Expressive System (Темная и Светлая темы) */
+    :root {
+      --bg: #181311;
+      --surface: #221a17;
+      --surface-variant: #2d221e;
+      --outline: rgba(255, 203, 178, 0.12);
+      --primary: #ffb59d;
+      --on-primary: #561f0f;
+      --text: #f5dfd8;
+      --text-muted: #a08c85;
+      --chip-bg: rgba(255, 181, 157, 0.08);
+      --chip-border: rgba(255, 181, 157, 0.15);
+      --card-hover-shadow: rgba(255, 181, 157, 0.08);
+      --divider-opacity: 0.15;
+    }
+
+    [data-theme="light"] {
+      --bg: #fcf8f6;
+      --surface: #f4ebe6;
+      --surface-variant: #e8dcd5;
+      --outline: rgba(83, 67, 60, 0.15);
+      --primary: #9c432a;
+      --on-primary: #ffffff;
+      --text: #231916;
+      --text-muted: #705d56;
+      --chip-bg: rgba(156, 67, 42, 0.08);
+      --chip-border: rgba(156, 67, 42, 0.2);
+      --card-hover-shadow: rgba(156, 67, 42, 0.12);
+      --divider-opacity: 0.25;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+      animation-duration: 0.5s;
+    }
+
+    body {
+      min-height: 100vh;
+      color: var(--text);
+      background: var(--bg);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: background 0.4s ease, color 0.4s ease;
+      padding-bottom: 60px;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; border: none; background: none; cursor: pointer; }
+
+    /* Top Floating Navigation Bar */
+    .nav-bar {
+      position: fixed;
+      top: 16px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 8px 20px;
+      width: min(520px, calc(100% - 32px));
+      background: rgba(34, 26, 23, 0.75);
+      border: 1px solid var(--outline);
+      border-radius: 100px;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      animation: slideDown 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    [data-theme="light"] .nav-bar {
+      background: rgba(244, 235, 230, 0.85);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 15px;
+    }
+
+    .brand-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .brand:hover .brand-avatar {
+      transform: rotate(15deg) scale(1.1);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .icon-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .icon-btn:hover {
+      background: var(--outline);
+      transform: scale(1.08);
+    }
+
+    .icon-btn:active {
+      transform: scale(0.92);
+    }
+
+    .icon-btn .material-symbols-outlined {
+      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .icon-btn:hover .material-symbols-outlined {
+      transform: rotate(30deg);
+    }
+
+    /* Main Container */
+    .container {
+      width: min(680px, calc(100% - 32px));
+      margin-top: 110px;
+      animation: fadeIn 1s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Hero Section */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .badge-blob {
+      width: 86px;
+      height: 86px;
+      background: var(--primary);
+      border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: morph 8s ease-in-out infinite, float 4s ease-in-out infinite;
+      overflow: hidden;
+      box-shadow: 0 10px 30px var(--card-hover-shadow);
+    }
+
+    .badge-blob img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    @keyframes morph {
+      0%, 100% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+      34% { border-radius: 70% 30% 50% 50% / 30% 30% 70% 70%; }
+      67% { border-radius: 100% 60% 60% 100% / 100% 100% 60% 60%; }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .hero-title {
+      font-size: clamp(48px, 8vw, 76px);
+      font-weight: 800;
+      letter-spacing: -2px;
+      line-height: 1;
+      color: var(--text);
+      transition: color 0.4s ease;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(20px, 4vw, 28px);
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: -0.5px;
+      min-height: 38px;
+    }
+
+    .hero-desc {
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--text-muted);
+      max-width: 580px;
+      transition: color 0.4s ease;
+    }
+
+    /* Action Buttons (MD3 Style) */
+    .cta-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .btn-md3 {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 700;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-md3:hover {
+      transform: translateY(-3px) scale(1.02);
+    }
+
+    .btn-md3:active {
+      transform: translateY(0) scale(0.96);
+    }
+
+    .btn-filled {
+      background: var(--primary);
+      color: var(--on-primary);
+      box-shadow: 0 4px 15px var(--card-hover-shadow);
+    }
+
+    .btn-filled:hover {
+      box-shadow: 0 8px 25px var(--card-hover-shadow);
+    }
+
+    .btn-outlined {
+      background: transparent;
+      border: 1px solid var(--outline);
+      color: var(--text);
+    }
+
+    .btn-outlined:hover {
+      background: var(--chip-bg);
+      border-color: var(--primary);
+    }
+
+    /* Tags / Chips */
+    .chips-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .md-chip {
+      padding: 6px 14px;
+      border-radius: 8px;
+      background: var(--chip-bg);
+      border: 1px solid var(--chip-border);
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 500;
+      font-family: 'JetBrains Mono', monospace;
+      transition: all 0.3s ease;
+    }
+
+    .md-chip:hover {
+      transform: translateY(-2px);
+      background: var(--primary);
+      color: var(--on-primary);
+      border-color: var(--primary);
+    }
+
+    /* MD3 Wavy Divider */
+    .wavy-divider {
+      width: 100%;
+      height: 20px;
+      margin: 36px 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 20' preserveAspectRatio='none'%3E%3Cpath d='M0,10 C150,20 350,0 500,10 C650,20 850,0 1000,10 C1150,20 1200,10 1200,10' fill='none' stroke='%23ffffff' stroke-opacity='0.15' stroke-width='2'/%3E%3C/svg%3E");
+      background-size: 600px 20px;
+      transition: opacity 0.4s ease;
+      opacity: var(--divider-opacity);
+    }
+
+    /* Information Sections */
+    .section-title {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 18px;
+    }
+
+    .info-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .info-card {
+      background: var(--surface);
+      border: 1px solid var(--outline);
+      border-radius: 20px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+    }
+
+    .info-card:hover {
+      background: var(--surface-variant);
+      transform: translateX(6px);
+      border-color: var(--chip-border);
+      box-shadow: 0 4px 20px var(--card-hover-shadow);
+    }
+
+    .info-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .info-icon {
+      color: var(--primary);
+      font-size: 22px;
+      transition: transform 0.3s ease;
+    }
+
+    .info-card:hover .info-icon {
+      transform: scale(1.2) rotate(5deg);
+    }
+
+    .info-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+      text-transform: lowercase;
+    }
+
+    .info-value {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .copyable { cursor: pointer; }
+    .copyable:hover .info-value { color: var(--primary); }
+
+    /* Footer */
+    .footer {
+      margin-top: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--primary);
+      color: var(--on-primary);
+      padding: 10px 24px;
+      border-radius: 100px;
+      font-weight: 700;
+      font-size: 13px;
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 1000;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    }
+
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* Animations */
+    @keyframes slideDown {
+      from { transform: translateY(-60px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
+
 <body>
-  <div class="site-shell" id="top">
-    <header class="topbar">
-      <a class="mini-brand" href="#top" aria-label="ynubo">
-        <span class="mini-avatar">y</span>
-        <span>ynubo</span>
-      </a>
 
-      <nav class="md-nav" aria-label="Навигация">
-        <a class="nav-item active" href="#contact" title="Связь">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 6.5h9A4.5 4.5 0 0 1 21 11v2a4.5 4.5 0 0 1-4.5 4.5H12l-4.5 3v-3H7.5A4.5 4.5 0 0 1 3 13v-2a4.5 4.5 0 0 1 4.5-4.5Z"/></svg>
-        </a>
-        <a class="nav-item" href="#channels" title="Каналы">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7L8 5Zm-3 1v12"/></svg>
-        </a>
-        <a class="nav-item" href="#about" title="О странице">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7v5l3 2m5-2a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z"/></svg>
-        </a>
-      </nav>
+  <!-- Top Floating Navigation Bar -->
+  <nav class="nav-bar">
+    <div class="brand">
+      <img src="https://i.ibb.co/5gjqPwNk/photo-2026-08-26-13-14-52.jpg" class="brand-avatar" alt="ynubo">
+      <span>ynubo</span>
+    </div>
 
-      <button class="theme-toggle" id="themeToggle" aria-label="Сменить тему">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.5A8 8 0 0 1 9.5 3.5 8.01 8.01 0 1 0 20.5 14.5Z"/></svg>
+    <div class="nav-right">
+      <button class="icon-btn" id="themeToggle" title="Переключить тему">
+        <span class="material-symbols-outlined" id="themeIcon">dark_mode</span>
       </button>
-    </header>
+      <button class="icon-btn" id="langToggle" style="font-family: 'JetBrains Mono'; font-weight: 700; font-size: 12px;">
+        RU
+      </button>
+    </div>
+  </nav>
 
-    <main>
-      <section class="hero">
-        <div class="blob" aria-hidden="true"></div>
-        <div class="hero-copy">
-          <h1>ynubo</h1>
-          <h2>quietly online &amp; slightly elsewhere</h2>
-          <p>
-            Личное пространство для общения, историй и вещей, которые хочется
-            оставить здесь. Иногда тихо. Иногда слишком много всего сразу.
-          </p>
-
-          <div class="hero-actions">
-            <a class="md-button filled" href="#channels">
-              <span class="icon">↓</span>
-              Смотреть каналы
-            </a>
-            <a class="md-button outlined" href="https://t.me/ynubo" target="_blank" rel="noopener">
-              <span class="icon">▷</span>
-              Написать
-            </a>
-          </div>
-
-          <div class="chips" aria-label="Темы">
-            <span>Communication</span>
-            <span>Stories</span>
-            <span>Art</span>
-          </div>
-        </div>
-      </section>
-
-      <div class="wave" aria-hidden="true">
-        <svg viewBox="0 0 1060 18" preserveAspectRatio="none">
-          <path d="M0 9 Q 13 1 26 9 T52 9 T78 9 T104 9 T130 9 T156 9 T182 9 T208 9 T234 9 T260 9 T286 9 T312 9 T338 9 T364 9 T390 9 T416 9 T442 9 T468 9 T494 9 T520 9 T546 9 T572 9 T598 9 T624 9 T650 9 T676 9 T702 9 T728 9 T754 9 T780 9 T806 9 T832 9 T858 9 T884 9 T910 9 T936 9 T962 9 T988 9 T1014 9 T1040 9 T1060 9" />
-        </svg>
+  <!-- Main Content Area -->
+  <div class="container">
+    <section class="hero">
+      <div class="badge-blob">
+        <img src="https://i.ibb.co/5gjqPwNk/photo-2026-08-26-13-14-52.jpg" alt="ynubo">
       </div>
 
-      <section class="section" id="contact">
-        <div class="section-title">
-          <h2>Связь</h2>
-          <span>01</span>
-        </div>
+      <h1 class="hero-title">ynubo</h1>
+      <div class="hero-subtitle" id="typing">frontendDeveloper & sacerdos</div>
 
-        <div class="contact-grid">
-          <a class="contact-card primary" href="https://t.me/ynubo" target="_blank" rel="noopener">
-            <div>
-              <div class="card-top">
-                <strong>Telegram</strong>
-                <small>DIRECT</small>
-              </div>
-              <p>Личные сообщения. Отвечаю частенько.</p>
-            </div>
-            <b>@ynubo</b>
-          </a>
+      <p class="hero-desc">
+        Разработчик / Frontend из Кирова. Создаю интерфейсы, изучаю стек веб-технологий и администрирую проекты.
+      </p>
 
-          <a class="contact-card" href="https://discord.com/" target="_blank" rel="noopener">
-            <div>
-              <div class="card-top">
-                <strong>Discord</strong>
-                <small>CHAT</small>
-              </div>
-              <p>Пользователь: <b>ynubo</b></p>
-            </div>
-            <span class="wide-action">Связаться ↗</span>
-          </a>
-
-          <a class="contact-card" href="https://matrix.to/#/@ynubo:matrix.org" target="_blank" rel="noopener">
-            <div>
-              <div class="card-top">
-                <strong>Matrix</strong>
-                <small>FEDERATED</small>
-              </div>
-              <p class="mono">@ynubo:matrix.org</p>
-            </div>
-            <span class="wide-action">Связаться ↗</span>
-          </a>
-        </div>
-      </section>
-
-      <div class="wave" aria-hidden="true">
-        <svg viewBox="0 0 1060 18" preserveAspectRatio="none">
-          <path d="M0 9 Q 13 1 26 9 T52 9 T78 9 T104 9 T130 9 T156 9 T182 9 T208 9 T234 9 T260 9 T286 9 T312 9 T338 9 T364 9 T390 9 T416 9 T442 9 T468 9 T494 9 T520 9 T546 9 T572 9 T598 9 T624 9 T650 9 T676 9 T702 9 T728 9 T754 9 T780 9 T806 9 T832 9 T858 9 T884 9 T910 9 T936 9 T962 9 T988 9 T1014 9 T1040 9 T1060 9" />
-        </svg>
+      <div class="cta-group">
+        <a href="https://t.me/ynubo" target="_blank" class="btn-md3 btn-filled">
+          <span class="material-symbols-outlined">send</span> <span data-i18n="btn_telegram">Написать</span>
+        </a>
+        <a href="https://t.me/d031r" target="_blank" class="btn-md3 btn-outlined">
+          <span class="material-symbols-outlined">podcasts</span> <span data-i18n="btn_channel">Канал</span>
+        </a>
       </div>
 
-      <section class="section" id="channels">
-        <div class="section-title">
-          <h2>Каналы</h2>
-          <span>02</span>
-        </div>
-
-        <div class="channel-grid">
-          <a class="channel" href="https://t.me/d031r" target="_blank" rel="noopener">
-            <strong>Основной канал</strong>
-            <span>@d031r</span>
-          </a>
-          <a class="channel" href="https://t.me/+hswo9AUvwiliYjli" target="_blank" rel="noopener">
-            <strong>Приватка</strong>
-            <span>10 ★ / месяц</span>
-          </a>
-          <a class="channel" href="https://t.me/cmdtag" target="_blank" rel="noopener">
-            <strong>Покупка Telegram-юзов</strong>
-            <span>@cmdtag</span>
-          </a>
-        </div>
-
-        <p class="note">Приватка бесплатна друзьям и знакомым.</p>
-      </section>
-
-      <div class="wave" aria-hidden="true">
-        <svg viewBox="0 0 1060 18" preserveAspectRatio="none">
-          <path d="M0 9 Q 13 1 26 9 T52 9 T78 9 T104 9 T130 9 T156 9 T182 9 T208 9 T234 9 T260 9 T286 9 T312 9 T338 9 T364 9 T390 9 T416 9 T442 9 T468 9 T494 9 T520 9 T546 9 T572 9 T598 9 T624 9 T650 9 T676 9 T702 9 T728 9 T754 9 T780 9 T806 9 T832 9 T858 9 T884 9 T910 9 T936 9 T962 9 T988 9 T1014 9 T1040 9 T1060 9" />
-        </svg>
+      <div class="chips-group">
+        <span class="md-chip">HTML / CSS</span>
+        <span class="md-chip">JavaScript</span>
+        <span class="md-chip">Frontend</span>
+        <span class="md-chip">Windows 10</span>
       </div>
+    </section>
 
-      <section class="section about" id="about">
-        <div class="section-title">
-          <h2>Обо мне</h2>
-          <span>03</span>
-        </div>
-        <div class="about-card">
-          <span class="mono">ynubo / 2026</span>
-          <p>
-            Спокойное место без лишнего шума. Здесь можно найти связь со мной,
-            каналы и немного атмосферы вокруг них.
-          </p>
-          <div class="about-tags">
-            <span>Tokyo Ghoul</span>
-            <span>Jongwoo</span>
-            <span>ISTP-T</span>
+    <div class="wavy-divider"></div>
+
+    <!-- About Section -->
+    <section>
+      <h2 class="section-title">Информация</h2>
+
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="info-left">
+            <span class="material-symbols-outlined info-icon">person</span>
+            <div>
+              <div class="info-label" data-i18n="alias_label">псевдоним</div>
+              <div class="info-value">ynubo · sacerdos (Иван)</div>
+            </div>
           </div>
         </div>
-      </section>
-    </main>
 
-    <button class="to-top" id="toTop" aria-label="Наверх">↑</button>
+        <div class="info-card copyable" id="tgIdCard">
+          <div class="info-left">
+            <span class="material-symbols-outlined info-icon">badge</span>
+            <div>
+              <div class="info-label" data-i18n="telegram_id">телеграм id</div>
+              <div class="info-value">8613256620</div>
+            </div>
+          </div>
+          <span class="material-symbols-outlined" style="color: var(--text-muted); font-size: 18px;">content_copy</span>
+        </div>
+
+        <div class="info-card">
+          <div class="info-left">
+            <span class="material-symbols-outlined info-icon">location_on</span>
+            <div>
+              <div class="info-label" data-i18n="location_label">локация</div>
+              <div class="info-value" data-i18n="location_val">Киров · ~15-16 лет</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-left">
+            <span class="material-symbols-outlined info-icon">psychology</span>
+            <div>
+              <div class="info-label" data-i18n="type_label">тип личности</div>
+              <div class="info-value" data-i18n="virtuoso">ISTP-T (Виртуоз)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="wavy-divider"></div>
+
+    <!-- Links / Social Section -->
+    <section>
+      <h2 class="section-title">Ссылки</h2>
+
+      <div class="cta-group">
+        <a href="https://github.com/ynubo" target="_blank" class="btn-md3 btn-outlined">
+          <i class="fa-brands fa-github"></i> GitHub
+        </a>
+        <a href="https://steamcommunity.com/id/ynubo" target="_blank" class="btn-md3 btn-outlined">
+          <i class="fa-brands fa-steam"></i> Steam
+        </a>
+        <a href="https://open.spotify.com/playlist/0yzdXwn0gWxlvnMeFCAgpZ" target="_blank" class="btn-md3 btn-outlined">
+          <i class="fa-brands fa-spotify"></i> Spotify
+        </a>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span>© 2026 ynubo</span>
+    </footer>
   </div>
 
-  <script src="script.js"></script>
+  <div class="toast" id="toast">ID скопирован!</div>
+
+  <script>
+    // --- Translations ---
+    const translations = {
+      ru: {
+        alias_label: "псевдоним", telegram_id: "телеграм id",
+        location_label: "локация", location_val: "Киров · ~15-16 лет", type_label: "тип личности",
+        btn_channel: "Канал", btn_telegram: "Написать", toast_copy: "ID скопирован в буфер обмена!",
+        phrases: ["frontendDeveloper & sacerdos", "создаю вещи в тишине", "ТГК: @d031r"], virtuoso: "ISTP-T (Виртуоз)"
+      },
+      en: {
+        alias_label: "alias", telegram_id: "telegram id",
+        location_label: "location", location_val: "Kirov · ~15-16 y.o.", type_label: "personality type",
+        btn_channel: "Channel", btn_telegram: "Contact", toast_copy: "ID copied to clipboard!",
+        phrases: ["frontendDeveloper & sacerdos", "building things quietly", "TGK: @d031r"], virtuoso: "ISTP-T (Virtuoso)"
+      }
+    };
+
+    let currentLang = localStorage.getItem("lang") || "ru";
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      localStorage.setItem("lang", lang);
+      document.getElementById("langToggle").textContent = lang.toUpperCase();
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        if (translations[lang] && translations[lang][key]) {
+          el.textContent = translations[lang][key];
+        }
+      });
+      phraseIdx = 0; pos = 0; deleting = false;
+    }
+
+    document.getElementById("langToggle").addEventListener("click", () => setLanguage(currentLang === "ru" ? "en" : "ru"));
+
+    // --- Typing Effect ---
+    const typing = document.getElementById("typing");
+    let phraseIdx = 0, pos = 0, deleting = false;
+
+    function typeLoop() {
+      const phrases = translations[currentLang].phrases;
+      const text = phrases[phraseIdx % phrases.length];
+      typing.textContent = deleting ? text.slice(0, pos--) : text.slice(0, pos++);
+      let delay = deleting ? 30 : 70;
+
+      if (!deleting && pos > text.length) { deleting = true; delay = 1400; }
+      else if (deleting && pos < 0) { deleting = false; phraseIdx = (phraseIdx + 1) % phrases.length; pos = 0; delay = 300; }
+      setTimeout(typeLoop, delay);
+    }
+    typeLoop();
+
+    // --- Smooth Theme Toggle (Dark / Light) ---
+    const themeToggleBtn = document.getElementById("themeToggle");
+    const themeIcon = document.getElementById("themeIcon");
+    let currentTheme = localStorage.getItem("theme") || "dark";
+
+    function applyTheme(theme) {
+      currentTheme = theme;
+      if (theme === "light") {
+        document.documentElement.setAttribute("data-theme", "light");
+        themeIcon.textContent = "light_mode";
+      } else {
+        document.documentElement.removeAttribute("data-theme");
+        themeIcon.textContent = "dark_mode";
+      }
+      localStorage.setItem("theme", theme);
+    }
+
+    themeToggleBtn.addEventListener("click", () => {
+      const newTheme = currentTheme === "dark" ? "light" : "dark";
+
+      // Анимация переключения через View Transitions API (если поддерживается)
+      if (document.startViewTransition) {
+        document.startViewTransition(() => applyTheme(newTheme));
+      } else {
+        applyTheme(newTheme);
+      }
+    });
+
+    // --- Copy ID ---
+    const tgIdCard = document.getElementById('tgIdCard');
+    const toast = document.getElementById('toast');
+    tgIdCard.addEventListener('click', () => {
+      navigator.clipboard.writeText('8613256620').then(() => {
+        toast.textContent = translations[currentLang].toast_copy;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2000);
+      });
+    });
+
+    // Init
+    applyTheme(currentTheme);
+    setLanguage(currentLang);
+  </script>
 </body>
 </html>
